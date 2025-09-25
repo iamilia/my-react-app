@@ -40,7 +40,29 @@ function App() {
 
     const scrollToSection = (sectionId: string) => {
         const element = document.getElementById(sectionId);
-        element?.scrollIntoView({ behavior: 'smooth' });
+        if (!element) return;
+
+        const startY = window.scrollY;
+        const endY = element.getBoundingClientRect().top + window.scrollY;
+        const duration = 700; // ms
+        const startTime = performance.now();
+
+        // Ease in-out cubic
+        const easeInOutCubic = (t: number) =>
+            t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+        function animateScroll(currentTime: number) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = easeInOutCubic(progress);
+            window.scrollTo(0, startY + (endY - startY) * ease);
+
+            if (progress < 1) {
+                requestAnimationFrame(animateScroll);
+            }
+        }
+
+        requestAnimationFrame(animateScroll);
     };
 
     if (loading) {
