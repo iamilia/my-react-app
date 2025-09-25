@@ -1,0 +1,200 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Custom scrollbar */
+/* Define CSS variables for light and dark mode */
+:root {
+    --scrollbar-track: #f1f5f9; /* bg-slate-100 */
+    --scrollbar-thumb: #94a3b8; /* bg-slate-400 */
+    --scrollbar-thumb-hover: #64748b; /* bg-slate-500 */
+    --background-color: #f8fafc; /* bg-slate-50 */
+    --text-color: #1e293b; /* text-slate-800 */
+    --primary-color: #0ea5e9; /* sky-500 */
+    --secondary-color: #14b8a6; /* teal-500 */
+}
+
+.dark {
+    --scrollbar-track: #1e293b; /* bg-zinc-800 */
+    --scrollbar-thumb: #475569; /* bg-zinc-600 */
+    --scrollbar-thumb-hover: #334155; /* bg-zinc-500 */
+    --background-color: #111827; /* bg-gray-900 */
+    --text-color: #e5e7eb; /* text-gray-200 */
+    --primary-color: #0ea5e9; /* cyan-500 */
+    --secondary-color: #14b8a6; /* teal-500 */
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Apply the variables to the scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 9999px; /* rounded-full */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Add safe area insets for iOS */
+html {
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    box-sizing: border-box;
+}
+
+/* Ensure the body respects the safe area */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Line clamp utility */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Enhanced backdrop blur */
+.backdrop-blur-xl {
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+/* Liquid-style transitions */
+* {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    transition-duration: 400ms;
+}
+
+/* Liquid blob animations */
+@keyframes liquid-blob {
+    0%, 100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    25% {
+        transform: translate(20px, -50px) scale(1.1) rotate(90deg);
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    50% {
+        transform: translate(-20px, 20px) scale(0.9) rotate(180deg);
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    75% {
+        transform: translate(10px, 50px) scale(1.05) rotate(270deg);
+        border-radius: 40% 70% 60% 30% / 40% 50% 60% 50%;
+    }
+}
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.5); /* blue-600 */
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(37, 99, 235, 0.8), 0 0 60px rgba(37, 99, 235, 0.3);
+    }
+}
+
+/* Liquid button styles */
+.liquid-button {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+
+.liquid-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.liquid-button:hover::before {
+    left: 100%;
+}
+
+/* Liquid card styles */
+.liquid-card {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(226, 232, 240, 0.7); /* slate-200 */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.dark .liquid-card {
+    background: rgba(14, 116, 144, 0.1);
+    border: 1px solid rgba(14, 116, 144, 0.2);
+    box-shadow: 0 8px 32px rgba(14, 116, 144, 0.1);
+}
+
+.liquid-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.dark .liquid-card:hover {
+    box-shadow: 0 20px 40px rgba(14, 116, 144, 0.2);
+}
+
+/* Animated background blobs */
+.blob-1 {
+    animation: liquid-blob 20s ease-in-out infinite;
+}
+
+.blob-2 {
+    animation: liquid-blob 25s ease-in-out infinite reverse;
+}
+
+.blob-3 {
+    animation: liquid-blob 30s ease-in-out infinite;
+}
+
+/* Floating animation */
+.floating {
+    animation: floating 6s ease-in-out infinite;
+}
+
+/* Glow effect */
+.glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+}
