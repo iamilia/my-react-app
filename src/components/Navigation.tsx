@@ -38,6 +38,12 @@ export const Navigation = ({
                             About
                         </button>
                         <button
+                            onClick={() => scrollToSection('skills')}
+                            className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
+                        >
+                            Skills
+                        </button>
+                        <button
                             onClick={() => scrollToSection('projects')}
                             className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
