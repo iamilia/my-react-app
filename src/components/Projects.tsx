@@ -1,8 +1,15 @@
-import { IconBrandGithub, IconStar, IconGitFork, IconExternalLink } from '@tabler/icons-react';
+import {
+    IconBrandGithub,
+    IconStar,
+    IconGitFork,
+    IconExternalLink,
+} from '@tabler/icons-react';
 import type { GitHubRepo } from '../types/github';
+import { useTranslations, type Language } from '../translations';
 
 interface ProjectsProps {
     repos: GitHubRepo[];
+    language: Language;
 }
 
 const getLanguageColor = (language: string) => {
@@ -56,15 +63,23 @@ const getLanguageColor = (language: string) => {
     return colors[language] || 'bg-gray-500';
 };
 
-export const Projects = ({ repos }: ProjectsProps) => {
+export const Projects = ({ repos, language }: ProjectsProps) => {
+    const t = useTranslations(language);
     return (
-        <section id="projects" className="py-20 bg-white/50 dark:bg-stone-950/10 transition-colors">
+        <section
+            id="projects"
+            className="py-20 bg-white/50 dark:bg-stone-950/10 transition-colors"
+        >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-cyan-300 mb-4 transition-colors">Recent Projects</h2>
-                    <p className="text-lg sm:text-xl text-slate-600 dark:text-zinc-400 transition-colors">Some of my latest work on GitHub</p>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-cyan-300 mb-4 transition-colors">
+                        {t.projects.title}
+                    </h2>
+                    <p className="text-lg sm:text-xl text-slate-600 dark:text-zinc-400 transition-colors">
+                        {t.projects.subtitle}
+                    </p>
                 </div>
-                
+
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     {repos.map((repo) => (
                         <div
@@ -86,7 +101,8 @@ export const Projects = ({ repos }: ProjectsProps) => {
                                     </a>
                                 </div>
                                 <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 mb-6 line-clamp-3 leading-relaxed">
-                                    {repo.description || 'No description available'}
+                                    {repo.description ||
+                                        t.projects.noDescription}
                                 </p>
                             </div>
                             <div className="mt-auto">
@@ -129,7 +145,7 @@ export const Projects = ({ repos }: ProjectsProps) => {
                         className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 liquid-button text-white rounded-2xl hover:shadow-xl transition-all duration-500 hover:-translate-y-1 text-base sm:text-lg font-semibold"
                     >
                         <IconBrandGithub size={20} className="mr-3" />
-                        View All Projects
+                        {t.projects.viewAllProjects}
                     </a>
                 </div>
             </div>

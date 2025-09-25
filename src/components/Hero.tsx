@@ -8,25 +8,28 @@ import {
 } from '@tabler/icons-react';
 import type { GitHubUser } from '../types/github';
 import { TypeAnimation } from 'react-type-animation';
+import { useTranslations, type Language } from '../translations';
 
 interface HeroProps {
     user: GitHubUser | null;
+    language: Language;
 }
 
-const animationSequence = [
-    "Software Developer 🚀",
-    3000,
-    "Game Developer 🎮",
-    3000,
-    "Tech Enthusiast 💡",
-    3000,
-    "Happy to connect with you! 😊",
-    3000,
-    "Let's build something awesome together! 🤝",
-    3000,
-];
+export const Hero = ({ user, language }: HeroProps) => {
+    const t = useTranslations(language);
+    const animationSequence = [
+        t.hero.animationSequence[0],
+        3000,
+        t.hero.animationSequence[1],
+        3000,
+        t.hero.animationSequence[2],
+        3000,
+        t.hero.animationSequence[3],
+        3000,
+        t.hero.animationSequence[4],
+        3000,
+    ];
 
-export const Hero = ({ user }: HeroProps) => {
     return (
         <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center overflow-hidden">
             {/* Animated Background Blobs */}
@@ -61,6 +64,7 @@ export const Hero = ({ user }: HeroProps) => {
                         Hi, I'm {user?.name || 'Ilia'}
                     </h1>
                     <TypeAnimation
+                        key={language}
                         sequence={animationSequence}
                         wrapper="p"
                         cursor={true}

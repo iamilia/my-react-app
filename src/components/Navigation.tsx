@@ -1,20 +1,25 @@
 import { useState } from 'react';
-import { IconMenu2, IconX, IconSun, IconMoon } from '@tabler/icons-react';
+import { IconMenu2, IconX, IconSun, IconMoon, IconLanguage } from '@tabler/icons-react';
+import { useTranslations, type Language } from '../translations';
 
 interface NavigationProps {
     userName: string;
     darkMode: boolean;
     toggleDarkMode: () => void;
     scrollToSection: (sectionId: string) => void;
+    language: Language;
+    toggleLanguage: () => void;
 }
 
 export const Navigation = ({
-    userName,
     darkMode,
     toggleDarkMode,
     scrollToSection,
+    language,
+    toggleLanguage,
 }: NavigationProps) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const t = useTranslations(language);
 
     const handleScrollToSection = (sectionId: string) => {
         scrollToSection(sectionId);
@@ -26,49 +31,72 @@ export const Navigation = ({
             <div className="px-4 py-3 sm:px-6 sm:py-4">
                 <div className="flex justify-between items-center">
                     <div className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-sky-600 to-teal-500 dark:from-cyan-950 dark:to-stone-950 bg-clip-text text-transparent">
-                        {userName || 'Ilia'}
+                        {t.navigation.userName}
                     </div>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    <div className="hidden md:flex items-center space-x-6 lg:space-x-8 rtl:space-x-reverse">
                         <button
                             onClick={() => scrollToSection('about')}
                             className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
-                            About
+                            {t.navigation.about}
                         </button>
                         <button
                             onClick={() => scrollToSection('skills')}
                             className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
-                            Skills
+                            {t.navigation.skills}
                         </button>
                         <button
                             onClick={() => scrollToSection('projects')}
                             className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
-                            Projects
+                            {t.navigation.projects}
                         </button>
                         <button
                             onClick={() => scrollToSection('contact')}
                             className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
-                            Contact
+                            {t.navigation.contact}
                         </button>
-                        <button
-                            onClick={toggleDarkMode}
-                            className="p-2 sm:p-3 rounded-full liquid-card text-slate-600 dark:text-cyan-400 hover:scale-110 transition-all duration-300"
-                        >
-                            {darkMode ? (
-                                <IconSun size={18} />
-                            ) : (
-                                <IconMoon size={18} />
-                            )}
-                        </button>
+                        
+                        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                            <button
+                                onClick={toggleLanguage}
+                                className="p-2 sm:p-3 rounded-full liquid-card text-slate-600 dark:text-cyan-400 hover:scale-110 transition-all duration-300 flex items-center space-x-1 rtl:space-x-reverse"
+                                title={language === 'en' ? 'Switch to Persian' : 'تغییر به انگلیسی'}
+                            >
+                                <IconLanguage size={18} />
+                                <span className="text-xs font-semibold uppercase">
+                                    {language === 'en' ? 'فا' : 'EN'}
+                                </span>
+                            </button>
+                            <button
+                                onClick={toggleDarkMode}
+                                className="p-2 sm:p-3 rounded-full liquid-card text-slate-600 dark:text-cyan-400 hover:scale-110 transition-all duration-300"
+                            >
+                                {darkMode ? (
+                                    <IconSun size={18} />
+                                ) : (
+                                    <IconMoon size={18} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center space-x-2 sm:space-x-3">
+                    {/* Mobile menu buttons */}
+                    <div className="md:hidden flex items-center space-x-2 sm:space-x-3 rtl:space-x-reverse">
+                        <button
+                            onClick={toggleLanguage}
+                            className="p-2 sm:p-3 rounded-full liquid-card text-slate-600 dark:text-cyan-400 hover:scale-110 transition-all duration-300 flex items-center space-x-1 rtl:space-x-reverse"
+                            title={language === 'en' ? 'Switch to Persian' : 'تغییر به انگلیسی'}
+                        >
+                            <IconLanguage size={16} />
+                            <span className="text-xs font-semibold uppercase">
+                                {language === 'en' ? 'فا' : 'EN'}
+                            </span>
+                        </button>
                         <button
                             onClick={toggleDarkMode}
                             className="p-2 sm:p-3 rounded-full liquid-card text-slate-600 dark:text-cyan-400 hover:scale-110 transition-all duration-300"
@@ -98,23 +126,29 @@ export const Navigation = ({
                         <div className="flex flex-col space-y-3 sm:space-y-4">
                             <button
                                 onClick={() => handleScrollToSection('about')}
-                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left font-medium py-2 text-sm sm:text-base"
+                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
-                                About
+                                {t.navigation.about}
+                            </button>
+                            <button
+                                onClick={() => handleScrollToSection('skills')}
+                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
+                            >
+                                {t.navigation.skills}
                             </button>
                             <button
                                 onClick={() =>
                                     handleScrollToSection('projects')
                                 }
-                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left font-medium py-2 text-sm sm:text-base"
+                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
-                                Projects
+                                {t.navigation.projects}
                             </button>
                             <button
                                 onClick={() => handleScrollToSection('contact')}
-                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left font-medium py-2 text-sm sm:text-base"
+                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
-                                Contact
+                                {t.navigation.contact}
                             </button>
                         </div>
                     </div>

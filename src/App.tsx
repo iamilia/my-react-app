@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { githubService } from './services/githubService';
 import { useDarkMode } from './hooks/useDarkMode';
+import { useLanguage } from './hooks/useLanguage';
+import { useTranslations } from './translations';
 import type { GitHubUser, GitHubRepo } from './types/github';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
@@ -15,6 +17,8 @@ function App() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { darkMode, toggleDarkMode } = useDarkMode();
+    const { language, toggleLanguage } = useLanguage();
+    const t = useTranslations(language);
 
     useEffect(() => {
         const fetchGitHubData = async () => {
@@ -84,7 +88,7 @@ function App() {
             <div className="min-h-screen bg-slate-50 dark:from-stone-950 dark:via-cyan-950 dark:to-zinc-900 flex items-center justify-center transition-colors">
                 <div className="text-center p-8 liquid-card max-w-md">
                     <h2 className="text-2xl font-bold text-sky-600 dark:text-cyan-400 mb-4">
-                        Error Loading Data
+                        {t.loading.errorTitle}
                     </h2>
                     <p className="text-slate-600 dark:text-zinc-300 mb-6">
                         {error}
@@ -93,7 +97,7 @@ function App() {
                         onClick={() => window.location.reload()}
                         className="px-6 py-3 bg-gradient-to-r from-sky-500 to-teal-600 dark:from-cyan-800 dark:to-stone-800 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                     >
-                        Try Again
+                        {t.loading.tryAgain}
                     </button>
                 </div>
             </div>
@@ -107,19 +111,21 @@ function App() {
                 darkMode={darkMode}
                 toggleDarkMode={toggleDarkMode}
                 scrollToSection={scrollToSection}
+                language={language}
+                toggleLanguage={toggleLanguage}
             />
-            <Hero user={user} />
-            <About user={user} />
-            <Skills />
-            <Projects repos={repos} />
-            <Contact user={user} />
+            <Hero user={user} language={language} />
+            <About user={user} language={language} />
+            <Skills language={language} />
+            <Projects repos={repos} language={language} />
+            <Contact user={user} language={language} />
             {/* Footer */}
             <footer className="bg-white/50 dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-700 py-6 transition-colors">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <p className="text-slate-600 dark:text-cyan-400 transition-colors">
                             © {new Date().getFullYear()} {user?.name || 'Ilia'}
-                            . Built with React, TypeScript, Tailwind CSS & ❤️
+                            . {t.footer.builtWith}
                         </p>
                     </div>
                 </div>
