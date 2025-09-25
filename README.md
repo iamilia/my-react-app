@@ -7,11 +7,12 @@ A modern, responsive portfolio built with **React**, **TypeScript**, and **Tailw
 ## Features
 
 - Animated hero section with dynamic typing and background blobs
-- GitHub integration: fetches user profile and recent repositories
-- Responsive design with dark mode support
-- Smooth navigation and section scrolling
+- GitHub integration: fetches user profile and recent repositories (with caching)
+- Responsive design with dark mode support (system and manual toggle)
+- Smooth navigation and animated section scrolling
 - Stylish cards for skills, projects, and contact info
 - Contact section with email, Telegram, Discord, and location
+- Custom liquid-style transitions and effects
 
 ## Tech Stack
 
@@ -68,7 +69,7 @@ npm run format
 ```
 src/
   components/    # UI components (Hero, About, Projects, etc.)
-  hooks/         # Custom React hooks
+  hooks/         # Custom React hooks (e.g., useDarkMode)
   services/      # API services (GitHub)
   types/         # TypeScript types
   style.css      # Tailwind and custom styles
@@ -82,6 +83,7 @@ public/
 
 - **GitHub Username:** Change the username in [`githubService.getUser`](src/services/githubService.ts) and [`App.tsx`](src/App.tsx) if you want to fetch data for a different user.
 - **Contact Info:** Update links and addresses in [`Hero`](src/components/Hero.tsx) and [`Contact`](src/components/Contact.tsx).
+- **Skills & Projects:** Edit [`Skills`](src/components/Skills.tsx) and [`Projects`](src/components/Projects.tsx) to customize your stack and featured repositories.
 
 ## Deployment
 
