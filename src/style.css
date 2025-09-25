@@ -1,6 +1,18 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@font-face {
+    font-family: 'Vazir';
+    src: url('/fonts/Vazirmatn.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.font-vazir {
+    font-family: 'Vazir', sans-serif;
+}
+
 /* Custom scrollbar */
 /* Define CSS variables for light and dark mode */
 :root {
