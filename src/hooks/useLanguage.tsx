@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-
-export type Language = 'en' | 'fa';
+import type { Language } from '../types/lang';
 
 const getSystemLanguage = (): Language => {
     const systemLang = navigator.language || navigator.languages[0];
