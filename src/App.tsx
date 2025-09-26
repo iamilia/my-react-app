@@ -19,11 +19,7 @@ function App() {
     const [error, setError] = useState<string | null>(null);
     const { darkMode, toggleDarkMode } = useDarkMode();
     const { language, toggleLanguage } = useLanguage();
-    const { t, i18n } = useTranslation();
-
-    useEffect(() => {
-        i18n.changeLanguage(language);
-    }, [language, i18n]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchGitHubData = async () => {
@@ -119,7 +115,7 @@ function App() {
                 toggleLanguage={toggleLanguage}
                 language={language}
             />
-            <Hero user={user} language={language} />
+            <Hero user={user} />
             <About user={user} />
             <Skills />
             <Projects repos={repos} />

@@ -1,20 +1,16 @@
 import { useState, useEffect } from 'react';
 import type { Language } from '../types/lang';
-
-const getSystemLanguage = (): Language => {
-    const systemLang = navigator.language || navigator.languages[0];
-    return systemLang.startsWith('fa') ? 'fa' : 'en';
-};
+import { useTranslation } from 'react-i18next';
 
 export const useLanguage = () => {
+    const { i18n } = useTranslation();
     const [language, setLanguage] = useState<Language>(() => {
         // First check localStorage
         const savedLang = localStorage.getItem('language');
         if (savedLang && (savedLang === 'en' || savedLang === 'fa')) {
             return savedLang as Language;
         }
-        // If no saved preference, check system preference
-        return getSystemLanguage();
+        return i18n.language === 'fa' ? 'fa' : 'en';
     });
 
     useEffect(() => {
@@ -26,7 +22,8 @@ export const useLanguage = () => {
         } else {
             document.documentElement.classList.remove('font-vazir');
         }
-    }, []);
+        i18n.changeLanguage(language);
+    }, );
 
     useEffect(() => {
         // Save to localStorage and apply direction when language changes
@@ -38,7 +35,8 @@ export const useLanguage = () => {
         } else {
             document.documentElement.classList.remove('font-vazir');
         }
-    }, [language]);
+        i18n.changeLanguage(language);
+    }, [language, i18n]);
 
     const toggleLanguage = () => {
         setLanguage(prevLang => prevLang === 'en' ? 'fa' : 'en');
