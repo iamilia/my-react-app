@@ -9,27 +9,29 @@ import {
 import type { GitHubUser } from '../types/github';
 import { TypeAnimation } from 'react-type-animation';
 import { useTranslation } from 'react-i18next';
-import type { Language } from '../types/lang';
+import { useMemo } from 'react';
 
 interface HeroProps {
     user: GitHubUser | null;
-    language: Language;
 }
 
-export const Hero = ({ user, language }: HeroProps) => {
-    const { t } = useTranslation();
-    const animationSequence = [
-        t('hero.animationSequence.0'),
-        3000,
-        t('hero.animationSequence.1'),
-        3000,
-        t('hero.animationSequence.2'),
-        3000,
-        t('hero.animationSequence.3'),
-        3000,
-        t('hero.animationSequence.4'),
-        3000,
-    ];
+export const Hero = ({ user }: HeroProps) => {
+    const { t, i18n } = useTranslation();
+    const animationSequence = useMemo(
+        () => [
+            t('hero.animationSequence.0'),
+            3000,
+            t('hero.animationSequence.1'),
+            3000,
+            t('hero.animationSequence.2'),
+            3000,
+            t('hero.animationSequence.3'),
+            3000,
+            t('hero.animationSequence.4'),
+            3000,
+        ],
+        [t]
+    );
 
     return (
         <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center overflow-hidden">
@@ -65,7 +67,7 @@ export const Hero = ({ user, language }: HeroProps) => {
                         Hi, I'm {user?.name || 'Ilia'}
                     </h1>
                     <TypeAnimation
-                        key={language}
+                        key={i18n.language}
                         sequence={animationSequence}
                         wrapper="p"
                         cursor={true}
