@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { githubService } from './services/githubService';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useLanguage } from './hooks/useLanguage';
-import { useTranslations } from './translations';
+// import { useTranslations } from './translations';
 import type { GitHubUser, GitHubRepo } from './types/github';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
@@ -10,6 +10,8 @@ import { About } from './components/About';
 import { Projects } from './components/Projects';
 import { Contact } from './components/Contact';
 import { Skills } from './components/Skills';
+import { useTranslation } from 'react-i18next';
+
 
 function App() {
     const [user, setUser] = useState<GitHubUser | null>(null);
@@ -18,7 +20,12 @@ function App() {
     const [error, setError] = useState<string | null>(null);
     const { darkMode, toggleDarkMode } = useDarkMode();
     const { language, toggleLanguage } = useLanguage();
-    const t = useTranslations(language);
+    // const t = useTranslations(language);
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        i18n.changeLanguage(language);
+    }, [language, i18n]);
 
     useEffect(() => {
         const fetchGitHubData = async () => {
@@ -88,7 +95,7 @@ function App() {
             <div className="min-h-screen bg-slate-50 dark:from-stone-950 dark:via-cyan-950 dark:to-zinc-900 flex items-center justify-center transition-colors">
                 <div className="text-center p-8 liquid-card max-w-md">
                     <h2 className="text-2xl font-bold text-sky-600 dark:text-cyan-400 mb-4">
-                        {t.loading.errorTitle}
+                        {t('loading.errorTitle')}
                     </h2>
                     <p className="text-slate-600 dark:text-zinc-300 mb-6">
                         {error}
@@ -97,7 +104,7 @@ function App() {
                         onClick={() => window.location.reload()}
                         className="px-6 py-3 bg-gradient-to-r from-sky-500 to-teal-600 dark:from-cyan-800 dark:to-stone-800 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                     >
-                        {t.loading.tryAgain}
+                        {t('loading.tryAgain')}
                     </button>
                 </div>
             </div>
@@ -125,7 +132,7 @@ function App() {
                     <div className="text-center">
                         <p className="text-slate-600 dark:text-cyan-400 transition-colors">
                             © {new Date().getFullYear()} {user?.name || 'Ilia'}
-                            . {t.footer.builtWith}
+                            . {t('footer.builtWith')}
                         </p>
                     </div>
                 </div>

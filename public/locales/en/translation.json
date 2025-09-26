@@ -1,0 +1,64 @@
+{
+    "navigation": {
+        "about": "About",
+        "skills": "Skills",
+        "projects": "Projects",
+        "contact": "Contact",
+        "userName": "Ilia"
+    },
+    "hero": {
+        "animationSequence": [
+            "Software Developer 🚀",
+            "Game Developer 🎮",
+            "Tech Enthusiast 💡",
+            "Happy to connect with you! 😊",
+            "Let's build something awesome together! 🤝"
+        ]
+    },
+    "about": {
+        "title": "About Me",
+        "subtitle": "Passionate about creating innovative solutions",
+        "development": {
+            "title": "Development",
+            "description": "Experienced in modern web technologies and software development practices."
+        },
+        "experience": {
+            "title": "Experience",
+            "description": "Building projects and contributing to open source communities."
+        },
+        "collaboration": {
+            "title": "Collaboration",
+            "description": "Love working with teams and sharing knowledge with the community."
+        },
+        "publicRepos": "Public Repositories",
+        "githubFollowers": "GitHub Followers",
+        "following": "Following"
+    },
+    "skills": {
+        "title": "Technologies & Skills",
+        "subtitle": "A look at the tools and technologies I use."
+    },
+    "projects": {
+        "title": "Recent Projects",
+        "subtitle": "Some of my latest work on GitHub",
+        "noDescription": "No description available",
+        "viewAllProjects": "View All Projects"
+    },
+    "contact": {
+        "title": "Get In Touch",
+        "subtitle": "Let's connect and build something amazing together",
+        "email": "Email",
+        "telegram": "Telegram",
+        "discordServer": "Discord Server",
+        "joinServer": "Join Server",
+        "readyToCollaborate": "Ready to collaborate?",
+        "collaborationText": "I'm always interested in hearing about new projects and opportunities. Whether you want to work together or just say hi, feel free to reach out through any of the channels above!"
+    },
+    "footer": {
+        "builtWith": "Built with React, TypeScript, Tailwind CSS & ❤️"
+    },
+    "loading": {
+        "errorTitle": "Error Loading Data",
+        "tryAgain": "Try Again"
+    }
+}
