@@ -1,25 +1,26 @@
 import { useState } from 'react';
 import { IconMenu2, IconX, IconSun, IconMoon, IconLanguage } from '@tabler/icons-react';
-import { useTranslations, type Language } from '../translations';
+import { useTranslation } from 'react-i18next';
+import type { Language } from '../types/lang';
 
 interface NavigationProps {
     userName: string;
     darkMode: boolean;
     toggleDarkMode: () => void;
     scrollToSection: (sectionId: string) => void;
-    language: Language;
     toggleLanguage: () => void;
+    language: Language;
 }
 
 export const Navigation = ({
     darkMode,
     toggleDarkMode,
     scrollToSection,
-    language,
     toggleLanguage,
+    language,
 }: NavigationProps) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const t = useTranslations(language);
+    const { t } = useTranslation();
 
     const handleScrollToSection = (sectionId: string) => {
         scrollToSection(sectionId);
@@ -31,7 +32,7 @@ export const Navigation = ({
             <div className="px-4 py-3 sm:px-6 sm:py-4">
                 <div className="flex justify-between items-center">
                     <div className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-sky-600 to-teal-500 dark:from-cyan-950 dark:to-stone-950 bg-clip-text text-transparent">
-                        {t.navigation.userName}
+                        {t('navigation.userName')}
                     </div>
 
                     {/* Desktop Navigation */}
@@ -40,25 +41,25 @@ export const Navigation = ({
                             onClick={() => scrollToSection('about')}
                             className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
-                            {t.navigation.about}
+                            {t('navigation.about')}
                         </button>
                         <button
                             onClick={() => scrollToSection('skills')}
                             className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
-                            {t.navigation.skills}
+                            {t('navigation.skills')}
                         </button>
                         <button
                             onClick={() => scrollToSection('projects')}
                             className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
-                            {t.navigation.projects}
+                            {t('navigation.projects')}
                         </button>
                         <button
                             onClick={() => scrollToSection('contact')}
                             className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
-                            {t.navigation.contact}
+                            {t('navigation.contact')}
                         </button>
                         
                         <div className="flex items-center space-x-2 rtl:space-x-reverse">
@@ -89,7 +90,7 @@ export const Navigation = ({
                     <div className="md:hidden flex items-center space-x-2 sm:space-x-3 rtl:space-x-reverse">
                         <button
                             onClick={toggleLanguage}
-                            className="p-2 sm:p-3 rounded-full liquid-card text-slate-600 dark:text-cyan-400 hover:scale-110 transition-all duration-300 flex items-center space-x-1 rtl:space-x-reverse"
+                            className={`${language == 'en' ? 'p-3.5' : 'p-2'} sm:p-3 rounded-full liquid-card text-slate-600 dark:text-cyan-400 hover:scale-110 transition-all duration-300 flex items-center space-x-1 rtl:space-x-reverse`}
                             title={language === 'en' ? 'Switch to Persian' : 'تغییر به انگلیسی'}
                         >
                             <IconLanguage size={16} />
@@ -128,13 +129,13 @@ export const Navigation = ({
                                 onClick={() => handleScrollToSection('about')}
                                 className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
-                                {t.navigation.about}
+                                {t('navigation.about')}
                             </button>
                             <button
                                 onClick={() => handleScrollToSection('skills')}
                                 className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
-                                {t.navigation.skills}
+                                {t('navigation.skills')}
                             </button>
                             <button
                                 onClick={() =>
@@ -142,13 +143,13 @@ export const Navigation = ({
                                 }
                                 className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
-                                {t.navigation.projects}
+                                {t('navigation.projects')}
                             </button>
                             <button
                                 onClick={() => handleScrollToSection('contact')}
                                 className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
-                                {t.navigation.contact}
+                                {t('navigation.contact')}
                             </button>
                         </div>
                     </div>

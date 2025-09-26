@@ -6,15 +6,13 @@ import {
     IconBrandDiscord,
 } from '@tabler/icons-react';
 import type { GitHubUser } from '../types/github';
-import { useTranslations, type Language } from '../translations';
-
+import { useTranslation } from 'react-i18next';
 interface ContactProps {
     user: GitHubUser | null;
-    language: Language;
 }
 
-export const Contact = ({ user, language }: ContactProps) => {
-    const t = useTranslations(language);
+export const Contact = ({ user, }: ContactProps) => {
+    const { t } = useTranslation();
 
     return (
         <section
@@ -24,10 +22,10 @@ export const Contact = ({ user, language }: ContactProps) => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-cyan-300 mb-4 transition-colors">
-                        {t.contact.title}
+                        {t('contact.title')}
                     </h2>
                     <p className="text-lg sm:text-xl text-slate-600 dark:text-zinc-400 transition-colors">
-                        {t.contact.subtitle}
+                        {t('contact.subtitle')}
                     </p>
                 </div>
 
@@ -39,7 +37,7 @@ export const Contact = ({ user, language }: ContactProps) => {
                                 <IconMail className="text-white" size={24} />
                             </div>
                             <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-cyan-300 mb-4">
-                                {t.contact.email}
+                                {t('contact.email')}
                             </h3>
                             <a
                                 href="mailto:ilialotfi@outlook.com"
@@ -58,7 +56,7 @@ export const Contact = ({ user, language }: ContactProps) => {
                                 />
                             </div>
                             <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-cyan-300 mb-4">
-                                {t.contact.telegram}
+                                {t('contact.telegram')}
                             </h3>
                             <a
                                 href="https://t.me/org_ilia"
@@ -79,7 +77,7 @@ export const Contact = ({ user, language }: ContactProps) => {
                                 />
                             </div>
                             <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-cyan-300 mb-4">
-                                {t.contact.discordServer}
+                                {t('contact.discordServer')}
                             </h3>
                             <a
                                 href="https://discord.gg/kz6cSRrTdy"
@@ -87,7 +85,7 @@ export const Contact = ({ user, language }: ContactProps) => {
                                 rel="noopener noreferrer"
                                 className="text-slate-600 dark:text-zinc-400 hover:text-sky-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium"
                             >
-                                {t.contact.joinServer}
+                                {t('contact.joinServer')}
                             </a>
                         </div>
                     </div>
@@ -131,10 +129,10 @@ export const Contact = ({ user, language }: ContactProps) => {
                     <div className="mt-16 text-center">
                         <div className="liquid-card p-6 sm:p-8 max-w-2xl mx-auto">
                             <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-cyan-300 mb-4">
-                                {t.contact.readyToCollaborate}
+                                {t('contact.readyToCollaborate')}
                             </h3>
                             <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg leading-relaxed">
-                                {t.contact.collaborationText}
+                                {t('contact.collaborationText')}
                             </p>
                         </div>
                     </div>

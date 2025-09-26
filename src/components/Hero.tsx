@@ -8,7 +8,8 @@ import {
 } from '@tabler/icons-react';
 import type { GitHubUser } from '../types/github';
 import { TypeAnimation } from 'react-type-animation';
-import { useTranslations, type Language } from '../translations';
+import { useTranslation } from 'react-i18next';
+import type { Language } from '../types/lang';
 
 interface HeroProps {
     user: GitHubUser | null;
@@ -16,17 +17,17 @@ interface HeroProps {
 }
 
 export const Hero = ({ user, language }: HeroProps) => {
-    const t = useTranslations(language);
+    const { t } = useTranslation();
     const animationSequence = [
-        t.hero.animationSequence[0],
+        t('hero.animationSequence.0'),
         3000,
-        t.hero.animationSequence[1],
+        t('hero.animationSequence.1'),
         3000,
-        t.hero.animationSequence[2],
+        t('hero.animationSequence.2'),
         3000,
-        t.hero.animationSequence[3],
+        t('hero.animationSequence.3'),
         3000,
-        t.hero.animationSequence[4],
+        t('hero.animationSequence.4'),
         3000,
     ];
 

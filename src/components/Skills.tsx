@@ -11,11 +11,7 @@ import {
     IconBrandSass,
     IconBrandCpp,
 } from '@tabler/icons-react';
-import { useTranslations, type Language } from '../translations';
-
-interface SkillsProps {
-    language: Language;
-}
+import { useTranslation } from 'react-i18next';
 
 const skills = [
     { name: 'Bash', icon: <span className="text-2xl">🐚</span> },
@@ -40,8 +36,8 @@ const skills = [
     { name: 'Visual Studio', icon: <span className="text-2xl">🖥️</span> },
 ];
 
-export const Skills = ({ language }: SkillsProps) => {
-    const t = useTranslations(language);
+export const Skills = () => {
+    const { t } = useTranslation();
     return (
         <section
             id="skills"
@@ -50,10 +46,10 @@ export const Skills = ({ language }: SkillsProps) => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-cyan-300 mb-4 transition-colors">
-                        {t.skills.title}
+                        {t('skills.title')}
                     </h2>
                     <p className="text-lg sm:text-xl text-slate-600 dark:text-zinc-400 transition-colors">
-                        {t.skills.subtitle}
+                        {t('skills.subtitle')}
                     </p>
                 </div>
                 <div className="max-w-4xl mx-auto">

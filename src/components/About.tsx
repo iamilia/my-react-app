@@ -1,14 +1,13 @@
 import { IconCode, IconBriefcase, IconUser } from '@tabler/icons-react';
 import type { GitHubUser } from '../types/github';
-import { useTranslations, type Language } from '../translations';
+import { useTranslation } from 'react-i18next';
 
 interface AboutProps {
     user: GitHubUser | null;
-    language: Language;
 }
 
-export const About = ({ user, language }: AboutProps) => {
-    const t = useTranslations(language);
+export const About = ({ user }: AboutProps) => {
+    const { t } = useTranslation();
 
     return (
         <section
@@ -18,10 +17,10 @@ export const About = ({ user, language }: AboutProps) => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-cyan-300 mb-4 transition-colors">
-                        {t.about.title}
+                        {t('about.title')}
                     </h2>
                     <p className="text-lg sm:text-xl text-slate-600 dark:text-zinc-400 transition-colors">
-                        {t.about.subtitle}
+                        {t('about.subtitle')}
                     </p>
                 </div>
 
@@ -31,10 +30,10 @@ export const About = ({ user, language }: AboutProps) => {
                             <IconCode className="text-white" size={28} />
                         </div>
                         <h3 className="text-xl sm:text-2xl font-bold mb-4 text-slate-800 dark:text-cyan-300">
-                            {t.about.development.title}
+                            {t('about.development.title')}
                         </h3>
                         <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 leading-relaxed">
-                            {t.about.development.description}
+                            {t('about.development.description')}
                         </p>
                     </div>
 
@@ -43,10 +42,10 @@ export const About = ({ user, language }: AboutProps) => {
                             <IconBriefcase className="text-white" size={28} />
                         </div>
                         <h3 className="text-xl sm:text-2xl font-bold mb-4 text-slate-800 dark:text-cyan-300">
-                            {t.about.experience.title}
+                            {t('about.experience.title')}
                         </h3>
                         <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 leading-relaxed">
-                            {t.about.experience.description}
+                            {t('about.experience.description')}
                         </p>
                     </div>
 
@@ -55,10 +54,10 @@ export const About = ({ user, language }: AboutProps) => {
                             <IconUser className="text-white" size={28} />
                         </div>
                         <h3 className="text-xl sm:text-2xl font-bold mb-4 text-slate-800 dark:text-cyan-300">
-                            {t.about.collaboration.title}
+                            {t('about.collaboration.title')}
                         </h3>
                         <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 leading-relaxed">
-                            {t.about.collaboration.description}
+                            {t('about.collaboration.description')}
                         </p>
                     </div>
                 </div>
@@ -69,7 +68,7 @@ export const About = ({ user, language }: AboutProps) => {
                             {user?.public_repos}
                         </div>
                         <div className="text-sm sm:text-base text-slate-600 dark:text-zinc-400">
-                            {t.about.publicRepos}
+                            {t('about.publicRepos')}
                         </div>
                     </div>
                     <div className="p-6 sm:p-8 liquid-card bg-gradient-to-br from-teal-100/50 to-blue-100/50 dark:from-zinc-700/40 dark:to-stone-950/40 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
@@ -77,7 +76,7 @@ export const About = ({ user, language }: AboutProps) => {
                             {user?.followers}
                         </div>
                         <div className="text-sm sm:text-base text-slate-600 dark:text-zinc-400">
-                            {t.about.githubFollowers}
+                            {t('about.githubFollowers')}
                         </div>
                     </div>
                     <div className="p-6 sm:p-8 liquid-card bg-gradient-to-br from-blue-100/50 to-sky-100/50 dark:from-stone-950/40 dark:to-cyan-950/40 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
@@ -85,7 +84,7 @@ export const About = ({ user, language }: AboutProps) => {
                             {user?.following}
                         </div>
                         <div className="text-sm sm:text-base text-slate-600 dark:text-zinc-400">
-                            {t.about.following}
+                            {t('about.following')}
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { githubService } from './services/githubService';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useLanguage } from './hooks/useLanguage';
-// import { useTranslations } from './translations';
 import type { GitHubUser, GitHubRepo } from './types/github';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
@@ -20,7 +19,6 @@ function App() {
     const [error, setError] = useState<string | null>(null);
     const { darkMode, toggleDarkMode } = useDarkMode();
     const { language, toggleLanguage } = useLanguage();
-    // const t = useTranslations(language);
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
@@ -118,14 +116,14 @@ function App() {
                 darkMode={darkMode}
                 toggleDarkMode={toggleDarkMode}
                 scrollToSection={scrollToSection}
-                language={language}
                 toggleLanguage={toggleLanguage}
+                language={language}
             />
             <Hero user={user} language={language} />
-            <About user={user} language={language} />
-            <Skills language={language} />
-            <Projects repos={repos} language={language} />
-            <Contact user={user} language={language} />
+            <About user={user} />
+            <Skills />
+            <Projects repos={repos} />
+            <Contact user={user} />
             {/* Footer */}
             <footer className="bg-white/50 dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-700 py-6 transition-colors">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
