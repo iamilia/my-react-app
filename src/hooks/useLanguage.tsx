@@ -1,45 +1,55 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import type { Language } from '../types/lang';
 import { useTranslation } from 'react-i18next';
 
+type Listener = () => void;
+
+function getInitialLanguage(): Language {
+    const saved = localStorage.getItem('language');
+    if (saved === 'en' || saved === 'fa') return saved;
+    return 'en';
+}
+
+let currentLanguage: Language = getInitialLanguage();
+const listeners = new Set<Listener>();
+
+function applyDomSideEffects(lang: Language) {
+    document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+    document.documentElement.classList.toggle('font-vazir', lang === 'fa');
+}
+
+function setGlobalLanguage(lang: Language) {
+    if (lang === currentLanguage) return;
+    currentLanguage = lang;
+    localStorage.setItem('language', lang);
+    applyDomSideEffects(lang);
+    listeners.forEach(l => l());
+}
+
+applyDomSideEffects(currentLanguage);
+
+function subscribe(listener: Listener) {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+}
+
+function getSnapshot() {
+    return currentLanguage;
+}
+
 export const useLanguage = () => {
     const { i18n } = useTranslation();
-    const [language, setLanguage] = useState<Language>(() => {
-        // First check localStorage
-        const savedLang = localStorage.getItem('language');
-        if (savedLang && (savedLang === 'en' || savedLang === 'fa')) {
-            return savedLang as Language;
-        }
-        return i18n.language === 'fa' ? 'fa' : 'en';
-    });
+    const language = useSyncExternalStore(subscribe, getSnapshot);
 
     useEffect(() => {
-        // Apply RTL/LTR direction
-        document.documentElement.dir = language === 'fa' ? 'rtl' : 'ltr';
-        document.documentElement.lang = language;
-        if (language === 'fa') {
-            document.documentElement.classList.add('font-vazir');
-        } else {
-            document.documentElement.classList.remove('font-vazir');
+        if (i18n.language !== language) {
+            i18n.changeLanguage(language);
         }
-        i18n.changeLanguage(language);
-    }, );
-
-    useEffect(() => {
-        // Save to localStorage and apply direction when language changes
-        localStorage.setItem('language', language);
-        document.documentElement.dir = language === 'fa' ? 'rtl' : 'ltr';
-        document.documentElement.lang = language;
-        if (language === 'fa') {
-            document.documentElement.classList.add('font-vazir');
-        } else {
-            document.documentElement.classList.remove('font-vazir');
-        }
-        i18n.changeLanguage(language);
     }, [language, i18n]);
 
     const toggleLanguage = () => {
-        setLanguage(prevLang => prevLang === 'en' ? 'fa' : 'en');
+        setGlobalLanguage(language === 'en' ? 'fa' : 'en');
     };
 
     return { language, toggleLanguage };
