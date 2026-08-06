@@ -28,10 +28,10 @@ export const Navigation = ({
     };
 
     return (
-        <nav className="fixed top-2 sm:top-4 left-1/2 transform -translate-x-1/2 w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-6xl liquid-card z-50 transition-all duration-300 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md">
+        <nav className="fixed top-2 sm:top-4 left-1/2 transform -translate-x-1/2 w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-6xl liquid-card z-50 transition-all duration-300 bg-rose-50/70 dark:bg-zinc-900/70 backdrop-blur-md">
             <div className="px-4 py-3 sm:px-6 sm:py-4">
                 <div className="flex justify-between items-center">
-                    <div className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-sky-600 to-teal-500 dark:from-cyan-950 dark:to-stone-950 bg-clip-text text-transparent">
+                    <div className="text-lg sm:text-xl lg:text-2xl font-bold bg-linear-to-r from-rose-600 to-pink-500 dark:from-cyan-950 dark:to-stone-950 bg-clip-text text-transparent">
                         {t('navigation.userName')}
                     </div>
 
@@ -39,25 +39,25 @@ export const Navigation = ({
                     <div className="hidden md:flex items-center space-x-6 lg:space-x-8 rtl:space-x-reverse">
                         <button
                             onClick={() => scrollToSection('about')}
-                            className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
+                            className="text-slate-600 dark:text-cyan-400 hover:text-rose-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
                             {t('navigation.about')}
                         </button>
                         <button
                             onClick={() => scrollToSection('skills')}
-                            className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
+                            className="text-slate-600 dark:text-cyan-400 hover:text-rose-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
                             {t('navigation.skills')}
                         </button>
                         <button
                             onClick={() => scrollToSection('projects')}
-                            className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
+                            className="text-slate-600 dark:text-cyan-400 hover:text-rose-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
                             {t('navigation.projects')}
                         </button>
                         <button
                             onClick={() => scrollToSection('contact')}
-                            className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
+                            className="text-slate-600 dark:text-cyan-400 hover:text-rose-500 dark:hover:text-zinc-300 transition-all duration-300 font-medium hover:scale-105 text-sm lg:text-base"
                         >
                             {t('navigation.contact')}
                         </button>
@@ -123,17 +123,17 @@ export const Navigation = ({
 
                 {/* Mobile Navigation */}
                 {mobileMenuOpen && (
-                    <div className="md:hidden mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-200/60 dark:border-zinc-700/20">
+                    <div className="md:hidden mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-rose-200/60 dark:border-zinc-700/20">
                         <div className="flex flex-col space-y-3 sm:space-y-4">
                             <button
                                 onClick={() => handleScrollToSection('about')}
-                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
+                                className="text-slate-600 dark:text-cyan-400 hover:text-rose-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
                                 {t('navigation.about')}
                             </button>
                             <button
                                 onClick={() => handleScrollToSection('skills')}
-                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
+                                className="text-slate-600 dark:text-cyan-400 hover:text-rose-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
                                 {t('navigation.skills')}
                             </button>
@@ -141,13 +141,13 @@ export const Navigation = ({
                                 onClick={() =>
                                     handleScrollToSection('projects')
                                 }
-                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
+                                className="text-slate-600 dark:text-cyan-400 hover:text-rose-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
                                 {t('navigation.projects')}
                             </button>
                             <button
                                 onClick={() => handleScrollToSection('contact')}
-                                className="text-slate-600 dark:text-cyan-400 hover:text-sky-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
+                                className="text-slate-600 dark:text-cyan-400 hover:text-rose-500 dark:hover:text-zinc-300 transition-all duration-300 text-left rtl:text-right font-medium py-2 text-sm sm:text-base"
                             >
                                 {t('navigation.contact')}
                             </button>

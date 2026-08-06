@@ -17,7 +17,7 @@ export const Contact = ({ user, }: ContactProps) => {
     return (
         <section
             id="contact"
-            className="py-20 bg-white/50 dark:bg-stone-950/10 transition-colors"
+            className="py-20 bg-rose-50/50 dark:bg-stone-950/10 transition-colors"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
@@ -33,7 +33,7 @@ export const Contact = ({ user, }: ContactProps) => {
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                         {/* Email */}
                         <div className="liquid-card p-6 sm:p-8 text-center group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-sky-400 to-sky-600 dark:from-cyan-800 dark:to-cyan-950 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-linear-to-br from-rose-400 to-rose-600 dark:from-cyan-800 dark:to-cyan-950 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
                                 <IconMail className="text-white" size={24} />
                             </div>
                             <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-cyan-300 mb-4">
@@ -41,7 +41,7 @@ export const Contact = ({ user, }: ContactProps) => {
                             </h3>
                             <a
                                 href="mailto:ilialotfi@outlook.com"
-                                className="text-slate-600 dark:text-zinc-400 hover:text-sky-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium break-all"
+                                className="text-slate-600 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium break-all"
                             >
                                 ilialotfi@outlook.com
                             </a>
@@ -49,7 +49,7 @@ export const Contact = ({ user, }: ContactProps) => {
 
                         {/* Telegram */}
                         <div className="liquid-card p-6 sm:p-8 text-center group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-400 to-teal-600 dark:from-zinc-600 dark:to-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-linear-to-br from-pink-400 to-pink-600 dark:from-zinc-600 dark:to-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
                                 <IconBrandTelegram
                                     className="text-white"
                                     size={24}
@@ -62,7 +62,7 @@ export const Contact = ({ user, }: ContactProps) => {
                                 href="https://t.me/org_ilia"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-slate-600 dark:text-zinc-400 hover:text-sky-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium"
+                                className="text-slate-600 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium"
                             >
                                 @org_ilia
                             </a>
@@ -70,7 +70,7 @@ export const Contact = ({ user, }: ContactProps) => {
 
                         {/* Discord */}
                         <div className="liquid-card p-6 sm:p-8 text-center group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 md:col-span-2 lg:col-span-1">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-400 to-blue-600 dark:from-stone-700 dark:to-stone-900 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-linear-to-br from-rose-400 to-rose-600 dark:from-stone-700 dark:to-stone-900 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
                                 <IconBrandDiscord
                                     className="text-white"
                                     size={24}
@@ -83,7 +83,7 @@ export const Contact = ({ user, }: ContactProps) => {
                                 href="https://discord.gg/kz6cSRrTdy"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-slate-600 dark:text-zinc-400 hover:text-sky-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium"
+                                className="text-slate-600 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium"
                             >
                                 {t('contact.joinServer')}
                             </a>
@@ -95,7 +95,7 @@ export const Contact = ({ user, }: ContactProps) => {
                         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 lg:space-x-8">
                             {user?.location && (
                                 <div className="flex items-center justify-center space-x-3 liquid-card px-4 py-3 sm:px-6 sm:py-4">
-                                    <div className="p-2 bg-gradient-to-br from-sky-400 to-teal-500 dark:from-cyan-800 dark:to-zinc-700 rounded-lg">
+                                    <div className="p-2 bg-linear-to-br from-rose-400 to-pink-500 dark:from-cyan-800 dark:to-zinc-700 rounded-lg">
                                         <IconMapPin
                                             size={16}
                                             className="text-white"
@@ -107,7 +107,7 @@ export const Contact = ({ user, }: ContactProps) => {
                                 </div>
                             )}
                             <div className="flex items-center justify-center space-x-3 liquid-card px-4 py-3 sm:px-6 sm:py-4">
-                                <div className="p-2 bg-gradient-to-br from-teal-500 to-blue-600 dark:from-zinc-700 dark:to-stone-900 rounded-lg">
+                                <div className="p-2 bg-linear-to-br from-pink-500 to-rose-600 dark:from-zinc-700 dark:to-stone-900 rounded-lg">
                                     <IconBrandGithub
                                         size={16}
                                         className="text-white"
@@ -117,7 +117,7 @@ export const Contact = ({ user, }: ContactProps) => {
                                     href="https://github.com/iamilia"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-slate-700 dark:text-cyan-300 hover:text-sky-500 dark:hover:text-zinc-300 transition-colors font-medium text-sm sm:text-lg"
+                                    className="text-slate-700 dark:text-cyan-300 hover:text-rose-500 dark:hover:text-zinc-300 transition-colors font-medium text-sm sm:text-lg"
                                 >
                                     github.com/iamilia
                                 </a>

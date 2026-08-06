@@ -41,7 +41,7 @@ export const Skills = () => {
     return (
         <section
             id="skills"
-            className="py-20 bg-white/50 dark:bg-stone-950/10 transition-colors"
+            className="py-20 bg-rose-50/50 dark:bg-stone-950/10 transition-colors"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
@@ -59,7 +59,7 @@ export const Skills = () => {
                                 key={skill.name}
                                 className="group liquid-card p-6 flex flex-col items-center justify-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
                             >
-                                <div className="text-sky-600 dark:text-cyan-400 mb-4 group-hover:scale-125 transition-transform">
+                                <div className="text-rose-600 dark:text-cyan-400 mb-4 group-hover:scale-125 transition-transform">
                                     {skill.icon}
                                 </div>
                                 <h3 className="text-md sm:text-lg font-semibold text-slate-700 dark:text-zinc-300">
