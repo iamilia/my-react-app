@@ -170,7 +170,7 @@ export const Navigation = ({
                     <div
                         ref={rulerRef}
                         aria-hidden="true"
-                        className="pointer-events-none invisible absolute start-0 top-0 flex items-center gap-1"
+                        className="pointer-events-none invisible absolute inset-s-0 top-0 flex items-center gap-1"
                     >
                         {SECTIONS.map((id, i) => renderLink(id, i, true))}
                     </div>
