@@ -78,8 +78,8 @@ export const Navigation = ({
                         className="group flex items-center gap-2.5"
                     >
                         <span className="relative flex h-2.5 w-2.5">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent)] opacity-60" />
-                            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--accent) opacity-60" />
+                            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-(--accent)" />
                         </span>
                         <span className="font-mono text-sm font-semibold tracking-[0.2em] uppercase sm:text-base">
                             {t('navigation.userName')}
@@ -96,7 +96,7 @@ export const Navigation = ({
                                 className={`nav-link relative rounded-full px-3.5 py-2 font-mono text-xs tracking-wider uppercase transition-colors duration-300 lg:text-[0.8rem] ${
                                     active === id
                                         ? 'text-accent'
-                                        : 'text-muted hover:text-[var(--fg)]'
+                                        : 'text-muted hover:text-(--fg)'
                                 }`}
                             >
                                 <span className="force-mono me-2 opacity-40">
@@ -104,7 +104,7 @@ export const Navigation = ({
                                 </span>
                                 {t(`navigation.${id}`)}
                                 {active === id && (
-                                    <span className="absolute inset-x-3 -bottom-px h-px bg-[var(--accent)]" />
+                                    <span className="absolute inset-x-3 -bottom-px h-px bg-(--accent)" />
                                 )}
                             </button>
                         ))}
@@ -114,7 +114,7 @@ export const Navigation = ({
                     <div className="flex items-center gap-2">
                         <button
                             onClick={toggleLanguage}
-                            className="icon-btn h-9 min-w-[4rem] gap-1.5 px-3 text-xs font-semibold"
+                            className="icon-btn h-9 min-w-16 gap-1.5 px-3 text-xs font-semibold"
                             title={
                                 language === 'en'
                                     ? 'Switch to Persian'
@@ -167,7 +167,7 @@ export const Navigation = ({
                                 <button
                                     key={id}
                                     onClick={() => handleScrollToSection(id)}
-                                    className="nav-link flex items-center gap-3 py-2.5 text-start font-mono text-sm tracking-wider uppercase transition-colors hover:text-[var(--accent)]"
+                                    className="nav-link flex items-center gap-3 py-2.5 text-start font-mono text-sm tracking-wider uppercase transition-colors hover:text-(--accent)"
                                 >
                                     <span className="force-mono text-accent text-[0.7rem] opacity-60">
                                         0{i + 1}
