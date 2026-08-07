@@ -1,38 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
+const STORAGE_KEY = 'darkMode';
+
+/** Dark-first: unless the user has explicitly opted out, the site is dark. */
+const getInitialMode = (): boolean => {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved !== null) return JSON.parse(saved) as boolean;
+    } catch {
+        /* localStorage unavailable — fall through */
+    }
+    return true;
+};
+
+const applyMode = (dark: boolean) => {
+    const root = document.documentElement;
+    root.classList.toggle('dark', dark);
+    root.style.colorScheme = dark ? 'dark' : 'light';
+    root.style.backgroundColor = dark ? '#08060a' : '#fff7f8';
+    document
+        .querySelector('meta[name="theme-color"]')
+        ?.setAttribute('content', dark ? '#08060a' : '#fff7f8');
+};
 
 export const useDarkMode = () => {
-    const [darkMode, setDarkMode] = useState<boolean>(() => {
-        // First check localStorage
-        const savedMode = localStorage.getItem('darkMode');
-        if (savedMode !== null) {
-            return JSON.parse(savedMode);
-        }
-        // If no saved preference, check system preference
-        return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    });
+    const [darkMode, setDarkMode] = useState<boolean>(getInitialMode);
 
     useEffect(() => {
-        // Apply the theme immediately when component mounts
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    }, []); // Run once on mount
-
-    useEffect(() => {
-        // Save to localStorage and apply theme when darkMode changes
-        localStorage.setItem('darkMode', JSON.stringify(darkMode));
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
+        applyMode(darkMode);
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(darkMode));
+        } catch {
+            /* ignore write failures (private mode, etc.) */
         }
     }, [darkMode]);
 
-    const toggleDarkMode = () => {
-        setDarkMode(prevMode => !prevMode);
-    };
+    const toggleDarkMode = useCallback(() => setDarkMode((prev) => !prev), []);
 
     return { darkMode, toggleDarkMode };
 };

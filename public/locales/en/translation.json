@@ -13,7 +13,13 @@
             "Tech Enthusiast 💡",
             "Happy to connect with you! 😊",
             "Let's build something awesome together! 🤝"
-        ]
+        ],
+        "greeting": "Hi, I'm",
+        "status": "Available for work",
+        "ctaWork": "See my work",
+        "ctaContact": "Get in touch",
+        "available": "Open to projects",
+        "scroll": "Scroll"
     },
     "about": {
         "title": "About Me",
@@ -59,6 +65,7 @@
     },
     "loading": {
         "errorTitle": "Error Loading Data",
-        "tryAgain": "Try Again"
+        "tryAgain": "Try Again",
+        "loading": "Loading"
     }
 }

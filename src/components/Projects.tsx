@@ -2,148 +2,135 @@ import {
     IconBrandGithub,
     IconStar,
     IconGitFork,
-    IconExternalLink,
+    IconArrowUpRight,
 } from '@tabler/icons-react';
 import type { GitHubRepo } from '../types/github';
 import { useTranslation } from 'react-i18next';
+import { useReveal } from '../hooks/useReveal';
+import { SectionHeading } from './SectionHeading';
 
 interface ProjectsProps {
     repos: GitHubRepo[];
 }
 
-const getLanguageColor = (language: string) => {
-    const colors: { [key: string]: string } = {
-        JavaScript: 'bg-yellow-400',
-        TypeScript: 'bg-blue-500',
-        Python: 'bg-green-500',
-        Java: 'bg-red-600',
-        'C++': 'bg-purple-600',
-        'C#': 'bg-green-700',
-        C: 'bg-gray-700',
-        Go: 'bg-cyan-500',
-        Rust: 'bg-orange-600',
-        PHP: 'bg-indigo-500',
-        Ruby: 'bg-red-400',
-        Swift: 'bg-orange-400',
-        Kotlin: 'bg-purple-400',
-        Dart: 'bg-sky-400',
-        Scala: 'bg-red-700',
-        Shell: 'bg-gray-400',
-        HTML: 'bg-orange-500',
-        CSS: 'bg-blue-400',
-        Vue: 'bg-green-400',
-        React: 'bg-cyan-400',
-        ObjectiveC: 'bg-blue-800',
-        ObjectiveCPlusPlus: 'bg-blue-900',
-        Perl: 'bg-pink-400',
-        R: 'bg-blue-300',
-        Lua: 'bg-indigo-400',
-        Haskell: 'bg-violet-700',
-        Elixir: 'bg-purple-700',
-        Erlang: 'bg-red-700',
-        DartLang: 'bg-sky-400',
-        PowerShell: 'bg-blue-800',
-        Groovy: 'bg-pink-700',
-        CoffeeScript: 'bg-yellow-700',
-        Assembly: 'bg-gray-600',
-        Makefile: 'bg-gray-500',
-        Dockerfile: 'bg-blue-300',
-        TeX: 'bg-green-800',
-        MATLAB: 'bg-yellow-600',
-        Julia: 'bg-purple-400',
-        FSharp: 'bg-green-600',
-        VisualBasic: 'bg-blue-700',
-        Fortran: 'bg-orange-700',
-        Crystal: 'bg-cyan-700',
-        Nim: 'bg-yellow-500',
-        Elm: 'bg-green-600',
-        Batchfile: 'bg-gray-500',
-    };
-    return colors[language] || 'bg-gray-500';
+const LANGUAGE_COLORS: Record<string, string> = {
+    JavaScript: '#f1e05a',
+    TypeScript: '#3178c6',
+    Python: '#3572A5',
+    Java: '#b07219',
+    'C++': '#f34b7d',
+    'C#': '#178600',
+    C: '#555555',
+    Go: '#00ADD8',
+    Rust: '#dea584',
+    PHP: '#4F5D95',
+    Ruby: '#701516',
+    Swift: '#F05138',
+    Kotlin: '#A97BFF',
+    Dart: '#00B4AB',
+    Scala: '#c22d40',
+    Shell: '#89e051',
+    HTML: '#e34c26',
+    CSS: '#563d7c',
+    SCSS: '#c6538c',
+    Vue: '#41b883',
+    Lua: '#000080',
+    Haskell: '#5e5086',
+    Elixir: '#6e4a7e',
+    Erlang: '#B83998',
+    PowerShell: '#012456',
+    Dockerfile: '#384d54',
+    Makefile: '#427819',
+    Assembly: '#6E4C13',
+    Batchfile: '#C1F12E',
 };
 
-export const Projects = ({ repos,  }: ProjectsProps) => {
+const langColor = (language: string) => LANGUAGE_COLORS[language] || '#8b8589';
+
+export const Projects = ({ repos }: ProjectsProps) => {
     const { t } = useTranslation();
+    const ref = useReveal<HTMLElement>();
+
     return (
         <section
+            ref={ref}
             id="projects"
-            className="py-20 bg-rose-50/50 dark:bg-stone-950/10 transition-colors"
+            className="scroll-mt-24 px-4 py-24 sm:px-6 lg:px-8"
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-cyan-300 mb-4 transition-colors">
-                        {t('projects.title')}
-                    </h2>
-                    <p className="text-lg sm:text-xl text-slate-600 dark:text-zinc-400 transition-colors">
-                        {t('projects.subtitle')}
-                    </p>
-                </div>
+            <div className="mx-auto max-w-6xl">
+                <SectionHeading
+                    index="03"
+                    label={t('navigation.projects')}
+                    title={t('projects.title')}
+                    subtitle={t('projects.subtitle')}
+                />
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                    {repos.map((repo) => (
-                        <div
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {repos.map((repo, i) => (
+                        <a
                             key={repo.id}
-                            className="group liquid-card p-6 sm:p-8 flex flex-col justify-between hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                            href={repo.html_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="panel panel-hover panel-glow group flex flex-col p-6 reveal"
+                            data-delay={(i % 3) * 80}
                         >
-                            <div>
-                                <div className="flex justify-between items-start mb-4">
-                                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 dark:text-cyan-300 group-hover:text-rose-500 dark:group-hover:text-zinc-300 transition-colors">
-                                        {repo.name}
-                                    </h3>
-                                    <a
-                                        href={repo.html_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="p-2 text-slate-400 dark:text-zinc-500 hover:text-rose-500 dark:hover:text-cyan-300 transition-colors hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-lg"
-                                    >
-                                        <IconExternalLink size={20} />
-                                    </a>
-                                </div>
-                                <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 mb-6 line-clamp-3 leading-relaxed">
-                                    {repo.description ||
-                                        t('projects.noDescription')}
-                                </p>
+                            <div className="mb-4 flex items-start justify-between gap-3">
+                                <h3 className="force-mono font-mono text-base font-semibold tracking-tight transition-colors duration-300 group-hover:text-[var(--accent)] sm:text-lg" dir="ltr">
+                                    {repo.name}
+                                </h3>
+                                <IconArrowUpRight
+                                    size={18}
+                                    className="text-muted shrink-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--accent)] rtl:-scale-x-100"
+                                />
                             </div>
-                            <div className="mt-auto">
-                                <div className="flex items-center justify-between text-xs sm:text-sm">
-                                    <div className="flex items-center space-x-4">
-                                        {repo.language && (
-                                            <span className="flex items-center space-x-2">
-                                                <div
-                                                    className={`w-3 h-3 sm:w-4 sm:h-4 ${getLanguageColor(
-                                                        repo.language
-                                                    )} rounded-full shadow-sm`}
-                                                ></div>
-                                                <span className="text-slate-700 dark:text-cyan-300 font-medium">
-                                                    {repo.language}
-                                                </span>
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div className="flex items-center space-x-3 sm:space-x-4 text-slate-500 dark:text-zinc-400">
-                                        <span className="flex items-center space-x-1">
-                                            <IconStar size={14} />
-                                            <span>{repo.stargazers_count}</span>
-                                        </span>
-                                        <span className="flex items-center space-x-1">
-                                            <IconGitFork size={14} />
-                                            <span>{repo.forks_count}</span>
-                                        </span>
-                                    </div>
-                                </div>
+
+                            <p className="text-muted line-clamp-3 min-h-[3.9rem] text-sm leading-relaxed">
+                                {repo.description || t('projects.noDescription')}
+                            </p>
+
+                            <hr className="my-5 border-0 border-t border-[var(--line)]" />
+
+                            <div className="mt-auto flex items-center justify-between font-mono text-xs">
+                                {repo.language ? (
+                                    <span className="flex items-center gap-2">
+                                        <span
+                                            className="h-2.5 w-2.5 rounded-full"
+                                            style={{
+                                                backgroundColor: langColor(
+                                                    repo.language
+                                                ),
+                                                boxShadow: `0 0 10px ${langColor(repo.language)}80`,
+                                            }}
+                                        />
+                                        {repo.language}
+                                    </span>
+                                ) : (
+                                    <span />
+                                )}
+                                <span className="text-muted flex items-center gap-4">
+                                    <span className="flex items-center gap-1.5">
+                                        <IconStar size={14} />
+                                        {repo.stargazers_count}
+                                    </span>
+                                    <span className="flex items-center gap-1.5">
+                                        <IconGitFork size={14} />
+                                        {repo.forks_count}
+                                    </span>
+                                </span>
                             </div>
-                        </div>
+                        </a>
                     ))}
                 </div>
 
-                <div className="text-center mt-16">
+                <div className="reveal mt-12 text-center" data-delay="100">
                     <a
                         href="https://github.com/iamilia?tab=repositories"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 liquid-button text-white rounded-2xl hover:shadow-xl transition-all duration-500 hover:-translate-y-1 text-base sm:text-lg font-semibold"
+                        className="btn-ghost text-sm sm:text-base"
                     >
-                        <IconBrandGithub size={20} className="mr-3" />
+                        <IconBrandGithub size={18} />
                         {t('projects.viewAllProjects')}
                     </a>
                 </div>

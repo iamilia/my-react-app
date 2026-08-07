@@ -19,8 +19,10 @@
         <meta property="og:url" content="https://iamilia.liara.run" />
         <meta property="og:site_name" content="Iam Ilia" />
 
-        <!-- Discord Embed -->
-        <meta property="theme-color" content="#0ea5e9" />
+        <!-- Discord Embed / browser chrome -->
+        <meta property="theme-color" content="#f43f5e" />
+        <meta name="theme-color" content="#08060a" />
+        <meta name="color-scheme" content="dark light" />
 
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image" />
@@ -35,8 +37,36 @@
         <meta name="telegram:channel" content="@im_1lia" />
 
         <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <link rel="preconnect" href="https://api.github.com" />
+        <link
+            rel="preload"
+            as="font"
+            type="font/woff2"
+            href="/fonts/Vazirmatn.woff2"
+            crossorigin
+        />
         <link href="/src/style.css" rel="stylesheet">
         <title>Iam Ilia - Software Developer Portfolio</title>
+
+        <!-- Apply the theme before first paint to avoid a light flash -->
+        <script>
+            (function () {
+                try {
+                    var saved = localStorage.getItem('darkMode');
+                    var dark = saved === null ? true : JSON.parse(saved);
+                    if (dark) document.documentElement.classList.add('dark');
+                    document.documentElement.style.colorScheme = dark
+                        ? 'dark'
+                        : 'light';
+                    document.documentElement.style.backgroundColor = dark
+                        ? '#08060a'
+                        : '#fff7f8';
+                } catch (e) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.style.backgroundColor = '#08060a';
+                }
+            })();
+        </script>
     </head>
     <body>
         <div id="root"></div>

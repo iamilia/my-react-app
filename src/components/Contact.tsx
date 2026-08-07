@@ -4,137 +4,136 @@ import {
     IconBrandGithub,
     IconBrandTelegram,
     IconBrandDiscord,
+    IconArrowUpRight,
 } from '@tabler/icons-react';
 import type { GitHubUser } from '../types/github';
 import { useTranslation } from 'react-i18next';
+import { useReveal } from '../hooks/useReveal';
+import { SectionHeading } from './SectionHeading';
+
 interface ContactProps {
     user: GitHubUser | null;
 }
 
-export const Contact = ({ user, }: ContactProps) => {
+export const Contact = ({ user }: ContactProps) => {
     const { t } = useTranslation();
+    const ref = useReveal<HTMLElement>();
+
+    const channels = [
+        {
+            title: t('contact.email'),
+            value: 'ilialotfi@outlook.com',
+            href: 'mailto:ilialotfi@outlook.com',
+            Icon: IconMail,
+            external: false,
+        },
+        {
+            title: t('contact.telegram'),
+            value: '@org_ilia',
+            href: 'https://t.me/org_ilia',
+            Icon: IconBrandTelegram,
+            external: true,
+        },
+        {
+            title: t('contact.discordServer'),
+            value: t('contact.joinServer'),
+            href: 'https://discord.gg/kz6cSRrTdy',
+            Icon: IconBrandDiscord,
+            external: true,
+        },
+    ];
 
     return (
         <section
+            ref={ref}
             id="contact"
-            className="py-20 bg-rose-50/50 dark:bg-stone-950/10 transition-colors"
+            className="scroll-mt-24 px-4 py-24 sm:px-6 lg:px-8"
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-cyan-300 mb-4 transition-colors">
-                        {t('contact.title')}
-                    </h2>
-                    <p className="text-lg sm:text-xl text-slate-600 dark:text-zinc-400 transition-colors">
-                        {t('contact.subtitle')}
-                    </p>
+            <div className="mx-auto max-w-6xl">
+                <SectionHeading
+                    index="04"
+                    label={t('navigation.contact')}
+                    title={t('contact.title')}
+                    subtitle={t('contact.subtitle')}
+                />
+
+                {/* Channels */}
+                <div className="grid gap-4 md:grid-cols-3">
+                    {channels.map(({ title, value, href, Icon, external }, i) => (
+                        <a
+                            key={title}
+                            href={href}
+                            target={external ? '_blank' : undefined}
+                            rel="noopener noreferrer"
+                            className="panel panel-hover panel-glow reveal group flex items-center gap-4 p-6"
+                            data-delay={i * 80}
+                        >
+                            <span className="border-[var(--line-strong)] bg-[var(--accent-soft)] text-accent inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
+                                <Icon size={20} />
+                            </span>
+                            <span className="min-w-0 flex-1">
+                                <span className="text-muted block font-mono text-[0.66rem] tracking-[0.18em] uppercase">
+                                    {title}
+                                </span>
+                                <span className="mt-1 block truncate text-sm font-medium transition-colors group-hover:text-[var(--accent)] sm:text-base">
+                                    {value}
+                                </span>
+                            </span>
+                            <IconArrowUpRight
+                                size={17}
+                                className="text-muted shrink-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--accent)] rtl:-scale-x-100"
+                            />
+                        </a>
+                    ))}
                 </div>
 
-                <div className="max-w-4xl mx-auto">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                        {/* Email */}
-                        <div className="liquid-card p-6 sm:p-8 text-center group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-linear-to-br from-rose-400 to-rose-600 dark:from-cyan-800 dark:to-cyan-950 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                                <IconMail className="text-white" size={24} />
-                            </div>
-                            <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-cyan-300 mb-4">
-                                {t('contact.email')}
-                            </h3>
+                {/* CTA panel */}
+                <div
+                    className="panel reveal relative mt-5 overflow-hidden p-8 text-center sm:p-14"
+                    data-delay="120"
+                >
+                    <div
+                        className="pointer-events-none absolute inset-0 opacity-70"
+                        style={{
+                            background:
+                                'radial-gradient(600px circle at 50% 0%, var(--accent-soft), transparent 60%)',
+                        }}
+                    />
+                    <div className="relative">
+                        <h3 className="display text-[clamp(1.5rem,4vw,2.5rem)]">
+                            <span className="gradient-text">
+                                {t('contact.readyToCollaborate')}
+                            </span>
+                        </h3>
+                        <p className="text-muted mx-auto mt-4 max-w-2xl text-sm leading-relaxed sm:text-base">
+                            {t('contact.collaborationText')}
+                        </p>
+
+                        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                             <a
                                 href="mailto:ilialotfi@outlook.com"
-                                className="text-slate-600 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium break-all"
+                                className="btn-neon text-sm sm:text-base"
                             >
-                                ilialotfi@outlook.com
+                                <IconMail size={17} />
+                                {t('contact.email')}
                             </a>
-                        </div>
-
-                        {/* Telegram */}
-                        <div className="liquid-card p-6 sm:p-8 text-center group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-linear-to-br from-pink-400 to-pink-600 dark:from-zinc-600 dark:to-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                                <IconBrandTelegram
-                                    className="text-white"
-                                    size={24}
-                                />
-                            </div>
-                            <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-cyan-300 mb-4">
-                                {t('contact.telegram')}
-                            </h3>
                             <a
-                                href="https://t.me/org_ilia"
+                                href="https://github.com/iamilia"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-slate-600 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium"
+                                className="btn-ghost text-sm sm:text-base"
                             >
-                                @org_ilia
+                                <IconBrandGithub size={17} />
+                                github.com/iamilia
                             </a>
                         </div>
 
-                        {/* Discord */}
-                        <div className="liquid-card p-6 sm:p-8 text-center group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 md:col-span-2 lg:col-span-1">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-linear-to-br from-rose-400 to-rose-600 dark:from-stone-700 dark:to-stone-900 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                                <IconBrandDiscord
-                                    className="text-white"
-                                    size={24}
-                                />
-                            </div>
-                            <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-cyan-300 mb-4">
-                                {t('contact.discordServer')}
-                            </h3>
-                            <a
-                                href="https://discord.gg/kz6cSRrTdy"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-slate-600 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-cyan-300 transition-colors text-sm sm:text-lg font-medium"
-                            >
-                                {t('contact.joinServer')}
-                            </a>
-                        </div>
-                    </div>
-
-                    {/* Additional Contact Info */}
-                    <div className="mt-16 text-center">
-                        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 lg:space-x-8">
-                            {user?.location && (
-                                <div className="flex items-center justify-center space-x-3 liquid-card px-4 py-3 sm:px-6 sm:py-4">
-                                    <div className="p-2 bg-linear-to-br from-rose-400 to-pink-500 dark:from-cyan-800 dark:to-zinc-700 rounded-lg">
-                                        <IconMapPin
-                                            size={16}
-                                            className="text-white"
-                                        />
-                                    </div>
-                                    <span className="text-slate-700 dark:text-cyan-300 font-medium text-sm sm:text-lg">
-                                        {user.location}
-                                    </span>
-                                </div>
-                            )}
-                            <div className="flex items-center justify-center space-x-3 liquid-card px-4 py-3 sm:px-6 sm:py-4">
-                                <div className="p-2 bg-linear-to-br from-pink-500 to-rose-600 dark:from-zinc-700 dark:to-stone-900 rounded-lg">
-                                    <IconBrandGithub
-                                        size={16}
-                                        className="text-white"
-                                    />
-                                </div>
-                                <a
-                                    href="https://github.com/iamilia"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-slate-700 dark:text-cyan-300 hover:text-rose-500 dark:hover:text-zinc-300 transition-colors font-medium text-sm sm:text-lg"
-                                >
-                                    github.com/iamilia
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Call to Action */}
-                    <div className="mt-16 text-center">
-                        <div className="liquid-card p-6 sm:p-8 max-w-2xl mx-auto">
-                            <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-cyan-300 mb-4">
-                                {t('contact.readyToCollaborate')}
-                            </h3>
-                            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg leading-relaxed">
-                                {t('contact.collaborationText')}
+                        {user?.location && (
+                            <p className="text-muted mt-8 inline-flex items-center gap-2 font-mono text-[0.7rem] tracking-[0.18em] uppercase">
+                                <IconMapPin size={13} />
+                                {user.location}
                             </p>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -9,8 +9,9 @@ import { About } from './components/About';
 import { Projects } from './components/Projects';
 import { Contact } from './components/Contact';
 import { Skills } from './components/Skills';
+import { Backdrop } from './components/Backdrop';
 import { useTranslation } from 'react-i18next';
-
+import { IconRefresh, IconAlertTriangle } from '@tabler/icons-react';
 
 function App() {
     const [user, setUser] = useState<GitHubUser | null>(null);
@@ -48,65 +49,69 @@ function App() {
         if (!element) return;
 
         const startY = window.scrollY;
-        const endY = element.getBoundingClientRect().top + window.scrollY;
-        const duration = 700; // ms
+        const endY = element.getBoundingClientRect().top + window.scrollY - 80;
+        const duration = 700;
         const startTime = performance.now();
 
-        // Ease in-out cubic
-        const easeInOutCubic = (t: number) =>
-            t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const easeInOutCubic = (x: number) =>
+            x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 
-        function animateScroll(currentTime: number) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const ease = easeInOutCubic(progress);
-            window.scrollTo(0, startY + (endY - startY) * ease);
-
-            if (progress < 1) {
-                requestAnimationFrame(animateScroll);
-            }
-        }
+        const animateScroll = (currentTime: number) => {
+            const progress = Math.min((currentTime - startTime) / duration, 1);
+            window.scrollTo(0, startY + (endY - startY) * easeInOutCubic(progress));
+            if (progress < 1) requestAnimationFrame(animateScroll);
+        };
 
         requestAnimationFrame(animateScroll);
     };
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-rose-50 dark:from-stone-950 dark:via-cyan-950 dark:to-zinc-900 flex items-center justify-center transition-colors">
-                <div className="relative">
-                    <div className="animate-spin rounded-full h-32 w-32 border-4 border-rose-200 dark:border-zinc-600"></div>
-                    <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-rose-500 dark:border-cyan-400 absolute top-0"></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-8 h-8 bg-pink-500 dark:bg-stone-400 rounded-full animate-pulse"></div>
+            <>
+                <Backdrop />
+                <div className="flex min-h-[100svh] flex-col items-center justify-center gap-6">
+                    <div className="relative h-20 w-20">
+                        <span className="absolute inset-0 rounded-full border border-[var(--line)]" />
+                        <span className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-[var(--accent)]" />
+                        <span className="absolute inset-3 rounded-full bg-[var(--accent)] opacity-20 blur-md" />
                     </div>
+                    <p className="text-muted font-mono text-[0.7rem] tracking-[0.3em] uppercase">
+                        {t('loading.loading')}
+                    </p>
                 </div>
-            </div>
+            </>
         );
     }
 
     if (error) {
         return (
-            <div className="min-h-screen bg-rose-50 dark:from-stone-950 dark:via-cyan-950 dark:to-zinc-900 flex items-center justify-center transition-colors">
-                <div className="text-center p-8 liquid-card max-w-md">
-                    <h2 className="text-2xl font-bold text-rose-600 dark:text-cyan-400 mb-4">
-                        {t('loading.errorTitle')}
-                    </h2>
-                    <p className="text-slate-600 dark:text-zinc-300 mb-6">
-                        {error}
-                    </p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="px-6 py-3 bg-linear-to-r from-rose-500 to-pink-600 dark:from-cyan-800 dark:to-stone-800 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                    >
-                        {t('loading.tryAgain')}
-                    </button>
+            <>
+                <Backdrop />
+                <div className="flex min-h-[100svh] items-center justify-center px-4">
+                    <div className="panel max-w-md p-8 text-center">
+                        <span className="text-accent border-[var(--line-strong)] bg-[var(--accent-soft)] mx-auto mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl border">
+                            <IconAlertTriangle size={22} />
+                        </span>
+                        <h2 className="text-xl font-semibold">
+                            {t('loading.errorTitle')}
+                        </h2>
+                        <p className="text-muted mt-3 text-sm">{error}</p>
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="btn-neon mt-7 text-sm"
+                        >
+                            <IconRefresh size={16} />
+                            {t('loading.tryAgain')}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 
     return (
-        <div className="min-h-screen bg-rose-50 dark:bg-linear-to-l dark:from-stone-950 dark:via-cyan-950 dark:to-zinc-900 transition-colors">
+        <>
+            <Backdrop />
             <Navigation
                 userName={user?.name || 'Ilia'}
                 darkMode={darkMode}
@@ -115,23 +120,26 @@ function App() {
                 toggleLanguage={toggleLanguage}
                 language={language}
             />
-            <Hero user={user} />
-            <About user={user} />
-            <Skills />
-            <Projects repos={repos} />
-            <Contact user={user} />
-            {/* Footer */}
-            <footer className="bg-rose-50/50 dark:bg-zinc-900 border-t border-rose-200 dark:border-zinc-700 py-6 transition-colors">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center">
-                        <p className="text-slate-600 dark:text-cyan-400 transition-colors">
-                            © {new Date().getFullYear()} {user?.name || 'Ilia'}
-                            . {t('footer.builtWith')}
-                        </p>
-                    </div>
+
+            <main>
+                <Hero user={user} scrollToSection={scrollToSection} />
+                <About user={user} />
+                <Skills />
+                <Projects repos={repos} />
+                <Contact user={user} />
+            </main>
+
+            <footer className="border-t border-[var(--line)] px-4 py-10 sm:px-6 lg:px-8">
+                <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-start">
+                    <p className="text-muted font-mono text-[0.7rem] tracking-[0.14em]">
+                        © {new Date().getFullYear()} {user?.name || 'Ilia'}
+                    </p>
+                    <p className="text-muted font-mono text-[0.7rem] tracking-[0.14em]">
+                        {t('footer.builtWith')}
+                    </p>
                 </div>
             </footer>
-        </div>
+        </>
     );
 }
 

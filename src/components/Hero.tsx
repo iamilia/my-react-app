@@ -5,18 +5,41 @@ import {
     IconMapPin,
     IconCalendar,
     IconBrandTelegram,
+    IconArrowDown,
 } from '@tabler/icons-react';
 import type { GitHubUser } from '../types/github';
 import { TypeAnimation } from 'react-type-animation';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
+import { useReveal } from '../hooks/useReveal';
 
 interface HeroProps {
     user: GitHubUser | null;
+    scrollToSection: (id: string) => void;
 }
 
-export const Hero = ({ user }: HeroProps) => {
+const socials = [
+    {
+        href: 'https://github.com/iamilia',
+        label: 'GitHub',
+        Icon: IconBrandGithub,
+    },
+    {
+        href: 'https://t.me/org_ilia',
+        label: 'Telegram',
+        Icon: IconBrandTelegram,
+    },
+    {
+        href: 'mailto:ilialotfi@outlook.com',
+        label: 'Email',
+        Icon: IconMail,
+    },
+];
+
+export const Hero = ({ user, scrollToSection }: HeroProps) => {
     const { t, i18n } = useTranslation();
+    const ref = useReveal<HTMLElement>();
+
     const animationSequence = useMemo(
         () => [
             t('hero.animationSequence.0'),
@@ -33,113 +56,147 @@ export const Hero = ({ user }: HeroProps) => {
         [t]
     );
 
+    const links = user?.twitter_username
+        ? [
+              ...socials,
+              {
+                  href: `https://twitter.com/${user.twitter_username}`,
+                  label: 'Twitter',
+                  Icon: IconBrandTwitter,
+              },
+          ]
+        : socials;
+
     return (
-        <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center overflow-hidden">
-            {/* Animated Background Blobs */}
-            <div className="absolute inset-0 -z-10">
-                <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 bg-linear-to-r from-rose-200/50 to-pink-200/50 rounded-full blob-1 blur-3xl"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 bg-linear-to-r from-pink-300/50 to-rose-200/50 rounded-full blob-2 blur-3xl"></div>{' '}
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 bg-linear-to-r from-rose-300/40 to-pink-400/40 rounded-full blob-3 blur-2xl"></div>
-            </div>
+        <section
+            ref={ref}
+            className="relative flex min-h-[100svh] items-center px-4 pt-28 pb-16 sm:px-6 lg:px-8"
+        >
+            <div className="mx-auto w-full max-w-6xl">
+                <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
+                    {/* Left — copy */}
+                    <div className="text-center lg:text-start">
+                        <p className="eyebrow reveal justify-center lg:justify-start">
+                            {t('hero.status')}
+                        </p>
 
-            {/* Dark theme blobs */}
-            <div className="absolute inset-0 -z-10 dark:block hidden">
-                <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 bg-linear-to-r from-cyan-950/40 to-zinc-700/40 rounded-full blob-1 blur-3xl"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 bg-linear-to-r from-stone-950/40 to-cyan-950/40 rounded-full blob-2 blur-3xl"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 bg-linear-to-r from-zinc-700/30 to-stone-950/30 rounded-full blob-3 blur-2xl"></div>
-            </div>
-
-            <div className="max-w-7xl mx-auto text-center w-full relative z-10">
-                <div className="mb-8 relative floating">
-                    <div className="absolute inset-0 bg-linear-to-r from-rose-300 to-pink-400 dark:from-cyan-950 dark:to-zinc-700 rounded-full w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 mx-auto blur-2xl opacity-30 glow"></div>
-                    <div className="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 mx-auto">
-                        <div className="absolute inset-0 bg-linear-to-r from-rose-500 to-pink-600 dark:from-cyan-950 dark:to-stone-950 rounded-full animate-spin-slow opacity-20"></div>
-                        <img
-                            src={user?.avatar_url}
-                            alt={user?.name}
-                            className="relative w-full h-full rounded-full shadow-2xl border-4 border-white/20 dark:border-zinc-700/20 backdrop-blur-sm transition-all duration-500 hover:scale-110 hover:rotate-6"
-                        />
-                    </div>
-                </div>
-
-                <div className="space-y-4 sm:space-y-6 mb-12">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold bg-linear-to-r from-slate-800 via-slate-600 to-slate-800 dark:from-cyan-950 dark:via-zinc-700 dark:to-stone-950 bg-clip-text text-transparent leading-tight tracking-tight">
-                        Hi, I'm {user?.name || 'Ilia'}
-                    </h1>
-                    <TypeAnimation
-                        key={i18n.language}
-                        sequence={animationSequence}
-                        wrapper="p"
-                        cursor={true}
-                        repeat={Infinity}
-                        className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-rose-600 dark:text-cyan-300 max-w-4xl mx-auto font-light leading-relaxed"
-                    />
-                </div>
-
-                <div className="flex justify-center space-x-4 sm:space-x-6 mb-12 sm:mb-16">
-                    <a
-                        href="https://github.com/iamilia"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group p-4 sm:p-6 liquid-card hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-                    >
-                        <IconBrandGithub
-                            size={24}
-                            className="sm:w-8 sm:h-8 group-hover:scale-125 transition-transform duration-300 text-slate-600 dark:text-cyan-400"
-                        />
-                    </a>
-                    {user?.twitter_username && (
-                        <a
-                            href={`https://twitter.com/${user.twitter_username}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group p-4 sm:p-6 liquid-card hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                        <h1
+                            className="display reveal mt-5 text-[clamp(2.75rem,9vw,5.5rem)]"
+                            data-delay="80"
                         >
-                            <IconBrandTwitter
-                                size={24}
-                                className="sm:w-8 sm:h-8 group-hover:scale-125 transition-transform duration-300 text-rose-500 dark:text-zinc-400"
-                            />
-                        </a>
-                    )}
-                    <a
-                        href="mailto:ilialotfi@outlook.com"
-                        className="group p-4 sm:p-6 liquid-card hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-                    >
-                        <IconMail
-                            size={24}
-                            className="sm:w-8 sm:h-8 group-hover:scale-125 transition-transform duration-300 text-pink-600 dark:text-stone-400"
-                        />
-                    </a>
-                    <a
-                        href="https://t.me/org_ilia"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group p-4 sm:p-6 liquid-card hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-                    >
-                        <IconBrandTelegram
-                            size={24}
-                            className="sm:w-8 sm:h-8 group-hover:scale-125 transition-transform duration-300 text-rose-600 dark:text-rose-600"
-                        />
-                    </a>
-                </div>
+                            <span className="hero-greeting">
+                                {t('hero.greeting')}
+                            </span>
+                            <span className="gradient-text glow-text block">
+                                {user?.name || 'Ilia'}
+                            </span>
+                        </h1>
 
-                <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 lg:space-x-8 text-slate-600 dark:text-cyan-400">
-                    {user?.location && (
-                        <div className="flex items-center space-x-3 liquid-card px-4 py-2 sm:px-6 sm:py-3">
-                            <IconMapPin size={16} className="sm:w-5 sm:h-5" />
-                            <span className="font-medium text-sm sm:text-base">
-                                {user.location}
+                        <TypeAnimation
+                            key={i18n.language}
+                            sequence={animationSequence}
+                            wrapper="p"
+                            cursor={true}
+                            repeat={Infinity}
+                            className="reveal text-muted mt-5 block text-lg font-light sm:text-xl lg:text-2xl"
+                        />
+
+                        {user?.bio && (
+                            <p
+                                className="text-muted reveal mx-auto mt-5 max-w-xl text-sm leading-relaxed sm:text-base lg:mx-0"
+                                data-delay="120"
+                            >
+                                {user.bio}
+                            </p>
+                        )}
+
+                        {/* CTAs */}
+                        <div
+                            className="reveal mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
+                            data-delay="160"
+                        >
+                            <button
+                                onClick={() => scrollToSection('projects')}
+                                className="btn-neon text-sm sm:text-base"
+                            >
+                                {t('hero.ctaWork')}
+                                <IconArrowDown size={17} />
+                            </button>
+                            <button
+                                onClick={() => scrollToSection('contact')}
+                                className="btn-ghost text-sm sm:text-base"
+                            >
+                                {t('hero.ctaContact')}
+                            </button>
+                        </div>
+
+                        {/* Socials */}
+                        <div
+                            className="reveal mt-8 flex items-center justify-center gap-2.5 lg:justify-start"
+                            data-delay="200"
+                        >
+                            {links.map(({ href, label, Icon }) => (
+                                <a
+                                    key={label}
+                                    href={href}
+                                    target={
+                                        href.startsWith('mailto')
+                                            ? undefined
+                                            : '_blank'
+                                    }
+                                    rel="noopener noreferrer"
+                                    aria-label={label}
+                                    className="icon-btn h-11 w-11"
+                                >
+                                    <Icon size={19} />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Right — avatar + meta */}
+                    <div className="reveal flex flex-col items-center gap-7" data-delay="120">
+                        <div className="relative">
+                            <span className="avatar-halo" />
+                            <div className="avatar-ring h-40 w-40 sm:h-48 sm:w-48 lg:h-56 lg:w-56">
+                                <img
+                                    src={user?.avatar_url}
+                                    alt={user?.name || 'Ilia'}
+                                    loading="eager"
+                                    className="h-full w-full rounded-full object-cover"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-wrap items-center justify-center gap-2">
+                            {user?.location && (
+                                <span className="chip">
+                                    <IconMapPin size={13} />
+                                    {user.location}
+                                </span>
+                            )}
+                            {user?.created_at && (
+                                <span className="chip">
+                                    <IconCalendar size={13} />
+                                    {new Date(user.created_at).getFullYear()}
+                                </span>
+                            )}
+                            <span className="chip">
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                                {t('hero.available')}
                             </span>
                         </div>
-                    )}
-                    <div className="flex items-center space-x-3 liquid-card px-4 py-2 sm:px-6 sm:py-3">
-                        <IconCalendar size={16} className="sm:w-5 sm:h-5" />
-                        <span className="font-medium text-sm sm:text-base">
-                            Joined{' '}
-                            {new Date(user?.created_at || '').getFullYear()}
-                        </span>
                     </div>
                 </div>
+
+                {/* Scroll cue */}
+                <button
+                    onClick={() => scrollToSection('about')}
+                    className="text-muted mx-auto mt-16 hidden items-center gap-2 font-mono text-[0.68rem] tracking-[0.25em] uppercase transition-colors hover:text-[var(--accent)] lg:flex"
+                >
+                    {t('hero.scroll')}
+                    <IconArrowDown size={14} className="animate-bounce" />
+                </button>
             </div>
         </section>
     );

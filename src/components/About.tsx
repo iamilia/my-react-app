@@ -1,6 +1,15 @@
-import { IconCode, IconBriefcase, IconUser } from '@tabler/icons-react';
+import {
+    IconCode,
+    IconBriefcase,
+    IconUser,
+    IconBook,
+    IconUsers,
+    IconHeart,
+} from '@tabler/icons-react';
 import type { GitHubUser } from '../types/github';
 import { useTranslation } from 'react-i18next';
+import { useReveal } from '../hooks/useReveal';
+import { SectionHeading } from './SectionHeading';
 
 interface AboutProps {
     user: GitHubUser | null;
@@ -8,84 +17,94 @@ interface AboutProps {
 
 export const About = ({ user }: AboutProps) => {
     const { t } = useTranslation();
+    const ref = useReveal<HTMLElement>();
+
+    const pillars = [
+        { key: 'development', Icon: IconCode },
+        { key: 'experience', Icon: IconBriefcase },
+        { key: 'collaboration', Icon: IconUser },
+    ] as const;
+
+    const stats = [
+        {
+            value: user?.public_repos,
+            label: t('about.publicRepos'),
+            Icon: IconBook,
+        },
+        {
+            value: user?.followers,
+            label: t('about.githubFollowers'),
+            Icon: IconUsers,
+        },
+        {
+            value: user?.following,
+            label: t('about.following'),
+            Icon: IconHeart,
+        },
+    ];
 
     return (
         <section
+            ref={ref}
             id="about"
-            className="py-20 bg-rose-50/50 dark:bg-stone-950/10 transition-colors"
+            className="scroll-mt-24 px-4 py-24 sm:px-6 lg:px-8"
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 dark:text-cyan-300 mb-4 transition-colors">
-                        {t('about.title')}
-                    </h2>
-                    <p className="text-lg sm:text-xl text-slate-600 dark:text-zinc-400 transition-colors">
-                        {t('about.subtitle')}
-                    </p>
+            <div className="mx-auto max-w-6xl">
+                <SectionHeading
+                    index="01"
+                    label={t('navigation.about')}
+                    title={t('about.title')}
+                    subtitle={t('about.subtitle')}
+                />
+
+                {/* Pillars */}
+                <div className="grid gap-5 md:grid-cols-3">
+                    {pillars.map(({ key, Icon }, i) => (
+                        <article
+                            key={key}
+                            className="panel panel-hover panel-glow reveal p-6 sm:p-7"
+                            data-delay={i * 90}
+                        >
+                            <div className="mb-5 flex items-center justify-between">
+                                <span className="border-[var(--line-strong)] bg-[var(--accent-soft)] text-accent inline-flex h-11 w-11 items-center justify-center rounded-xl border">
+                                    <Icon size={21} />
+                                </span>
+                                <span className="text-muted font-mono text-xs opacity-50">
+                                    0{i + 1}
+                                </span>
+                            </div>
+                            <h3 className="text-lg font-semibold sm:text-xl">
+                                {t(`about.${key}.title`)}
+                            </h3>
+                            <p className="text-muted mt-3 text-sm leading-relaxed">
+                                {t(`about.${key}.description`)}
+                            </p>
+                        </article>
+                    ))}
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8 mb-16">
-                    <div className="group text-center p-6 sm:p-8 liquid-card hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-linear-to-br from-rose-400 to-rose-600 dark:from-cyan-800 dark:to-cyan-950 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                            <IconCode className="text-white" size={28} />
-                        </div>
-                        <h3 className="text-xl sm:text-2xl font-bold mb-4 text-slate-800 dark:text-cyan-300">
-                            {t('about.development.title')}
-                        </h3>
-                        <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 leading-relaxed">
-                            {t('about.development.description')}
-                        </p>
-                    </div>
-
-                    <div className="group text-center p-6 sm:p-8 liquid-card hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-linear-to-br from-pink-400 to-pink-600 dark:from-zinc-600 dark:to-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                            <IconBriefcase className="text-white" size={28} />
-                        </div>
-                        <h3 className="text-xl sm:text-2xl font-bold mb-4 text-slate-800 dark:text-cyan-300">
-                            {t('about.experience.title')}
-                        </h3>
-                        <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 leading-relaxed">
-                            {t('about.experience.description')}
-                        </p>
-                    </div>
-
-                    <div className="group text-center p-6 sm:p-8 liquid-card hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-linear-to-br from-rose-400 to-rose-600 dark:from-stone-700 dark:to-stone-900 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                            <IconUser className="text-white" size={28} />
-                        </div>
-                        <h3 className="text-xl sm:text-2xl font-bold mb-4 text-slate-800 dark:text-cyan-300">
-                            {t('about.collaboration.title')}
-                        </h3>
-                        <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 leading-relaxed">
-                            {t('about.collaboration.description')}
-                        </p>
-                    </div>
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-6 sm:gap-8 text-center">
-                    <div className="p-6 sm:p-8 liquid-card bg-linear-to-br from-rose-100/50 to-pink-100/50 dark:from-cyan-950/40 dark:to-zinc-700/40 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                        <div className="text-3xl sm:text-4xl font-bold mb-2 text-rose-600 dark:text-cyan-300">
-                            {user?.public_repos}
-                        </div>
-                        <div className="text-sm sm:text-base text-slate-600 dark:text-zinc-400">
-                            {t('about.publicRepos')}
-                        </div>
-                    </div>
-                    <div className="p-6 sm:p-8 liquid-card bg-linear-to-br from-pink-100/50 to-rose-100/50 dark:from-zinc-700/40 dark:to-stone-950/40 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                        <div className="text-3xl sm:text-4xl font-bold mb-2 text-pink-600 dark:text-cyan-300">
-                            {user?.followers}
-                        </div>
-                        <div className="text-sm sm:text-base text-slate-600 dark:text-zinc-400">
-                            {t('about.githubFollowers')}
-                        </div>
-                    </div>
-                    <div className="p-6 sm:p-8 liquid-card bg-linear-to-br from-rose-100/50 to-rose-100/50 dark:from-stone-950/40 dark:to-cyan-950/40 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                        <div className="text-3xl sm:text-4xl font-bold mb-2 text-rose-600 dark:text-cyan-300">
-                            {user?.following}
-                        </div>
-                        <div className="text-sm sm:text-base text-slate-600 dark:text-zinc-400">
-                            {t('about.following')}
-                        </div>
+                {/* Stats strip */}
+                <div className="panel reveal mt-5 overflow-hidden" data-delay="120">
+                    <div className="grid divide-y divide-[var(--line)] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                        {stats.map(({ value, label, Icon }) => (
+                            <div
+                                key={label}
+                                className="group flex items-center gap-4 px-6 py-7"
+                            >
+                                <Icon
+                                    size={22}
+                                    className="text-accent shrink-0 opacity-70 transition-opacity group-hover:opacity-100"
+                                />
+                                <div>
+                                    <div className="display glow-text text-3xl sm:text-4xl">
+                                        {value ?? '—'}
+                                    </div>
+                                    <div className="text-muted mt-1 font-mono text-[0.68rem] tracking-[0.16em] uppercase">
+                                        {label}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
