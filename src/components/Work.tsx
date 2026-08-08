@@ -73,10 +73,17 @@ const STACK = ['React', 'TypeScript', 'Node.js', 'MySQL', 'Nginx'];
  */
 const ARCHIVED: Archived[] = [
     {
+        key: 'endtime',
+        name: 'EndTime',
+        platform: 'FiveM',
+        framework: 'extendedmode',
+        kind: 'zombie',
+    },
+    {
         key: 'arkacity',
         name: 'ArkaCity',
         platform: 'FiveM',
-        framework: 'essentialmode → extendedmode',
+        framework: 'essentialmode , extendedmode',
         kind: 'roleplay',
     },
     {
@@ -94,20 +101,6 @@ const ARCHIVED: Archived[] = [
         kind: 'roleplay',
     },
     {
-        key: 'syncwest',
-        name: 'SyncWest',
-        platform: 'RedM',
-        framework: 'VORP Core',
-        kind: 'roleplay',
-    },
-    {
-        key: 'endtime',
-        name: 'EndTime',
-        platform: 'FiveM',
-        framework: 'extendedmode',
-        kind: 'zombie',
-    },
-    {
         key: 'silverlife',
         name: 'Silverlife',
         platform: 'FiveM',
@@ -119,6 +112,13 @@ const ARCHIVED: Archived[] = [
         name: 'Tokyo RP',
         platform: 'FiveM',
         framework: 'essentialmode',
+        kind: 'roleplay',
+    },
+    {
+        key: 'syncwest',
+        name: 'SyncWest',
+        platform: 'RedM',
+        framework: 'VORP Core',
         kind: 'roleplay',
     },
     {
