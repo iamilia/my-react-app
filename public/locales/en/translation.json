@@ -61,7 +61,12 @@
         "collaborationText": "I'm always interested in hearing about new projects and opportunities. Whether you want to work together or just say hi, feel free to reach out through any of the channels above!"
     },
     "footer": {
-        "builtWith": "Built with React, TypeScript, Tailwind CSS & ❤️"
+        "tagline": "Software and game developer building fast, thoughtful interfaces for the web.",
+        "navigate": "Navigate",
+        "colophon": "Built with",
+        "madeWith": "Made with",
+        "rights": "All rights reserved",
+        "backToTop": "Back to top"
     },
     "loading": {
         "errorTitle": "Error Loading Data",
