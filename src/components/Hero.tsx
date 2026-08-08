@@ -70,7 +70,7 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
     return (
         <section
             ref={ref}
-            className="relative flex min-h-[100svh] items-center px-4 pt-28 pb-16 sm:px-6 lg:px-8"
+            className="relative flex min-h-svh items-center px-4 pt-28 pb-16 sm:px-6 lg:px-8"
         >
             <div className="mx-auto w-full max-w-6xl">
                 <div className="grid items-center gap-12 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
@@ -116,7 +116,7 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                             data-delay="160"
                         >
                             <button
-                                onClick={() => scrollToSection('projects')}
+                                onClick={() => scrollToSection('work')}
                                 className="btn-neon text-sm sm:text-base"
                             >
                                 {t('hero.ctaWork')}
@@ -192,7 +192,7 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                 {/* Scroll cue */}
                 <button
                     onClick={() => scrollToSection('about')}
-                    className="text-muted mx-auto mt-16 hidden items-center gap-2 font-mono text-[0.68rem] tracking-[0.25em] uppercase transition-colors hover:text-[var(--accent)] lg:flex"
+                    className="text-muted mx-auto mt-16 hidden items-center gap-2 font-mono text-[0.68rem] tracking-[0.25em] uppercase transition-colors hover:text-(--accent) lg:flex"
                 >
                     {t('hero.scroll')}
                     <IconArrowDown size={14} className="animate-bounce" />

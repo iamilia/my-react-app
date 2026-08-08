@@ -78,7 +78,7 @@ export const Skills = () => {
                             className="panel panel-hover panel-glow reveal group flex flex-col items-center justify-center gap-3 px-3 py-6"
                             data-delay={(i % 5) * 60}
                         >
-                            <span className="text-muted transition-colors duration-300 group-hover:text-[var(--accent)] [&>svg]:h-7 [&>svg]:w-7">
+                            <span className="text-muted transition-colors duration-300 group-hover:text-(--accent) [&>svg]:h-7 [&>svg]:w-7">
                                 {skill.icon}
                             </span>
                             <span className="text-center font-mono text-[0.72rem] tracking-wide">

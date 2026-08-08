@@ -2,6 +2,7 @@
     "navigation": {
         "about": "About",
         "skills": "Skills",
+        "work": "Work",
         "projects": "Projects",
         "contact": "Contact",
         "userName": "Ilia"
@@ -43,6 +44,87 @@
     "skills": {
         "title": "Technologies & Skills",
         "subtitle": "A look at the tools and technologies I use."
+    },
+    "work": {
+        "title": "Selected Work",
+        "subtitle": "Platforms and game servers I've built — what's running now, and what came before.",
+        "liveLabel": "Currently live",
+        "live": "Live in production",
+        "platformsLabel": "Platforms",
+        "endpoints": "Web services",
+        "archived": {
+            "label": "Archived",
+            "badge": "Archived",
+            "note": "Game servers and tools I built for the FiveM and RedM communities. These are no longer running and have no public URL, so they're listed for context rather than as links.",
+            "kinds": {
+                "roleplay": "Roleplay server",
+                "zombie": "Survival / zombie server",
+                "anticheat": "Anti-cheat"
+            },
+            "items": {
+                "arkacity": {
+                    "description": "Roleplay game mode that started on essentialmode and was later migrated over to extendedmode."
+                },
+                "iceroleplay": {
+                    "description": "NoPixel-inspired roleplay game mode on QBCore. It had a public site, which is now offline along with the server."
+                },
+                "moonlight": {
+                    "description": "Roleplay game mode built on the ESX core."
+                },
+                "syncwest": {
+                    "description": "Red Dead Redemption roleplay server on RedM, built on the VORP core."
+                },
+                "endtime": {
+                    "description": "Survival zombie game mode built on extendedmode."
+                },
+                "silverlife": {
+                    "description": "Roleplay game mode built on essentialmode."
+                },
+                "tokyorp": {
+                    "description": "Roleplay game mode built on essentialmode."
+                },
+                "redline": {
+                    "description": "Anti-cheat for FiveM servers — a standalone detection and enforcement tool, not a game mode."
+                }
+            }
+        },
+        "genesis": {
+            "name": "GenesisRP",
+            "role": "Roleplay community · Full-stack developer",
+            "description": "A roleplay community running across FiveM, the Persian VMP platform, and a TeamSpeak voice server — backed by a website and the internal services that keep it all running: file uploads, a support desk, and live activity logging. I build and maintain the whole thing.",
+            "platforms": {
+                "fivem": {
+                    "label": "Roleplay server",
+                    "description": "Main in-game server"
+                },
+                "vmp": {
+                    "label": "Roleplay server",
+                    "description": "Persian roleplay platform"
+                },
+                "teamspeak": {
+                    "label": "Voice server",
+                    "description": "Community voice chat"
+                }
+            },
+            "sites": {
+                "main": {
+                    "label": "Main site",
+                    "description": "Public landing and community hub"
+                },
+                "upload": {
+                    "label": "Upload service",
+                    "description": "File and asset uploads"
+                },
+                "support": {
+                    "label": "Support desk",
+                    "description": "Ticketing and player support"
+                },
+                "log": {
+                    "label": "Activity logs",
+                    "description": "Live event and audit logging"
+                }
+            }
+        }
     },
     "projects": {
         "title": "Recent Projects",

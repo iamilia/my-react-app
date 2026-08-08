@@ -18,7 +18,7 @@ interface NavigationProps {
     language: Language;
 }
 
-const SECTIONS = ['about', 'skills', 'projects', 'contact'] as const;
+const SECTIONS = ['about', 'skills', 'work', 'projects', 'contact'] as const;
 
 /** Space the burger button occupies once it appears (36px button + 8px gap). */
 const BURGER_W = 44;

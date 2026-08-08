@@ -59,7 +59,7 @@ export const Projects = ({ repos }: ProjectsProps) => {
         >
             <div className="mx-auto max-w-6xl">
                 <SectionHeading
-                    index="03"
+                    index="04"
                     label={t('navigation.projects')}
                     title={t('projects.title')}
                     subtitle={t('projects.subtitle')}
@@ -76,12 +76,12 @@ export const Projects = ({ repos }: ProjectsProps) => {
                             data-delay={(i % 3) * 80}
                         >
                             <div className="mb-4 flex items-start justify-between gap-3">
-                                <h3 className="force-mono font-mono text-base font-semibold tracking-tight transition-colors duration-300 group-hover:text-[var(--accent)] sm:text-lg" dir="ltr">
+                                <h3 className="force-mono font-mono text-base font-semibold tracking-tight transition-colors duration-300 group-hover:text-(--accent) sm:text-lg" dir="ltr">
                                     {repo.name}
                                 </h3>
                                 <IconArrowUpRight
                                     size={18}
-                                    className="text-muted shrink-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--accent)] rtl:-scale-x-100"
+                                    className="text-muted shrink-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--accent) rtl:-scale-x-100"
                                 />
                             </div>
 
@@ -89,7 +89,7 @@ export const Projects = ({ repos }: ProjectsProps) => {
                                 {repo.description || t('projects.noDescription')}
                             </p>
 
-                            <hr className="my-5 border-0 border-t border-[var(--line)]" />
+                            <hr className="my-5 border-0 border-t border-(--line)" />
 
                             <div className="mt-auto flex items-center justify-between font-mono text-xs">
                                 {repo.language ? (

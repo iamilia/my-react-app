@@ -51,7 +51,7 @@ export const Contact = ({ user }: ContactProps) => {
         >
             <div className="mx-auto max-w-6xl">
                 <SectionHeading
-                    index="04"
+                    index="05"
                     label={t('navigation.contact')}
                     title={t('contact.title')}
                     subtitle={t('contact.subtitle')}
@@ -68,20 +68,20 @@ export const Contact = ({ user }: ContactProps) => {
                             className="panel panel-hover panel-glow reveal group flex items-center gap-4 p-6"
                             data-delay={i * 80}
                         >
-                            <span className="border-[var(--line-strong)] bg-[var(--accent-soft)] text-accent inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
+                            <span className="border-(--line-strong) bg-(--accent-soft) text-accent inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
                                 <Icon size={20} />
                             </span>
                             <span className="min-w-0 flex-1">
                                 <span className="text-muted block font-mono text-[0.66rem] tracking-[0.18em] uppercase">
                                     {title}
                                 </span>
-                                <span className="mt-1 block truncate text-sm font-medium transition-colors group-hover:text-[var(--accent)] sm:text-base">
+                                <span className="mt-1 block truncate text-sm font-medium transition-colors group-hover:text-(--accent) sm:text-base">
                                     {value}
                                 </span>
                             </span>
                             <IconArrowUpRight
                                 size={17}
-                                className="text-muted shrink-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--accent)] rtl:-scale-x-100"
+                                className="text-muted shrink-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--accent) rtl:-scale-x-100"
                             />
                         </a>
                     ))}

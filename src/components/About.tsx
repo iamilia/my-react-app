@@ -66,7 +66,7 @@ export const About = ({ user }: AboutProps) => {
                             data-delay={i * 90}
                         >
                             <div className="mb-5 flex items-center justify-between">
-                                <span className="border-[var(--line-strong)] bg-[var(--accent-soft)] text-accent inline-flex h-11 w-11 items-center justify-center rounded-xl border">
+                                <span className="border-(--line-strong) bg-(--accent-soft) text-accent inline-flex h-11 w-11 items-center justify-center rounded-xl border">
                                     <Icon size={21} />
                                 </span>
                                 <span className="text-muted font-mono text-xs opacity-50">
@@ -85,7 +85,7 @@ export const About = ({ user }: AboutProps) => {
 
                 {/* Stats strip */}
                 <div className="panel reveal mt-5 overflow-hidden" data-delay="120">
-                    <div className="grid divide-y divide-[var(--line)] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                    <div className="grid divide-y divide-(--line) sm:grid-cols-3 sm:divide-x sm:divide-y-0">
                         {stats.map(({ value, label, Icon }) => (
                             <div
                                 key={label}

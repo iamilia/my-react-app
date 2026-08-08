@@ -8,7 +8,7 @@ interface FooterProps {
     scrollToSection: (sectionId: string) => void;
 }
 
-const SECTIONS = ['about', 'skills', 'projects', 'contact'] as const;
+const SECTIONS = ['about', 'skills', 'work', 'projects', 'contact'] as const;
 
 const STACK = [
     { label: 'React', href: 'https://react.dev' },
