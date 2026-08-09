@@ -589,8 +589,290 @@ body {
 }
 
 /* ==========================================================================
+   GAME · 2048
+   --------------------------------------------------------------------------
+   The grid is laid out in percentages of the board so it scales with its
+   container, and tiles are absolutely positioned from `--row` / `--col` set
+   inline by React. Sizes use container query units, so the numbers stay
+   proportional at every board width without a single media query.
+   ========================================================================== */
+
+.board2048-frame {
+    position: relative;
+    padding: 2.6%;
+    border-radius: 20px;
+    /* the board owns every gesture inside it — no scrolling, no pull-to-refresh */
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 26px 60px -38px var(--glow);
+    transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+.board2048-frozen {
+    opacity: 0.55;
+    filter: saturate(0.7);
+}
+
+.board2048 {
+    --cells: 4;
+    --gap: 2.6%;
+    --cell: calc((100% - (var(--cells) - 1) * var(--gap)) / var(--cells));
+    --step: calc(var(--cell) + var(--gap));
+
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    container-type: inline-size;
+}
+
+.board2048-cells {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--cells), 1fr);
+    gap: var(--gap);
+}
+
+.board2048-cell {
+    border-radius: 13%;
+    background: color-mix(in srgb, var(--fg) 4%, transparent);
+    border: 1px solid var(--line);
+}
+
+.tile2048 {
+    position: absolute;
+    width: var(--cell);
+    height: var(--cell);
+    left: calc(var(--col) * var(--step));
+    top: calc(var(--row) * var(--step));
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13%;
+    font-weight: 700;
+    font-size: 10cqw;
+    line-height: 1;
+    letter-spacing: -0.02em;
+
+    transition:
+        left 130ms cubic-bezier(0.22, 1, 0.36, 1),
+        top 130ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: left, top;
+}
+
+/* Merge parents finish their slide underneath the tile they became. */
+.tile2048-ghost {
+    z-index: 1;
+}
+
+/* Longer numbers step down so 16384 still fits its tile. */
+.tile2048-d1 {
+    font-size: 11cqw;
+}
+.tile2048-d3 {
+    font-size: 8.4cqw;
+}
+.tile2048-d4 {
+    font-size: 6.6cqw;
+}
+.tile2048-d5 {
+    font-size: 5.4cqw;
+}
+.tile2048-d6 {
+    font-size: 4.6cqw;
+}
+
+/* --- value ramp: neutral surfaces climbing into the accent ---------------- */
+
+.tile2048-v2 {
+    background: color-mix(in srgb, var(--fg) 8%, transparent);
+    border: 1px solid var(--line);
+    color: var(--fg);
+}
+.tile2048-v4 {
+    background: color-mix(in srgb, var(--fg) 14%, transparent);
+    border: 1px solid var(--line);
+    color: var(--fg);
+}
+.tile2048-v8 {
+    background: rgba(244, 63, 94, 0.22);
+    border: 1px solid rgba(244, 63, 94, 0.34);
+    color: color-mix(in srgb, var(--fg) 65%, var(--accent));
+}
+.tile2048-v16 {
+    background: rgba(244, 63, 94, 0.36);
+    border: 1px solid rgba(244, 63, 94, 0.48);
+    color: #fff;
+}
+.tile2048-v32 {
+    background: rgba(244, 63, 94, 0.55);
+    border: 1px solid rgba(244, 63, 94, 0.65);
+    color: #fff;
+}
+.tile2048-v64 {
+    background: rgba(244, 63, 94, 0.78);
+    border: 1px solid rgba(244, 63, 94, 0.85);
+    color: #fff;
+}
+.tile2048-v128 {
+    background: linear-gradient(135deg, #f43f5e, #ec4899);
+    color: #fff;
+    box-shadow: 0 0 18px -4px rgba(244, 63, 94, 0.65);
+}
+.tile2048-v256 {
+    background: linear-gradient(135deg, #fb7185, #e11d48);
+    color: #fff;
+    box-shadow: 0 0 22px -4px rgba(244, 63, 94, 0.75);
+}
+.tile2048-v512 {
+    background: linear-gradient(135deg, #ec4899, #a21caf);
+    color: #fff;
+    box-shadow: 0 0 26px -4px rgba(236, 72, 153, 0.8);
+}
+.tile2048-v1024 {
+    background: linear-gradient(135deg, #f43f5e, #a21caf 60%, #6d28d9);
+    color: #fff;
+    box-shadow: 0 0 30px -4px rgba(168, 85, 247, 0.85);
+}
+.tile2048-v2048 {
+    background: linear-gradient(135deg, #fbbf24, #f43f5e 55%, #a21caf);
+    color: #fff;
+    box-shadow:
+        0 0 0 1px rgba(251, 191, 36, 0.55),
+        0 0 34px -2px rgba(251, 191, 36, 0.75);
+}
+.tile2048-max {
+    background: linear-gradient(135deg, #fde68a, #fb7185 45%, #6d28d9);
+    color: #1c1117;
+    box-shadow:
+        0 0 0 1px rgba(253, 230, 138, 0.7),
+        0 0 38px -2px rgba(253, 230, 138, 0.8);
+}
+
+/* The two lightest tiles need real ink behind them on the light theme. */
+:root:not(.dark) .tile2048-v2 {
+    background: rgba(255, 255, 255, 0.85);
+}
+:root:not(.dark) .tile2048-v4 {
+    background: rgba(255, 228, 230, 0.95);
+}
+:root:not(.dark) .tile2048-v8 {
+    color: #7f1d3a;
+}
+
+/* --- entrances ----------------------------------------------------------- */
+
+/* Both wait out the slide (110ms) so the movement is visible first. */
+.tile2048-new {
+    animation: tile2048-appear 180ms cubic-bezier(0.22, 1, 0.36, 1) 110ms both;
+}
+
+.tile2048-merged {
+    animation: tile2048-pop 220ms cubic-bezier(0.22, 1, 0.36, 1) 110ms both;
+}
+
+/* --- HUD ----------------------------------------------------------------- */
+
+.stat2048 {
+    position: relative;
+    display: flex;
+    min-width: 5.5rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    padding: 0.55rem 1rem;
+}
+
+.stat2048-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+}
+
+.stat2048-value {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* the floating "+8" that rises off the score when tiles merge */
+.stat2048-gain {
+    position: absolute;
+    inset-inline: 0;
+    top: 0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent);
+    pointer-events: none;
+    animation: stat2048-gain 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.overlay2048 {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: inherit;
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    animation: tile2048-appear 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ==========================================================================
    KEYFRAMES
    ========================================================================== */
+
+@keyframes tile2048-appear {
+    from {
+        transform: scale(0.4);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes tile2048-pop {
+    0% {
+        transform: scale(0);
+    }
+    60% {
+        transform: scale(1.18);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes stat2048-gain {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-1.6rem);
+    }
+}
 
 @keyframes drift {
     0%,

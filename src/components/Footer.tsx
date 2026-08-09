@@ -1,14 +1,21 @@
 import { IconArrowUp, IconHeartFilled } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useReveal } from '../hooks/useReveal';
 import { smoothScrollToTop } from '../utils/scroll';
 
 interface FooterProps {
     userName: string;
-    scrollToSection: (sectionId: string) => void;
+    /** Only supplied by the home page, where the sections actually exist. */
+    scrollToSection?: (sectionId: string) => void;
 }
 
 const SECTIONS = ['about', 'skills', 'work', 'projects', 'contact'] as const;
+
+const NAV_ITEMS = [
+    ...SECTIONS.map((id) => ({ id, to: `/#${id}` })),
+    { id: 'games', to: '/game' },
+] as const;
 
 const STACK = [
     { label: 'React', href: 'https://react.dev' },
@@ -20,8 +27,24 @@ const STACK = [
 export const Footer = ({ userName, scrollToSection }: FooterProps) => {
     const { t } = useTranslation();
     const ref = useReveal<HTMLElement>();
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
 
-    const scrollToTop = () => smoothScrollToTop();
+    const onHome = pathname === '/';
+
+    const scrollToTop = () => {
+        if (onHome) smoothScrollToTop();
+        else navigate('/');
+    };
+
+    /** Same rule as the header: scroll on home, route with a hash elsewhere. */
+    const go = (item: (typeof NAV_ITEMS)[number]) => {
+        if (item.id !== 'games' && onHome && scrollToSection) {
+            scrollToSection(item.id);
+            return;
+        }
+        navigate(item.to);
+    };
 
     return (
         <footer ref={ref} className="relative overflow-hidden px-4 sm:px-6 lg:px-8">
@@ -75,17 +98,17 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                             {t('footer.navigate')}
                         </h3>
                         <ul className="mt-5 space-y-1">
-                            {SECTIONS.map((id, i) => (
-                                <li key={id}>
+                            {NAV_ITEMS.map((item, i) => (
+                                <li key={item.id}>
                                     <button
-                                        onClick={() => scrollToSection(id)}
+                                        onClick={() => go(item)}
                                         className="text-muted group flex items-center gap-3 py-1.5 text-sm transition-colors hover:text-(--accent)"
                                     >
                                         <span className="force-mono text-[0.68rem] opacity-40 transition-opacity group-hover:opacity-100">
                                             0{i + 1}
                                         </span>
                                         <span className="relative">
-                                            {t(`navigation.${id}`)}
+                                            {t(`navigation.${item.id}`)}
                                             <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-(--accent) rtl:origin-right transition-transform duration-300 group-hover:scale-x-100" />
                                         </span>
                                     </button>

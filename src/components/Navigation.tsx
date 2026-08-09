@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
     IconMenu2,
     IconX,
@@ -13,12 +14,19 @@ interface NavigationProps {
     userName: string;
     darkMode: boolean;
     toggleDarkMode: () => void;
-    scrollToSection: (sectionId: string) => void;
     toggleLanguage: () => void;
     language: Language;
+    /** Only supplied by the home page, where the sections actually exist. */
+    scrollToSection?: (sectionId: string) => void;
 }
 
 const SECTIONS = ['about', 'skills', 'work', 'projects', 'contact'] as const;
+
+/** Sections first, then the routed pages that live outside the one-pager. */
+const NAV_ITEMS = [
+    ...SECTIONS.map((id) => ({ id, to: `/#${id}` })),
+    { id: 'games', to: '/game' },
+] as const;
 
 /** Space the burger button occupies once it appears (36px button + 8px gap). */
 const BURGER_W = 44;
@@ -38,6 +46,11 @@ export const Navigation = ({
     // true => links don't fit, show the burger instead
     const [compact, setCompact] = useState(false);
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+
+    const onHome = pathname === '/';
+    const onGames = pathname.startsWith('/game');
 
     const barRef = useRef<HTMLDivElement>(null);
     const wordmarkRef = useRef<HTMLButtonElement>(null);
@@ -52,6 +65,10 @@ export const Navigation = ({
     }, []);
 
     useEffect(() => {
+        if (!onHome) {
+            setActive(onGames ? 'games' : '');
+            return;
+        }
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((e) => {
@@ -65,7 +82,7 @@ export const Navigation = ({
             if (el) observer.observe(el);
         });
         return () => observer.disconnect();
-    }, []);
+    }, [onHome, onGames]);
 
     /**
      * Decide between the full link row and the burger by measuring, not by a
@@ -113,23 +130,42 @@ export const Navigation = ({
         if (!compact) setMobileMenuOpen(false);
     }, [compact]);
 
-    const handleScrollToSection = (sectionId: string) => {
-        scrollToSection(sectionId);
+    /**
+     * On the home page the section links scroll; from anywhere else they route
+     * home with a hash and let Home do the scrolling once its data has landed.
+     */
+    const go = (item: (typeof NAV_ITEMS)[number]) => {
         setMobileMenuOpen(false);
+        if (item.id === 'games') {
+            navigate(item.to);
+            return;
+        }
+        if (onHome && scrollToSection) scrollToSection(item.id);
+        else navigate(item.to);
     };
 
-    const renderLink = (id: string, i: number, measuring = false) => (
+    const goHome = () => {
+        setMobileMenuOpen(false);
+        if (onHome) window.scrollTo({ top: 0, behavior: 'smooth' });
+        else navigate('/');
+    };
+
+    const renderLink = (
+        item: (typeof NAV_ITEMS)[number],
+        i: number,
+        measuring = false
+    ) => (
         <button
-            key={id}
-            onClick={measuring ? undefined : () => scrollToSection(id)}
+            key={item.id}
+            onClick={measuring ? undefined : () => go(item)}
             tabIndex={measuring ? -1 : undefined}
             className={`nav-link relative rounded-full px-3.5 py-2 font-mono text-xs tracking-wider whitespace-nowrap uppercase transition-colors duration-300 lg:text-[0.8rem] ${
-                active === id ? 'text-accent' : 'text-muted hover:text-(--fg)'
+                active === item.id ? 'text-accent' : 'text-muted hover:text-(--fg)'
             }`}
         >
             <span className="force-mono me-2 opacity-40">0{i + 1}</span>
-            {t(`navigation.${id}`)}
-            {!measuring && active === id && (
+            {t(`navigation.${item.id}`)}
+            {!measuring && active === item.id && (
                 <span className="absolute inset-x-3 -bottom-px h-px bg-(--accent)" />
             )}
         </button>
@@ -151,9 +187,7 @@ export const Navigation = ({
                     {/* Wordmark */}
                     <button
                         ref={wordmarkRef}
-                        onClick={() =>
-                            window.scrollTo({ top: 0, behavior: 'smooth' })
-                        }
+                        onClick={goHome}
                         className="group flex shrink-0 items-center gap-2.5"
                     >
                         <span className="relative flex h-2.5 w-2.5">
@@ -172,14 +206,14 @@ export const Navigation = ({
                         aria-hidden="true"
                         className="pointer-events-none invisible absolute inset-s-0 top-0 flex items-center gap-1"
                     >
-                        {SECTIONS.map((id, i) => renderLink(id, i, true))}
+                        {NAV_ITEMS.map((item, i) => renderLink(item, i, true))}
                     </div>
 
                     {/* Links — shown only while they actually fit */}
                     <div
                         className={`items-center gap-1 ${compact ? 'hidden' : 'flex'}`}
                     >
-                        {SECTIONS.map((id, i) => renderLink(id, i))}
+                        {NAV_ITEMS.map((item, i) => renderLink(item, i))}
                     </div>
 
                     {/* Controls */}
@@ -240,22 +274,24 @@ export const Navigation = ({
                 {/* Collapsed menu */}
                 <div
                     className={`overflow-hidden transition-[max-height] duration-500 ease-out ${
-                        compact && mobileMenuOpen ? 'max-h-72' : 'max-h-0'
+                        compact && mobileMenuOpen ? 'max-h-96' : 'max-h-0'
                     }`}
                 >
                     <div className="px-4 pb-4 sm:px-6">
                         <hr className="hairline mb-3" />
                         <div className="flex flex-col">
-                            {SECTIONS.map((id, i) => (
+                            {NAV_ITEMS.map((item, i) => (
                                 <button
-                                    key={id}
-                                    onClick={() => handleScrollToSection(id)}
-                                    className="nav-link flex items-center gap-3 py-2.5 text-start font-mono text-sm tracking-wider uppercase transition-colors hover:text-(--accent)"
+                                    key={item.id}
+                                    onClick={() => go(item)}
+                                    className={`nav-link flex items-center gap-3 py-2.5 text-start font-mono text-sm tracking-wider uppercase transition-colors hover:text-(--accent) ${
+                                        active === item.id ? 'text-accent' : ''
+                                    }`}
                                 >
                                     <span className="force-mono text-accent text-[0.7rem] opacity-60">
                                         0{i + 1}
                                     </span>
-                                    {t(`navigation.${id}`)}
+                                    {t(`navigation.${item.id}`)}
                                 </button>
                             ))}
                         </div>

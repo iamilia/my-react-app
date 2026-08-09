@@ -5,7 +5,8 @@
         "work": "Work",
         "projects": "Projects",
         "contact": "Contact",
-        "userName": "Ilia"
+        "userName": "Ilia",
+        "games": "Games"
     },
     "hero": {
         "animationSequence": [
@@ -154,5 +155,55 @@
         "errorTitle": "Error Loading Data",
         "tryAgain": "Try Again",
         "loading": "Loading"
+    },
+    "games": {
+        "title": "Games",
+        "subtitle": "Small browser games I build to keep the fundamentals sharp — no installs, no accounts, just play.",
+        "play": "Play now",
+        "inProgress": "In progress",
+        "footnote": "More on the way — check back soon.",
+        "status": {
+            "live": "Playable",
+            "soon": "Coming soon"
+        },
+        "items": {
+            "2048": {
+                "title": "2048",
+                "description": "Slide the tiles, merge matching numbers, and try to reach 2048 before the board fills up."
+            },
+            "memory": {
+                "title": "Memory Match",
+                "description": "Flip cards two at a time and clear the grid in as few moves as you can."
+            },
+            "minesweeper": {
+                "title": "Minesweeper",
+                "description": "Read the numbers, flag the mines, and clear the field without a single misstep."
+            }
+        }
+    },
+    "game2048": {
+        "back": "All games",
+        "tagline": "Merge matching tiles to double them. Reach 2048 to win — then keep going for a bigger score.",
+        "score": "Score",
+        "best": "Best",
+        "newGame": "New game",
+        "undo": "Undo",
+        "howTo": {
+            "title": "How to play",
+            "keys": "Use the arrow keys or WASD to slide every tile in one direction.",
+            "swipe": "On a phone, swipe across the board — up, down, left or right.",
+            "goal": "Two tiles with the same number merge into one worth double.",
+            "hint": "Your score and board are saved locally, so you can pick up where you left off."
+        },
+        "win": {
+            "title": "You made 2048!",
+            "body": "That's the goal reached. Keep going for a higher score, or start fresh.",
+            "keepPlaying": "Keep playing"
+        },
+        "lose": {
+            "title": "No moves left",
+            "body": "The board is full and nothing else can merge. You finished on {{score}}.",
+            "tryAgain": "Try again"
+        }
     }
 }

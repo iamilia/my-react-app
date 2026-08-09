@@ -8,15 +8,24 @@
         <meta name="author" content="Ilia" />
         <meta name="robots" content="index, follow" />
 
+        <!--
+          NOTE: every og:* / twitter:* / <title> / description tag below is
+          replaced at request time by the Express server (my-express-app,
+          src/lib/html-meta.ts) so each route gets its own link preview.
+          What's here is only the fallback for `vite dev` and for any host
+          that serves this file statically. Edit the real per-route values in
+          my-express-app/src/config/meta.ts.
+        -->
+
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Iam Ilia - Software Developer Portfolio" />
         <meta property="og:description" content="Explore my projects, skills, and experience as a software developer and tech enthusiast." />
-        <meta property="og:image" content="https://iamilia.liara.run/embed_icon.svg" />
-        <meta property="og:image:type" content="image/svg+xml" />
-        <meta property="og:image:width" content="512" />
-        <meta property="og:image:height" content="512" />
-        <meta property="og:url" content="https://iamilia.liara.run" />
+        <meta property="og:image" content="https://iamilia.ir/og-home.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:url" content="https://iamilia.ir" />
         <meta property="og:site_name" content="Iam Ilia" />
 
         <!-- Discord Embed / browser chrome -->
@@ -28,10 +37,10 @@
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Iam Ilia - Software Developer Portfolio" />
         <meta name="twitter:description" content="Explore my projects, skills, and experience as a software developer and tech enthusiast." />
-        <meta name="twitter:image" content="https://iamilia.liara.run/embed_icon.svg" />
+        <meta name="twitter:image" content="https://iamilia.ir/og-home.png" />
         <meta name="twitter:site" content="@org_ilia" />
         <meta name="twitter:creator" content="@org_ilia" />
-        <meta name="twitter:url" content="https://iamilia.liara.run" />
+        <meta name="twitter:url" content="https://iamilia.ir" />
 
         <!-- Telegram Preview -->
         <meta name="telegram:channel" content="@im_1lia" />
