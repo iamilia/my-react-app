@@ -29,9 +29,10 @@
         <meta property="og:site_name" content="Iam Ilia" />
 
         <!-- Discord Embed / browser chrome -->
-        <meta property="theme-color" content="#f43f5e" />
-        <meta name="theme-color" content="#08060a" />
-        <meta name="color-scheme" content="dark light" />
+        <meta property="theme-color" content="#9f1239" />
+        <!-- rewritten before first paint by the inline script below -->
+        <meta name="theme-color" content="#f9f4ec" />
+        <meta name="color-scheme" content="light dark" />
 
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image" />
@@ -47,33 +48,45 @@
 
         <link rel="icon" type="image/svg+xml" href="/icon.svg" />
         <link rel="preconnect" href="https://api.github.com" />
-        <link
-            rel="preload"
-            as="font"
-            type="font/woff2"
-            href="/fonts/Vazirmatn.woff2"
-            crossorigin
-        />
+
+        <!--
+          Typefaces are self-hosted via Fontsource and bundled by Vite (see
+          src/style.css) rather than pulled from a font CDN — no third-party
+          request on first paint, and nothing to fail on a slow network.
+        -->
         <link href="/src/style.css" rel="stylesheet">
         <title>Iam Ilia - Software Developer Portfolio</title>
 
-        <!-- Apply the theme before first paint to avoid a light flash -->
+        <!--
+          Resolve the theme before first paint so there is no flash. The
+          default is the operating system's own preference; `theme` in
+          localStorage only exists once the visitor has overridden it by
+          hand. Keep these two hex values in step with --bg in src/style.css.
+        -->
         <script>
             (function () {
+                var LIGHT = '#f9f4ec';
+                var DARK = '#020617';
+                var dark = false;
                 try {
-                    var saved = localStorage.getItem('darkMode');
-                    var dark = saved === null ? true : JSON.parse(saved);
-                    if (dark) document.documentElement.classList.add('dark');
-                    document.documentElement.style.colorScheme = dark
-                        ? 'dark'
-                        : 'light';
-                    document.documentElement.style.backgroundColor = dark
-                        ? '#08060a'
-                        : '#fff7f8';
+                    var saved = localStorage.getItem('theme');
+                    dark =
+                        saved === 'dark' ||
+                        (saved !== 'light' &&
+                            window.matchMedia('(prefers-color-scheme: dark)')
+                                .matches);
                 } catch (e) {
-                    document.documentElement.classList.add('dark');
-                    document.documentElement.style.backgroundColor = '#08060a';
+                    /* localStorage blocked — fall back to the media query */
+                    dark =
+                        window.matchMedia &&
+                        window.matchMedia('(prefers-color-scheme: dark)').matches;
                 }
+                var root = document.documentElement;
+                root.classList.toggle('dark', dark);
+                root.style.colorScheme = dark ? 'dark' : 'light';
+                root.style.backgroundColor = dark ? DARK : LIGHT;
+                var meta = document.querySelector('meta[name="theme-color"]');
+                if (meta) meta.setAttribute('content', dark ? DARK : LIGHT);
             })();
         </script>
     </head>

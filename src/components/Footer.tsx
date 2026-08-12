@@ -1,7 +1,8 @@
-import { IconArrowUp, IconHeartFilled } from '@tabler/icons-react';
+import { IconArrowUp } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useReveal } from '../hooks/useReveal';
+import { useNumbers } from '../hooks/useNumbers';
 import { smoothScrollToTop } from '../utils/scroll';
 
 interface FooterProps {
@@ -27,6 +28,7 @@ const STACK = [
 export const Footer = ({ userName, scrollToSection }: FooterProps) => {
     const { t } = useTranslation();
     const ref = useReveal<HTMLElement>();
+    const n = useNumbers();
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
@@ -47,137 +49,87 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
     };
 
     return (
-        <footer ref={ref} className="relative overflow-hidden px-4 sm:px-6 lg:px-8">
-            {/* ambient wash so the page fades out instead of stopping dead */}
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-full"
-                style={{
-                    background:
-                        'radial-gradient(720px circle at 50% 118%, var(--accent-soft), transparent 62%)',
-                }}
-            />
-
-            <div className="relative mx-auto max-w-6xl">
-                <hr className="hairline" />
-
-                {/* ---------------- main columns ---------------- */}
-                <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr] lg:gap-14">
-                    {/* Brand */}
-                    <div className="reveal sm:col-span-2 lg:col-span-1">
+        <footer ref={ref} className="section-alt">
+            <div className="wrap">
+                <div className="field py-12 sm:py-14 lg:py-20">
+                    {/* colophon in the margin, index in the field */}
+                    <div className="field-aside reveal">
                         <button
                             onClick={scrollToTop}
-                            className="group flex items-center gap-2.5"
+                            className="display text-3xl transition-colors hover:text-(--accent)"
                         >
-                            <span className="relative flex h-2.5 w-2.5">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--accent) opacity-60" />
-                                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-(--accent)" />
-                            </span>
-                            <span className="font-mono text-base font-semibold tracking-[0.2em] uppercase transition-colors group-hover:text-(--accent)">
-                                {userName}
-                                <span className="text-accent">_</span>
-                            </span>
+                            {userName}
                         </button>
-
-                        <p className="text-muted mt-4 max-w-xs text-sm leading-relaxed">
+                        <p className="prose-sm mt-3 max-w-xs">
                             {t('footer.tagline')}
                         </p>
-
-                        <span className="chip mt-6">
-                            <span className="relative flex h-1.5 w-1.5">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--accent) opacity-70" />
-                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-(--accent)" />
+                        <p className="mt-6 flex items-center gap-2.5">
+                            <span className="marker" />
+                            <span className="label label-ink">
+                                {t('hero.available')}
                             </span>
-                            {t('hero.available')}
-                        </span>
+                        </p>
                     </div>
 
-                    {/* Navigate */}
-                    <nav className="reveal" data-delay="80">
-                        <h3 className="text-muted font-mono text-[0.66rem] tracking-[0.22em] uppercase">
-                            {t('footer.navigate')}
-                        </h3>
-                        <ul className="mt-5 space-y-1">
-                            {NAV_ITEMS.map((item, i) => (
-                                <li key={item.id}>
-                                    <button
-                                        onClick={() => go(item)}
-                                        className="text-muted group flex items-center gap-3 py-1.5 text-sm transition-colors hover:text-(--accent)"
-                                    >
-                                        <span className="force-mono text-[0.68rem] opacity-40 transition-opacity group-hover:opacity-100">
-                                            0{i + 1}
-                                        </span>
-                                        <span className="relative">
-                                            {t(`navigation.${item.id}`)}
-                                            <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-(--accent) rtl:origin-right transition-transform duration-300 group-hover:scale-x-100" />
-                                        </span>
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
+                    <div className="field-body">
+                        <div className="grid gap-12 sm:grid-cols-2">
+                            <nav className="reveal" data-delay="60">
+                                <p className="label">{t('footer.navigate')}</p>
+                                <ul className="m-0 mt-4 list-none p-0">
+                                    {NAV_ITEMS.map((item, i) => (
+                                        <li key={item.id}>
+                                            <button
+                                                onClick={() => go(item)}
+                                                className="text-muted flex min-h-9 w-full items-baseline gap-4 py-1.5 text-start text-[0.9375rem] transition-colors hover:text-(--accent)"
+                                            >
+                                                <span className="force-mono nums text-[0.6875rem] opacity-50">
+                                                    {n(i + 1, 'padded')}
+                                                </span>
+                                                {t(`navigation.${item.id}`)}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
 
-                    {/* Colophon */}
-                    <div className="reveal" data-delay="160">
-                        <h3 className="text-muted font-mono text-[0.66rem] tracking-[0.22em] uppercase">
-                            {t('footer.colophon')}
-                        </h3>
-                        <ul className="mt-5 flex flex-wrap gap-2">
-                            {STACK.map(({ label, href }) => (
-                                <li key={label}>
-                                    <a
-                                        href={href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="chip force-mono transition-colors duration-300 hover:border-(--line-strong) hover:text-(--accent)"
-                                    >
-                                        {label}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
+                            <div className="reveal" data-delay="120">
+                                <p className="label">{t('footer.colophon')}</p>
+                                <ul className="m-0 mt-4 list-none p-0">
+                                    {STACK.map(({ label, href }) => (
+                                        <li key={label}>
+                                            <a
+                                                href={href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="link force-mono inline-block py-1.5 text-sm"
+                                                dir="ltr"
+                                            >
+                                                {label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <hr className="hairline" />
+                <hr className="rule" />
 
-                {/* ---------------- bottom bar ---------------- */}
-                <div className="flex flex-col-reverse items-center justify-between gap-5 py-7 text-center sm:flex-row sm:text-start">
-                    <p className="text-muted font-mono text-[0.7rem] tracking-[0.14em]">
-                        <span className="force-mono">
-                            © {new Date().getFullYear()}
-                        </span>{' '}
-                        {userName} — {t('footer.rights')}
+                <div className="flex flex-col-reverse items-start justify-between gap-3 py-6 sm:flex-row sm:items-center sm:py-7">
+                    <p className="text-muted nums text-xs">
+                        © {n(new Date().getFullYear(), 'plain')} {userName} —{' '}
+                        {t('footer.rights')}
                     </p>
 
-                    <div className="flex items-center gap-4">
-                        <p className="text-muted hidden items-center gap-1.5 font-mono text-[0.7rem] tracking-[0.14em] md:inline-flex">
-                            {t('footer.madeWith')}
-                            <IconHeartFilled
-                                size={12}
-                                className="text-accent animate-pulse"
-                            />
-                        </p>
-                        <button
-                            onClick={scrollToTop}
-                            className="icon-btn group h-9 gap-2 px-4 font-mono text-[0.66rem] tracking-[0.18em] uppercase"
-                            aria-label={t('footer.backToTop')}
-                        >
-                            {t('footer.backToTop')}
-                            {/* the arrow launches out of the top while a second
-                                one rises in behind it */}
-                            <span className="relative block h-3.5 w-3.5 overflow-hidden">
-                                <IconArrowUp
-                                    size={14}
-                                    className="absolute inset-0 transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full"
-                                />
-                                <IconArrowUp
-                                    size={14}
-                                    className="absolute inset-0 translate-y-full transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0"
-                                />
-                            </span>
-                        </button>
-                    </div>
+                    <button
+                        onClick={scrollToTop}
+                        className="text-muted label inline-flex min-h-11 items-center gap-2 transition-colors hover:text-(--accent)"
+                        aria-label={t('footer.backToTop')}
+                    >
+                        {t('footer.backToTop')}
+                        <IconArrowUp size={14} />
+                    </button>
                 </div>
             </div>
         </footer>

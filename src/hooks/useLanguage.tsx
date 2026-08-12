@@ -13,10 +13,15 @@ function getInitialLanguage(): Language {
 let currentLanguage: Language = getInitialLanguage();
 const listeners = new Set<Listener>();
 
+/**
+ * `dir` and `lang` are the only things that need to change. The font no
+ * longer does: the sans/display stacks list Vazirmatn after the Latin faces,
+ * so Persian glyphs resolve to it per-glyph while Latin runs (repo names,
+ * stack lists) keep the Latin face they were set in.
+ */
 function applyDomSideEffects(lang: Language) {
     document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
-    document.documentElement.classList.toggle('font-vazir', lang === 'fa');
 }
 
 function setGlobalLanguage(lang: Language) {

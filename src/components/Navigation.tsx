@@ -1,13 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-    IconMenu2,
-    IconX,
-    IconSun,
-    IconMoon,
-    IconLanguage,
-} from '@tabler/icons-react';
+import { IconMenu2, IconX, IconSun, IconMoon } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { useNumbers } from '../hooks/useNumbers';
 import type { Language } from '../types/lang';
 
 interface NavigationProps {
@@ -28,10 +23,10 @@ const NAV_ITEMS = [
     { id: 'games', to: '/game' },
 ] as const;
 
-/** Space the burger button occupies once it appears (36px button + 8px gap). */
-const BURGER_W = 44;
+/** Space the burger button occupies once it appears (36px button + 12px gap). */
+const BURGER_W = 48;
 /** Flex gap between wordmark / links / controls, both sides. */
-const GAPS = 24;
+const GAPS = 48;
 
 export const Navigation = ({
     darkMode,
@@ -46,6 +41,7 @@ export const Navigation = ({
     // true => links don't fit, show the burger instead
     const [compact, setCompact] = useState(false);
     const { t } = useTranslation();
+    const n = useNumbers();
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
@@ -58,7 +54,7 @@ export const Navigation = ({
     const rulerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 24);
+        const onScroll = () => setScrolled(window.scrollY > 12);
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
@@ -152,76 +148,69 @@ export const Navigation = ({
 
     const renderLink = (
         item: (typeof NAV_ITEMS)[number],
-        i: number,
         measuring = false
     ) => (
         <button
             key={item.id}
             onClick={measuring ? undefined : () => go(item)}
             tabIndex={measuring ? -1 : undefined}
-            className={`nav-link relative rounded-full px-3.5 py-2 font-mono text-xs tracking-wider whitespace-nowrap uppercase transition-colors duration-300 lg:text-[0.8rem] ${
-                active === item.id ? 'text-accent' : 'text-muted hover:text-(--fg)'
+            className={`nav-link relative py-2 text-[0.9375rem] whitespace-nowrap transition-colors duration-200 ${
+                active === item.id
+                    ? 'text-accent'
+                    : 'text-muted hover:text-(--fg)'
             }`}
         >
-            <span className="force-mono me-2 opacity-40">0{i + 1}</span>
             {t(`navigation.${item.id}`)}
             {!measuring && active === item.id && (
-                <span className="absolute inset-x-3 -bottom-px h-px bg-(--accent)" />
+                <span className="absolute inset-x-0 bottom-0 h-px bg-(--accent)" />
             )}
         </button>
     );
 
     return (
-        <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
-            <nav
-                className={`panel mx-auto max-w-6xl transition-all duration-500 ${
-                    scrolled || mobileMenuOpen
-                        ? 'shadow-[0_18px_50px_-28px_var(--glow)]'
-                        : 'border-transparent bg-transparent backdrop-blur-0'
-                }`}
-            >
+        <header
+            className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+                scrolled || mobileMenuOpen
+                    ? 'border-b border-(--line) bg-(--bg)'
+                    : 'border-b border-transparent'
+            }`}
+        >
+            <div className="wrap">
                 <div
                     ref={barRef}
-                    className="relative flex items-center justify-between gap-3 px-4 py-3 sm:px-6"
+                    className="relative flex items-center justify-between gap-5 py-3 sm:gap-6 sm:py-4"
                 >
                     {/* Wordmark */}
                     <button
                         ref={wordmarkRef}
                         onClick={goHome}
-                        className="group flex shrink-0 items-center gap-2.5"
+                        className="display shrink-0 text-xl whitespace-nowrap transition-colors hover:text-(--accent) sm:text-2xl"
                     >
-                        <span className="relative flex h-2.5 w-2.5">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--accent) opacity-60" />
-                            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-(--accent)" />
-                        </span>
-                        <span className="font-mono text-sm font-semibold tracking-[0.2em] whitespace-nowrap uppercase sm:text-base">
-                            {t('navigation.userName')}
-                            <span className="text-accent">_</span>
-                        </span>
+                        {t('navigation.userName')}
                     </button>
 
                     {/* Off-screen ruler: never painted, only measured */}
                     <div
                         ref={rulerRef}
                         aria-hidden="true"
-                        className="pointer-events-none invisible absolute inset-s-0 top-0 flex items-center gap-1"
+                        className="pointer-events-none invisible absolute inset-s-0 top-0 flex items-center gap-7"
                     >
-                        {NAV_ITEMS.map((item, i) => renderLink(item, i, true))}
+                        {NAV_ITEMS.map((item) => renderLink(item, true))}
                     </div>
 
                     {/* Links — shown only while they actually fit */}
-                    <div
-                        className={`items-center gap-1 ${compact ? 'hidden' : 'flex'}`}
+                    <nav
+                        className={`items-center gap-7 ${compact ? 'hidden' : 'flex'}`}
                     >
-                        {NAV_ITEMS.map((item, i) => renderLink(item, i))}
-                    </div>
+                        {NAV_ITEMS.map((item) => renderLink(item))}
+                    </nav>
 
                     {/* Controls */}
                     <div className="flex shrink-0 items-center gap-2">
                         <div ref={controlsRef} className="flex items-center gap-2">
                             <button
                                 onClick={toggleLanguage}
-                                className="icon-btn h-9 min-w-16 gap-1.5 px-3 text-xs font-semibold"
+                                className="text-muted inline-flex h-11 min-w-11 items-center justify-center px-1 text-xs font-semibold transition-colors hover:text-(--fg)"
                                 title={
                                     language === 'en'
                                         ? 'Switch to Persian'
@@ -229,75 +218,84 @@ export const Navigation = ({
                                 }
                                 aria-label="Toggle language"
                             >
-                                <IconLanguage size={15} className="shrink-0" />
-                                {/* Vazir covers Arabic script; the mono face does not */}
-                                <span className="font-vazir leading-none">
-                                    {language === 'en' ? 'فارسی' : 'EN'}
+                                <span
+                                    className={
+                                        language === 'en' ? 'text-accent' : ''
+                                    }
+                                >
+                                    EN
+                                </span>
+                                <span className="mx-1 opacity-40">/</span>
+                                {/* Vazirmatn covers Arabic script; Instrument does not */}
+                                <span
+                                    className={`font-vazir ${
+                                        language === 'fa' ? 'text-accent' : ''
+                                    }`}
+                                >
+                                    فا
                                 </span>
                             </button>
+
                             <button
                                 onClick={toggleDarkMode}
-                                className="icon-btn h-9 w-9"
+                                className="text-muted inline-flex h-11 w-11 items-center justify-center transition-colors hover:text-(--fg)"
                                 aria-label="Toggle theme"
                             >
                                 {darkMode ? (
-                                    <IconSun size={17} />
+                                    <IconSun size={18} />
                                 ) : (
-                                    <IconMoon size={17} />
+                                    <IconMoon size={18} />
                                 )}
                             </button>
                         </div>
 
                         {compact && (
                             <button
-                                onClick={() =>
-                                    setMobileMenuOpen(!mobileMenuOpen)
-                                }
-                                className={`icon-btn h-9 w-9 ${
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                className={`inline-flex h-11 w-11 items-center justify-center transition-colors ${
                                     mobileMenuOpen
-                                        ? 'border-(--line-strong) bg-(--accent-soft) text-accent'
-                                        : ''
+                                        ? 'text-accent'
+                                        : 'text-muted hover:text-(--fg)'
                                 }`}
                                 aria-label="Toggle menu"
                                 aria-expanded={mobileMenuOpen}
                             >
                                 {mobileMenuOpen ? (
-                                    <IconX size={18} />
+                                    <IconX size={22} />
                                 ) : (
-                                    <IconMenu2 size={18} />
+                                    <IconMenu2 size={22} />
                                 )}
                             </button>
                         )}
                     </div>
                 </div>
+            </div>
 
-                {/* Collapsed menu */}
-                <div
-                    className={`overflow-hidden transition-[max-height] duration-500 ease-out ${
-                        compact && mobileMenuOpen ? 'max-h-96' : 'max-h-0'
-                    }`}
-                >
-                    <div className="px-4 pb-4 sm:px-6">
-                        <hr className="hairline mb-3" />
-                        <div className="flex flex-col">
-                            {NAV_ITEMS.map((item, i) => (
-                                <button
-                                    key={item.id}
-                                    onClick={() => go(item)}
-                                    className={`nav-link flex items-center gap-3 py-2.5 text-start font-mono text-sm tracking-wider uppercase transition-colors hover:text-(--accent) ${
-                                        active === item.id ? 'text-accent' : ''
-                                    }`}
-                                >
-                                    <span className="force-mono text-accent text-[0.7rem] opacity-60">
-                                        0{i + 1}
-                                    </span>
-                                    {t(`navigation.${item.id}`)}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+            {/* Collapsed menu */}
+            <div
+                className={`overflow-hidden transition-[max-height] duration-400 ease-out ${
+                    compact && mobileMenuOpen ? 'max-h-[32rem]' : 'max-h-0'
+                }`}
+            >
+                <div className="wrap pt-1 pb-8">
+                    {NAV_ITEMS.map((item, i) => (
+                        <button
+                            key={item.id}
+                            onClick={() => go(item)}
+                            className={`nav-link flex w-full items-baseline gap-4 border-t border-(--line) py-3.5 text-start transition-colors hover:text-(--accent) ${
+                                active === item.id ? 'text-accent' : ''
+                            }`}
+                        >
+                            <span className="force-mono text-accent nums text-xs">
+                                {n(i + 1, 'padded')}
+                            </span>
+                            <span className="display text-2xl">
+                                {t(`navigation.${item.id}`)}
+                            </span>
+                        </button>
+                    ))}
                 </div>
-            </nav>
+            </div>
         </header>
     );
 };

@@ -24,8 +24,8 @@ export const SubPageShell = ({ children }: { children: ReactNode }) => {
                 language={language}
             />
 
-            <main className="px-4 pt-28 pb-20 sm:px-6 sm:pt-32 lg:px-8">
-                {children}
+            <main className="pt-28 pb-20 lg:pt-36">
+                <div className="wrap">{children}</div>
             </main>
 
             <Footer userName={t('navigation.userName')} />

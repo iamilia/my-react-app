@@ -1,16 +1,4 @@
-import type { ReactNode } from 'react';
-import {
-    IconWorld,
-    IconCloudUpload,
-    IconHeadset,
-    IconFileText,
-    IconArrowUpRight,
-    IconPointFilled,
-    IconArchive,
-    IconDeviceGamepad2,
-    IconCar,
-    IconHeadphones,
-} from '@tabler/icons-react';
+import { IconArrowUpRight } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useReveal } from '../hooks/useReveal';
 import { SectionHeading } from './SectionHeading';
@@ -19,14 +7,12 @@ type Platform = {
     /** i18n key under `work.genesis.platforms` */
     key: string;
     name: string;
-    icon: ReactNode;
 };
 
 type Site = {
     /** i18n key under `work.genesis.sites` */
     key: string;
     host: string;
-    icon: ReactNode;
 };
 
 type Archived = {
@@ -45,9 +31,9 @@ type Archived = {
  * rather than URLs, so they render as plain rows instead of links.
  */
 const PLATFORMS: Platform[] = [
-    { key: 'fivem', name: 'FiveM', icon: <IconDeviceGamepad2 /> },
-    { key: 'vmp', name: 'VMP', icon: <IconCar /> },
-    { key: 'teamspeak', name: 'TeamSpeak', icon: <IconHeadphones /> },
+    { key: 'fivem', name: 'FiveM' },
+    { key: 'vmp', name: 'VMP' },
+    { key: 'teamspeak', name: 'TeamSpeak' },
 ];
 
 /**
@@ -58,17 +44,17 @@ const PLATFORMS: Platform[] = [
  * `label` / `description` strings to both translation files.
  */
 const SITES: Site[] = [
-    { key: 'main', host: 'genesisrp.ir', icon: <IconWorld /> },
-    { key: 'upload', host: 'upload.genesisrp.ir', icon: <IconCloudUpload /> },
-    { key: 'support', host: 'support.genesisrp.ir', icon: <IconHeadset /> },
-    { key: 'log', host: 'log.genesisrp.ir', icon: <IconFileText /> },
+    { key: 'main', host: 'genesisrp.ir' },
+    { key: 'upload', host: 'upload.genesisrp.ir' },
+    { key: 'support', host: 'support.genesisrp.ir' },
+    { key: 'log', host: 'log.genesisrp.ir' },
 ];
 
 const STACK = ['React', 'TypeScript', 'Node.js', 'MySQL', 'Nginx'];
 
 /**
  * Past game-server work. These are shut down and have no public URL, so the
- * cards are deliberately not links — only the framework and a one-line
+ * table is deliberately not linked — only the framework and a one-line
  * summary, pulled from the translation files.
  */
 const ARCHIVED: Archived[] = [
@@ -135,235 +121,180 @@ export const Work = () => {
     const ref = useReveal<HTMLElement>();
 
     return (
-        <section
-            ref={ref}
-            id="work"
-            className="scroll-mt-24 px-4 py-24 sm:px-6 lg:px-8"
-        >
-            <div className="mx-auto max-w-6xl">
+        <section ref={ref} id="work" className="section scroll-mt-16">
+            <div className="wrap">
                 <SectionHeading
-                    index="03"
+                    index={3}
                     label={t('navigation.work')}
                     title={t('work.title')}
                     subtitle={t('work.subtitle')}
                 />
 
                 {/* ============================ LIVE ============================ */}
-                <p className="eyebrow reveal mb-5">{t('work.liveLabel')}</p>
-
-                <div className="panel panel-glow reveal overflow-hidden">
-                    <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
-                        {/* ---------------- project summary ---------------- */}
-                        <div className="border-b border-(--line) p-6 sm:p-8 lg:border-e lg:border-b-0">
-                            <span className="chip">
-                                <span className="relative flex h-1.5 w-1.5">
-                                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--accent) opacity-70" />
-                                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-(--accent)" />
-                                </span>
+                <div className="field">
+                    <div className="field-aside reveal">
+                        <span className="flex items-center gap-2.5">
+                            <span className="marker" />
+                            <span className="label label-ink">
                                 {t('work.live')}
                             </span>
+                        </span>
+                        <p className="prose-sm mt-3">{t('work.liveLabel')}</p>
+                    </div>
 
-                            <h3
-                                className="force-mono mt-5 font-mono text-2xl font-semibold tracking-tight sm:text-3xl"
-                                dir="ltr"
-                            >
+                    <div className="field-body">
+                        <div className="reveal" data-delay="60">
+                            <h3 className="display display-lg" dir="ltr">
                                 {t('work.genesis.name')}
                             </h3>
-
-                            <p className="text-accent mt-2 font-mono text-xs tracking-[0.18em] uppercase">
+                            <p className="label label-accent mt-3">
                                 {t('work.genesis.role')}
                             </p>
-
-                            <p className="text-muted mt-5 text-sm leading-relaxed">
+                            <p className="lede mt-5">
                                 {t('work.genesis.description')}
                             </p>
+                            <p
+                                className="text-muted force-mono ltr-run mt-5 text-xs"
+                                dir="ltr"
+                            >
+                                {STACK.join('  ·  ')}
+                            </p>
+                        </div>
 
-                            <div className="mt-7 flex flex-wrap gap-2">
-                                {STACK.map((item) => (
+                        {/* ----------- in-game and voice: not links ----------- */}
+                        <p className="label reveal mt-12 block" data-delay="80">
+                            {t('work.platformsLabel')}
+                        </p>
+
+                        <ul className="reveal m-0 mt-4 list-none p-0" data-delay="100">
+                            {PLATFORMS.map((platform) => (
+                                <li
+                                    key={platform.key}
+                                    className="row grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[1fr_1fr_1.2fr] sm:items-baseline"
+                                >
+                                    <span className="text-[0.9375rem] font-medium">
+                                        {t(
+                                            `work.genesis.platforms.${platform.key}.label`
+                                        )}
+                                    </span>
                                     <span
-                                        key={item}
-                                        className="text-muted rounded-full border border-(--line) px-3 py-1 font-mono text-[0.68rem] tracking-wide"
+                                        className="force-mono text-muted ltr-run text-xs"
                                         dir="ltr"
                                     >
-                                        {item}
+                                        {platform.name}
                                     </span>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* ------------- platforms + web services ------------- */}
-                        <div className="p-3 sm:p-4">
-                            {/* in-game and voice — connect addresses, not URLs,
-                                so these are rows rather than links */}
-                            <p className="text-muted px-3 pt-3 pb-2 font-mono text-[0.66rem] tracking-[0.22em] uppercase">
-                                {t('work.platformsLabel')}
-                            </p>
-
-                            <ul>
-                                {PLATFORMS.map((platform, i) => (
-                                    <li key={platform.key}>
-                                        <div className="flex items-center gap-4 px-3 py-4">
-                                            <span className="text-muted border-(--line) flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border [&>svg]:h-5 [&>svg]:w-5">
-                                                {platform.icon}
-                                            </span>
-
-                                            <span className="min-w-0 flex-1">
-                                                <span className="block text-sm font-medium">
-                                                    {t(
-                                                        `work.genesis.platforms.${platform.key}.label`
-                                                    )}
-                                                </span>
-                                                <span
-                                                    className="force-mono text-muted mt-0.5 block truncate font-mono text-xs"
-                                                    dir="ltr"
-                                                >
-                                                    {platform.name}
-                                                </span>
-                                            </span>
-
-                                            <span className="text-muted hidden max-w-52 shrink-0 items-center gap-1.5 text-xs sm:flex">
-                                                <IconPointFilled
-                                                    size={10}
-                                                    className="text-accent shrink-0"
-                                                />
-                                                <span className="truncate">
-                                                    {t(
-                                                        `work.genesis.platforms.${platform.key}.description`
-                                                    )}
-                                                </span>
-                                            </span>
-                                        </div>
-
-                                        {i < PLATFORMS.length - 1 && (
-                                            <hr className="mx-3 border-0 border-t border-(--line)" />
+                                    <span
+                                        className="text-muted bidi-auto text-sm"
+                                        dir="auto"
+                                    >
+                                        {t(
+                                            `work.genesis.platforms.${platform.key}.description`
                                         )}
-                                    </li>
-                                ))}
-                            </ul>
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                        <hr className="rule" />
 
-                            <hr className="hairline mx-3 my-3" />
+                        {/* --------------------- endpoints -------------------- */}
+                        <p className="label reveal mt-12 block" data-delay="80">
+                            {t('work.endpoints')}
+                        </p>
 
-                            <p className="text-muted px-3 pt-2 pb-2 font-mono text-[0.66rem] tracking-[0.22em] uppercase">
-                                {t('work.endpoints')}
-                            </p>
-
-                            <ul>
-                                {SITES.map((site, i) => (
-                                    <li key={site.key}>
-                                        <a
-                                            href={`https://${site.host}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="group flex items-center gap-4 rounded-xl px-3 py-4 transition-colors duration-300 hover:bg-(--accent-soft)"
+                        <ul className="reveal m-0 mt-4 list-none p-0" data-delay="100">
+                            {SITES.map((site) => (
+                                <li key={site.key}>
+                                    <a
+                                        href={`https://${site.host}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="row row-link group grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[1fr_1fr_1.2fr_auto] sm:items-baseline"
+                                    >
+                                        <span className="text-[0.9375rem] font-medium transition-colors duration-200 group-hover:text-(--accent)">
+                                            {t(
+                                                `work.genesis.sites.${site.key}.label`
+                                            )}
+                                        </span>
+                                        <span
+                                            className="force-mono text-muted ltr-run truncate text-xs"
+                                            dir="ltr"
                                         >
-                                            <span className="text-muted border-(--line) flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:border-(--line-strong) group-hover:text-(--accent) [&>svg]:h-5 [&>svg]:w-5">
-                                                {site.icon}
-                                            </span>
-
-                                            <span className="min-w-0 flex-1">
-                                                <span className="flex items-center gap-2 text-sm font-medium transition-colors duration-300 group-hover:text-(--accent)">
-                                                    {t(
-                                                        `work.genesis.sites.${site.key}.label`
-                                                    )}
-                                                </span>
-                                                <span
-                                                    className="force-mono text-muted mt-0.5 block truncate font-mono text-xs"
-                                                    dir="ltr"
-                                                >
-                                                    {site.host}
-                                                </span>
-                                            </span>
-
-                                            <span className="text-muted hidden max-w-52 shrink-0 items-center gap-1.5 text-xs sm:flex">
-                                                <IconPointFilled
-                                                    size={10}
-                                                    className="text-accent shrink-0"
-                                                />
-                                                <span className="truncate">
-                                                    {t(
-                                                        `work.genesis.sites.${site.key}.description`
-                                                    )}
-                                                </span>
-                                            </span>
-
-                                            <IconArrowUpRight
-                                                size={18}
-                                                className="text-muted shrink-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--accent) rtl:-scale-x-100"
-                                            />
-                                        </a>
-
-                                        {i < SITES.length - 1 && (
-                                            <hr className="mx-3 border-0 border-t border-(--line)" />
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                                            {site.host}
+                                        </span>
+                                        <span
+                                            className="text-muted bidi-auto text-sm"
+                                            dir="auto"
+                                        >
+                                            {t(
+                                                `work.genesis.sites.${site.key}.description`
+                                            )}
+                                        </span>
+                                        <IconArrowUpRight
+                                            size={16}
+                                            className="text-muted shrink-0 transition-colors duration-200 group-hover:text-(--accent) rtl:-scale-x-100"
+                                        />
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                        <hr className="rule" />
                     </div>
                 </div>
 
                 {/* ========================== ARCHIVED ========================== */}
-                <div className="mt-20">
-                    <p className="eyebrow reveal">{t('work.archived.label')}</p>
+                <div className="field mt-20 lg:mt-28">
+                    <div className="field-aside reveal">
+                        <span className="label">{t('work.archived.label')}</span>
+                        <p className="prose-sm mt-3">{t('work.archived.note')}</p>
+                    </div>
 
-                    <p
-                        className="text-muted reveal mt-4 max-w-2xl text-sm leading-relaxed"
-                        data-delay="60"
-                    >
-                        {t('work.archived.note')}
-                    </p>
+                    <div className="field-body">
+                        <ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+                            {ARCHIVED.map((project, i) => (
+                                <li
+                                    key={project.key}
+                                    className="reveal flex"
+                                    data-delay={(i % 3) * 50}
+                                >
+                                    <article className="card w-full">
+                                        <div className="flex items-start justify-between gap-3">
+                                            <h4
+                                                className="force-mono text-[0.9375rem] font-bold tracking-tight"
+                                                dir="ltr"
+                                            >
+                                                {project.name}
+                                            </h4>
+                                            <span
+                                                className="text-muted force-mono shrink-0 text-[0.6875rem]"
+                                                dir="ltr"
+                                            >
+                                                {project.platform}
+                                            </span>
+                                        </div>
 
-                    <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {ARCHIVED.map((project, i) => (
-                            <article
-                                key={project.key}
-                                className="panel panel-hover reveal flex flex-col p-5"
-                                data-delay={(i % 3) * 80}
-                            >
-                                <div className="mb-3 flex items-start justify-between gap-3">
-                                    <h4
-                                        className="force-mono font-mono text-base font-semibold tracking-tight"
-                                        dir="ltr"
-                                    >
-                                        {project.name}
-                                    </h4>
+                                        <p className="label label-accent mt-2">
+                                            {t(
+                                                `work.archived.kinds.${project.kind}`
+                                            )}
+                                        </p>
 
-                                    <span
-                                        className="text-muted border-(--line) shrink-0 rounded-full border px-2.5 py-0.5 font-mono text-[0.62rem] tracking-wider"
-                                        dir="ltr"
-                                    >
-                                        {project.platform}
-                                    </span>
-                                </div>
+                                        <p className="prose-sm bidi-auto mt-2.5" dir="auto">
+                                            {t(
+                                                `work.archived.items.${project.key}.description`
+                                            )}
+                                        </p>
 
-                                <p className="text-accent font-mono text-[0.64rem] tracking-[0.18em] uppercase opacity-80">
-                                    {t(`work.archived.kinds.${project.kind}`)}
-                                </p>
-
-                                <p className="text-muted mt-3 text-sm leading-relaxed">
-                                    {t(
-                                        `work.archived.items.${project.key}.description`
-                                    )}
-                                </p>
-
-                                <hr className="my-4 border-0 border-t border-(--line)" />
-
-                                <div className="text-muted mt-auto flex items-center justify-between gap-3 font-mono text-[0.68rem]">
-                                    {project.framework ? (
-                                        <span className="truncate" dir="ltr">
-                                            {project.framework}
-                                        </span>
-                                    ) : (
-                                        <span />
-                                    )}
-
-                                    <span className="flex shrink-0 items-center gap-1.5 opacity-70">
-                                        <IconArchive size={13} />
-                                        {t('work.archived.badge')}
-                                    </span>
-                                </div>
-                            </article>
-                        ))}
+                                        {project.framework && (
+                                            <div className="card-foot" dir="ltr">
+                                                <span className="truncate">
+                                                    {project.framework}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </article>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
             </div>

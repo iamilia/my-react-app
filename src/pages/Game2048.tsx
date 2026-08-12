@@ -4,15 +4,10 @@ import { useTranslation } from 'react-i18next';
 import {
     IconArrowBackUp,
     IconArrowLeft,
-    IconArrowsMove,
-    IconHandFinger,
-    IconKeyboard,
-    IconMoodSad,
     IconRefresh,
-    IconTarget,
-    IconTrophy,
 } from '@tabler/icons-react';
 import { SubPageShell } from '../components/SubPageShell';
+import { useNumbers } from '../hooks/useNumbers';
 import { Board } from '../games/2048/Board';
 import { use2048 } from '../games/2048/use2048';
 import { useBoardInput } from '../games/2048/useBoardInput';
@@ -39,6 +34,7 @@ const Stat = ({
 
 export const Game2048 = () => {
     const { t } = useTranslation();
+    const n = useNumbers();
     const frameRef = useRef<HTMLDivElement>(null);
     const {
         board,
@@ -64,24 +60,26 @@ export const Game2048 = () => {
             <div className="mx-auto max-w-3xl">
                 <Link
                     to="/game"
-                    className="text-muted inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase transition-colors hover:text-(--accent)"
+                    className="text-muted label inline-flex items-center gap-2 transition-colors hover:text-(--fg)"
                 >
-                    <IconArrowLeft size={15} className="rtl:-scale-x-100" />
+                    <IconArrowLeft size={14} className="rtl:-scale-x-100" />
                     {t('game2048.back')}
                 </Link>
 
-                <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                <hr className="rule-heavy mt-5" />
+
+                <div className="mt-6 flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                        <p className="eyebrow">{t('navigation.games')}</p>
-                        <h1 className="display force-mono mt-3 text-[clamp(2.4rem,8vw,3.6rem)]">
+                        <span className="label">{t('navigation.games')}</span>
+                        <h1 className="display force-mono mt-2 text-[clamp(2.5rem,9vw,4.5rem)]">
                             2048
                         </h1>
-                        <p className="text-muted mt-3 max-w-md text-sm leading-relaxed">
+                        <p className="prose-sm mt-3 max-w-md">
                             {t('game2048.tagline')}
                         </p>
                     </div>
 
-                    <div className="flex gap-3" dir="ltr">
+                    <div className="flex gap-8" dir="ltr">
                         <Stat
                             label={t('game2048.score')}
                             value={board.score}
@@ -91,15 +89,15 @@ export const Game2048 = () => {
                     </div>
                 </div>
 
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                    <button onClick={restart} className="btn-neon px-5 py-2.5 text-sm">
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                    <button onClick={restart} className="btn">
                         <IconRefresh size={16} />
                         {t('game2048.newGame')}
                     </button>
                     <button
                         onClick={undo}
                         disabled={!canUndo}
-                        className="btn-ghost px-5 py-2.5 text-sm disabled:pointer-events-none disabled:opacity-40"
+                        className="btn-outline disabled:pointer-events-none disabled:opacity-40"
                     >
                         <IconArrowBackUp size={16} className="rtl:-scale-x-100" />
                         {t('game2048.undo')}
@@ -107,8 +105,8 @@ export const Game2048 = () => {
                 </div>
 
                 {/* --- board --------------------------------------------------- */}
-                <div className="mt-7 flex justify-center">
-                    <div className="relative w-full max-w-120 rounded-[20px]">
+                <div className="mt-8 flex justify-center">
+                    <div className="relative w-full max-w-120">
                         <Board
                             board={board}
                             frameRef={frameRef}
@@ -117,23 +115,22 @@ export const Game2048 = () => {
 
                         {showWin && (
                             <div className="overlay2048">
-                                <IconTrophy size={40} className="text-accent" />
-                                <h2 className="display text-2xl">
+                                <h2 className="display display-md">
                                     {t('game2048.win.title')}
                                 </h2>
-                                <p className="text-muted max-w-xs text-sm">
+                                <p className="prose-sm max-w-xs">
                                     {t('game2048.win.body')}
                                 </p>
                                 <div className="flex flex-wrap justify-center gap-3">
                                     <button
                                         onClick={keepPlaying}
-                                        className="btn-neon px-5 py-2.5 text-sm"
+                                        className="btn"
                                     >
                                         {t('game2048.win.keepPlaying')}
                                     </button>
                                     <button
                                         onClick={restart}
-                                        className="btn-ghost px-5 py-2.5 text-sm"
+                                        className="btn-outline"
                                     >
                                         {t('game2048.newGame')}
                                     </button>
@@ -143,27 +140,23 @@ export const Game2048 = () => {
 
                         {showLoss && (
                             <div className="overlay2048">
-                                <IconMoodSad size={40} className="text-accent" />
-                                <h2 className="display text-2xl">
+                                <h2 className="display display-md">
                                     {t('game2048.lose.title')}
                                 </h2>
-                                <p className="text-muted max-w-xs text-sm">
+                                <p className="prose-sm max-w-xs">
                                     {t('game2048.lose.body', {
                                         score: board.score,
                                     })}
                                 </p>
                                 <div className="flex flex-wrap justify-center gap-3">
-                                    <button
-                                        onClick={restart}
-                                        className="btn-neon px-5 py-2.5 text-sm"
-                                    >
+                                    <button onClick={restart} className="btn">
                                         <IconRefresh size={16} />
                                         {t('game2048.lose.tryAgain')}
                                     </button>
                                     {canUndo && (
                                         <button
                                             onClick={undo}
-                                            className="btn-ghost px-5 py-2.5 text-sm"
+                                            className="btn-outline"
                                         >
                                             <IconArrowBackUp
                                                 size={16}
@@ -179,28 +172,26 @@ export const Game2048 = () => {
                 </div>
 
                 {/* --- how to play --------------------------------------------- */}
-                <div className="panel mt-8 p-6">
-                    <h2 className="text-muted font-mono text-[0.66rem] tracking-[0.22em] uppercase">
+                <div className="mt-14">
+                    <hr className="rule-ink" />
+                    <h2 className="label mt-4 block">
                         {t('game2048.howTo.title')}
                     </h2>
-                    <ul className="mt-5 grid gap-4 sm:grid-cols-3">
-                        {[
-                            { icon: IconKeyboard, key: 'keys' },
-                            { icon: IconHandFinger, key: 'swipe' },
-                            { icon: IconTarget, key: 'goal' },
-                        ].map(({ icon: Icon, key }) => (
-                            <li key={key} className="flex items-start gap-3">
-                                <span className="text-accent border-(--line) bg-(--bg-elev) mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border">
-                                    <Icon size={17} />
-                                </span>
-                                <p className="text-muted text-sm leading-relaxed">
+
+                    <dl className="m-0 mt-5 grid gap-6 sm:grid-cols-3">
+                        {(['keys', 'swipe', 'goal'] as const).map((key, i) => (
+                            <div key={key}>
+                                <dt className="folio nums">
+                                    {n(i + 1, 'padded')}
+                                </dt>
+                                <dd className="prose-sm m-0 mt-2">
                                     {t(`game2048.howTo.${key}`)}
-                                </p>
-                            </li>
+                                </dd>
+                            </div>
                         ))}
-                    </ul>
-                    <p className="text-muted mt-5 flex items-center gap-2 font-mono text-[0.7rem] tracking-wider">
-                        <IconArrowsMove size={14} className="text-accent" />
+                    </dl>
+
+                    <p className="text-muted mt-6 text-xs">
                         {t('game2048.howTo.hint')}
                     </p>
                 </div>

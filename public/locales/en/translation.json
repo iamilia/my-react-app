@@ -9,19 +9,18 @@
         "games": "Games"
     },
     "hero": {
-        "animationSequence": [
-            "Software Developer 🚀",
-            "Game Developer 🎮",
-            "Tech Enthusiast 💡",
-            "Happy to connect with you! 😊",
-            "Let's build something awesome together! 🤝"
-        ],
         "greeting": "Hi, I'm",
         "status": "Available for work",
         "ctaWork": "See my work",
         "ctaContact": "Get in touch",
         "available": "Open to projects",
-        "scroll": "Scroll"
+        "scroll": "Scroll",
+        "roles": [
+            "Software Developer",
+            "Game Developer",
+            "Tech Enthusiast"
+        ],
+        "rolesLabel": "Working as"
     },
     "about": {
         "title": "About Me",
@@ -44,7 +43,14 @@
     },
     "skills": {
         "title": "Technologies & Skills",
-        "subtitle": "A look at the tools and technologies I use."
+        "subtitle": "A look at the tools and technologies I use.",
+        "groups": {
+            "core": "Core",
+            "web": "Web",
+            "systems": "Systems",
+            "data": "Data",
+            "tools": "Tools"
+        }
     },
     "work": {
         "title": "Selected Work",

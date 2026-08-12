@@ -1,8 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Backdrop } from './components/Backdrop';
 import { PageLoader } from './components/PageLoader';
 import { ScrollToTop } from './components/ScrollToTop';
+import { usePageview } from './hooks/usePageview';
 import { Home } from './pages/Home';
 
 /**
@@ -16,10 +16,17 @@ const Game2048 = lazy(() =>
     import('./pages/Game2048').then((m) => ({ default: m.Game2048 }))
 );
 
+// Only I ever open this, so it has no business in the bundle everyone else
+// downloads.
+const Stats = lazy(() =>
+    import('./pages/Stats').then((m) => ({ default: m.Stats }))
+);
+
 function App() {
+    usePageview();
+
     return (
         <>
-            <Backdrop />
             <ScrollToTop />
             <Suspense fallback={<PageLoader />}>
                 <Routes>
@@ -35,6 +42,7 @@ function App() {
                         path="/games/*"
                         element={<Navigate to="/game" replace />}
                     />
+                    <Route path="/admin/stats" element={<Stats />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </Suspense>

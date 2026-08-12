@@ -24,7 +24,7 @@ A modern, responsive portfolio built with **React**, **TypeScript**, and **Tailw
 - [Vite](https://vitejs.dev/)
 - [Axios](https://axios-http.com/)
 - [Tabler Icons](https://tabler.io/icons)
-- [react-type-animation](https://www.npmjs.com/package/react-type-animation)
+- [i18next](https://www.i18next.com/)
 
 ## 🚀 Getting Started
 

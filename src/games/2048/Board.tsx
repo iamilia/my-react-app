@@ -40,7 +40,7 @@ export const Board = ({ board, frameRef, frozen = false }: BoardProps) => {
         <div
             ref={frameRef}
             dir="ltr"
-            className={`board2048-frame panel ${frozen ? 'board2048-frozen' : ''}`}
+            className={`board2048-frame ${frozen ? 'board2048-frozen' : ''}`}
         >
             <div className="board2048">
                 <div className="board2048-cells" aria-hidden="true">

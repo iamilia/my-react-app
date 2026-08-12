@@ -71,18 +71,17 @@ export const Home = () => {
 
     if (error) {
         return (
-            <div className="flex min-h-svh items-center justify-center px-4">
-                <div className="panel max-w-md p-8 text-center">
-                    <span className="text-accent border-(--line-strong) bg-(--accent-soft) mx-auto mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl border">
-                        <IconAlertTriangle size={22} />
-                    </span>
-                    <h2 className="text-xl font-semibold">
+            <div className="flex min-h-svh items-center px-6">
+                <div className="mx-auto w-full max-w-md">
+                    <hr className="rule-heavy" />
+                    <span className="label label-ink mt-5 flex items-center gap-2.5">
+                        <IconAlertTriangle size={15} className="text-accent" />
                         {t('loading.errorTitle')}
-                    </h2>
-                    <p className="text-muted mt-3 text-sm">{error}</p>
+                    </span>
+                    <p className="prose-sm mt-3">{error}</p>
                     <button
                         onClick={() => window.location.reload()}
-                        className="btn-neon mt-7 text-sm"
+                        className="btn mt-7"
                     >
                         <IconRefresh size={16} />
                         {t('loading.tryAgain')}

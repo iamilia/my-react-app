@@ -1,9 +1,4 @@
-import {
-    IconBrandGithub,
-    IconStar,
-    IconGitFork,
-    IconArrowUpRight,
-} from '@tabler/icons-react';
+import { IconStar, IconGitFork, IconArrowUpRight } from '@tabler/icons-react';
 import type { GitHubRepo } from '../types/github';
 import { useTranslation } from 'react-i18next';
 import { useReveal } from '../hooks/useReveal';
@@ -34,18 +29,18 @@ const LANGUAGE_COLORS: Record<string, string> = {
     CSS: '#563d7c',
     SCSS: '#c6538c',
     Vue: '#41b883',
-    Lua: '#000080',
+    Lua: '#4b6bff',
     Haskell: '#5e5086',
     Elixir: '#6e4a7e',
     Erlang: '#B83998',
-    PowerShell: '#012456',
-    Dockerfile: '#384d54',
+    PowerShell: '#519aba',
+    Dockerfile: '#6fa2c9',
     Makefile: '#427819',
-    Assembly: '#6E4C13',
+    Assembly: '#a08a4a',
     Batchfile: '#C1F12E',
 };
 
-const langColor = (language: string) => LANGUAGE_COLORS[language] || '#8b8589';
+const langColor = (language: string) => LANGUAGE_COLORS[language] || '#94a3b8';
 
 export const Projects = ({ repos }: ProjectsProps) => {
     const { t } = useTranslation();
@@ -55,83 +50,96 @@ export const Projects = ({ repos }: ProjectsProps) => {
         <section
             ref={ref}
             id="projects"
-            className="scroll-mt-24 px-4 py-24 sm:px-6 lg:px-8"
+            className="section section-alt scroll-mt-16"
         >
-            <div className="mx-auto max-w-6xl">
+            <div className="wrap">
                 <SectionHeading
-                    index="04"
+                    index={4}
                     label={t('navigation.projects')}
                     title={t('projects.title')}
                     subtitle={t('projects.subtitle')}
                 />
 
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
                     {repos.map((repo, i) => (
-                        <a
+                        <li
                             key={repo.id}
-                            href={repo.html_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="panel panel-hover panel-glow group flex flex-col p-6 reveal"
-                            data-delay={(i % 3) * 80}
+                            className="reveal flex"
+                            data-delay={(i % 3) * 60}
                         >
-                            <div className="mb-4 flex items-start justify-between gap-3">
-                                <h3 className="force-mono font-mono text-base font-semibold tracking-tight transition-colors duration-300 group-hover:text-(--accent) sm:text-lg" dir="ltr">
-                                    {repo.name}
-                                </h3>
-                                <IconArrowUpRight
-                                    size={18}
-                                    className="text-muted shrink-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--accent) rtl:-scale-x-100"
-                                />
-                            </div>
+                            <a
+                                href={repo.html_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="card card-link group w-full"
+                            >
+                                <div className="flex items-start justify-between gap-3">
+                                    <h3
+                                        className="force-mono min-w-0 text-[0.9375rem] font-bold tracking-tight break-words transition-colors duration-200 group-hover:text-(--accent)"
+                                        dir="ltr"
+                                    >
+                                        {repo.name}
+                                    </h3>
+                                    <IconArrowUpRight
+                                        size={16}
+                                        className="text-muted mt-0.5 shrink-0 transition-colors duration-200 group-hover:text-(--accent) rtl:-scale-x-100"
+                                    />
+                                </div>
 
-                            <p className="text-muted line-clamp-3 min-h-[3.9rem] text-sm leading-relaxed">
-                                {repo.description || t('projects.noDescription')}
-                            </p>
+                                {/* Descriptions come from GitHub, so they may be
+                                    English on a Persian page or the reverse —
+                                    `dir="auto"` lets each one align itself. */}
+                                <p
+                                    className="prose-sm bidi-auto mt-2.5 line-clamp-3"
+                                    dir="auto"
+                                >
+                                    {repo.description ||
+                                        t('projects.noDescription')}
+                                </p>
 
-                            <hr className="my-5 border-0 border-t border-(--line)" />
-
-                            <div className="mt-auto flex items-center justify-between font-mono text-xs">
-                                {repo.language ? (
-                                    <span className="flex items-center gap-2">
-                                        <span
-                                            className="h-2.5 w-2.5 rounded-full"
-                                            style={{
-                                                backgroundColor: langColor(
-                                                    repo.language
-                                                ),
-                                                boxShadow: `0 0 10px ${langColor(repo.language)}80`,
-                                            }}
-                                        />
-                                        {repo.language}
-                                    </span>
-                                ) : (
-                                    <span />
-                                )}
-                                <span className="text-muted flex items-center gap-4">
+                                {/* Counts and the language name are Latin data:
+                                    pinned LTR so the icon always leads, and
+                                    pushed back to the reading edge so the
+                                    strip still lines up with the card above. */}
+                                <div className="card-foot ltr-run nums" dir="ltr">
+                                    {repo.language && (
+                                        <span className="flex min-w-0 items-center gap-1.5">
+                                            <span
+                                                className="h-2 w-2 shrink-0 rounded-full"
+                                                style={{
+                                                    backgroundColor: langColor(
+                                                        repo.language
+                                                    ),
+                                                }}
+                                            />
+                                            <span className="truncate">
+                                                {repo.language}
+                                            </span>
+                                        </span>
+                                    )}
                                     <span className="flex items-center gap-1.5">
-                                        <IconStar size={14} />
+                                        <IconStar size={13} />
                                         {repo.stargazers_count}
                                     </span>
                                     <span className="flex items-center gap-1.5">
-                                        <IconGitFork size={14} />
+                                        <IconGitFork size={13} />
                                         {repo.forks_count}
                                     </span>
-                                </span>
-                            </div>
-                        </a>
+                                </div>
+                            </a>
+                        </li>
                     ))}
-                </div>
+                </ul>
 
-                <div className="reveal mt-12 text-center" data-delay="100">
+                <div className="reveal mt-10" data-delay="80">
                     <a
                         href="https://github.com/iamilia?tab=repositories"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn-ghost text-sm sm:text-base"
+                        className="btn-outline"
                     >
-                        <IconBrandGithub size={18} />
                         {t('projects.viewAllProjects')}
+                        <IconArrowUpRight size={16} className="rtl:-scale-x-100" />
                     </a>
                 </div>
             </div>

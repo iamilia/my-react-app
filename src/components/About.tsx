@@ -1,110 +1,86 @@
-import {
-    IconCode,
-    IconBriefcase,
-    IconUser,
-    IconBook,
-    IconUsers,
-    IconHeart,
-} from '@tabler/icons-react';
 import type { GitHubUser } from '../types/github';
 import { useTranslation } from 'react-i18next';
 import { useReveal } from '../hooks/useReveal';
+import { useNumbers } from '../hooks/useNumbers';
 import { SectionHeading } from './SectionHeading';
 
 interface AboutProps {
     user: GitHubUser | null;
 }
 
+const PILLARS = ['development', 'experience', 'collaboration'] as const;
+
 export const About = ({ user }: AboutProps) => {
     const { t } = useTranslation();
     const ref = useReveal<HTMLElement>();
-
-    const pillars = [
-        { key: 'development', Icon: IconCode },
-        { key: 'experience', Icon: IconBriefcase },
-        { key: 'collaboration', Icon: IconUser },
-    ] as const;
+    const n = useNumbers();
 
     const stats = [
-        {
-            value: user?.public_repos,
-            label: t('about.publicRepos'),
-            Icon: IconBook,
-        },
-        {
-            value: user?.followers,
-            label: t('about.githubFollowers'),
-            Icon: IconUsers,
-        },
-        {
-            value: user?.following,
-            label: t('about.following'),
-            Icon: IconHeart,
-        },
+        { value: user?.public_repos, label: t('about.publicRepos') },
+        { value: user?.followers, label: t('about.githubFollowers') },
+        { value: user?.following, label: t('about.following') },
     ];
 
     return (
-        <section
-            ref={ref}
-            id="about"
-            className="scroll-mt-24 px-4 py-24 sm:px-6 lg:px-8"
-        >
-            <div className="mx-auto max-w-6xl">
+        <section ref={ref} id="about" className="section scroll-mt-16">
+            <div className="wrap">
                 <SectionHeading
-                    index="01"
+                    index={1}
                     label={t('navigation.about')}
                     title={t('about.title')}
                     subtitle={t('about.subtitle')}
                 />
 
-                {/* Pillars */}
-                <div className="grid gap-5 md:grid-cols-3">
-                    {pillars.map(({ key, Icon }, i) => (
-                        <article
-                            key={key}
-                            className="panel panel-hover panel-glow reveal p-6 sm:p-7"
-                            data-delay={i * 90}
-                        >
-                            <div className="mb-5 flex items-center justify-between">
-                                <span className="border-(--line-strong) bg-(--accent-soft) text-accent inline-flex h-11 w-11 items-center justify-center rounded-xl border">
-                                    <Icon size={21} />
-                                </span>
-                                <span className="text-muted font-mono text-xs opacity-50">
-                                    0{i + 1}
-                                </span>
-                            </div>
-                            <h3 className="text-lg font-semibold sm:text-xl">
-                                {t(`about.${key}.title`)}
-                            </h3>
-                            <p className="text-muted mt-3 text-sm leading-relaxed">
-                                {t(`about.${key}.description`)}
-                            </p>
-                        </article>
-                    ))}
+                {/* ------------------------- pillars ------------------------- */}
+                <div className="field">
+                    <div className="field-body">
+                        <div className="grid gap-8 sm:gap-x-8 sm:gap-y-10 md:grid-cols-3">
+                            {PILLARS.map((key, i) => (
+                                <article
+                                    key={key}
+                                    className="reveal"
+                                    data-delay={i * 70}
+                                >
+                                    <hr className="rule-ink" />
+                                    <span className="folio nums mt-3 block">
+                                        {n(i + 1, 'padded')}
+                                    </span>
+                                    <h3 className="display display-md mt-2">
+                                        {t(`about.${key}.title`)}
+                                    </h3>
+                                    <p className="prose-sm mt-3">
+                                        {t(`about.${key}.description`)}
+                                    </p>
+                                </article>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
-                {/* Stats strip */}
-                <div className="panel reveal mt-5 overflow-hidden" data-delay="120">
-                    <div className="grid divide-y divide-(--line) sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-                        {stats.map(({ value, label, Icon }) => (
-                            <div
-                                key={label}
-                                className="group flex items-center gap-4 px-6 py-7"
-                            >
-                                <Icon
-                                    size={22}
-                                    className="text-accent shrink-0 opacity-70 transition-opacity group-hover:opacity-100"
-                                />
-                                <div>
-                                    <div className="display glow-text text-3xl sm:text-4xl">
-                                        {value ?? '—'}
+                {/* -------------------------- figures ------------------------- */}
+                <div className="field mt-14 lg:mt-24">
+                    <div className="field-aside reveal">
+                        <span className="label">GitHub</span>
+                    </div>
+
+                    <div className="field-body">
+                        <div className="grid grid-cols-3 gap-4 sm:gap-10">
+                            {stats.map(({ value, label }, i) => (
+                                <div
+                                    key={label}
+                                    className="reveal"
+                                    data-delay={i * 60}
+                                >
+                                    <hr className="rule-ink" />
+                                    <div className="display nums mt-3 text-[clamp(2.25rem,9vw,4rem)]">
+                                        {n(value)}
                                     </div>
-                                    <div className="text-muted mt-1 font-mono text-[0.68rem] tracking-[0.16em] uppercase">
+                                    <div className="label mt-1 block">
                                         {label}
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

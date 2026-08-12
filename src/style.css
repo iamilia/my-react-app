@@ -3,589 +3,691 @@
 
 /* ==========================================================================
    FONTS
+   --------------------------------------------------------------------------
+   All three faces are self-hosted through Fontsource and bundled by Vite —
+   nothing is fetched from a third-party CDN at runtime, which matters for
+   visitors on networks where Google Fonts is slow or unreachable.
+
+   JetBrains Mono carries the structure (headings, labels, data, code),
+   Instrument Sans the prose, and Vazirmatn the Persian. Neither Latin face
+   has Arabic coverage, so Persian glyphs fall through to Vazirmatn per-glyph
+   — no dir-dependent font switching needed.
    ========================================================================== */
 
-@font-face {
-    font-family: 'Vazir';
-    src: url('/fonts/Vazirmatn.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-.font-vazir {
-    font-family: 'Vazir', sans-serif;
-}
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+@import '@fontsource-variable/instrument-sans/wght.css';
+@import '@fontsource-variable/vazirmatn/wght.css';
 
 /* ==========================================================================
    THEME TOKENS (Tailwind v4 @theme)
    ========================================================================== */
 
 @theme {
-    --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular,
-        Menlo, monospace;
+    --font-sans:
+        'Instrument Sans Variable', 'Vazirmatn Variable', ui-sans-serif,
+        system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-    --color-neon-50: #fff1f2;
-    --color-neon-100: #ffe4e6;
-    --color-neon-200: #fecdd3;
-    --color-neon-300: #fda4af;
-    --color-neon-400: #fb7185;
-    --color-neon-500: #f43f5e;
-    --color-neon-600: #e11d48;
-    --color-neon-700: #be123c;
+    /* Vazirmatn sits in the mono stack too: JetBrains Mono has no Arabic, and
+       plenty of mono-set chrome (kickers, labels, stat captions) carries
+       Persian. Without it those strings would render as tofu. */
+    --font-mono:
+        'JetBrains Mono Variable', 'Vazirmatn Variable', ui-monospace,
+        'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
+        monospace;
 
-    --color-void-900: #08060a;
-    --color-void-800: #0d0910;
-    --color-void-700: #140e18;
-    --color-void-600: #1c1420;
+    /* Headings are set in the mono face: this is a developer's site, and the
+       structure should read like one. Prose stays on the sans, because mono
+       at paragraph length is tiring. */
+    --font-display: var(--font-mono);
 
-    --animate-marquee: marquee 40s linear infinite;
-    --animate-drift: drift 22s ease-in-out infinite;
-    --animate-drift-slow: drift 34s ease-in-out infinite reverse;
-    --animate-scan: scan 8s linear infinite;
-    --animate-pulse-ring: pulse-ring 3.5s ease-out infinite;
-    --animate-spin-slow: spin 24s linear infinite;
+    --default-font-family: var(--font-sans);
+
+    /* Container width for every page. One number, one place. */
+    --wrap: 76rem;
+}
+
+/* ==========================================================================
+   PALETTE
+   --------------------------------------------------------------------------
+   Light is warm paper with a deep rose; dark is slate with a soft rose. Both
+   themes carry two paper tones so sections can alternate — that banding is
+   what gives the page rhythm, in place of borders and shadows.
+   ========================================================================== */
+
+:root {
+    color-scheme: light;
+
+    --bg: #f9f4ec;
+    --bg-alt: #f1e9dc;
+    --fg: #2a1f22;
+    --fg-muted: #6b5d55;
+
+    --line: rgba(42, 31, 34, 0.14);
+    --line-strong: rgba(42, 31, 34, 0.32);
+    --tint: rgba(42, 31, 34, 0.04);
+
+    /* Cards are a translucent wash rather than a fixed colour, so the same
+       card reads correctly on both paper tones without a second variant. */
+    --surface: rgba(255, 252, 246, 0.66);
+    --surface-hover: rgba(255, 253, 249, 0.95);
+
+    /* rose-800 */
+    --accent: #9f1239;
+    --accent-soft: rgba(159, 18, 57, 0.1);
+    /* 58% is where the folio clears 3:1 on both paper tones — quiet enough to
+       stay a background mark, solid enough to still be a legible numeral. */
+    --folio: rgba(159, 18, 57, 0.58);
+
+    --on-accent: #fdf5f0;
+
+    --scrollbar-thumb: rgba(42, 31, 34, 0.2);
+    --scrollbar-thumb-hover: rgba(42, 31, 34, 0.4);
+}
+
+.dark {
+    color-scheme: dark;
+
+    /* slate-950 / slate-900 */
+    --bg: #020617;
+    --bg-alt: #0f172a;
+    /* slate-100 / slate-400 */
+    --fg: #f1f5f9;
+    --fg-muted: #94a3b8;
+
+    --line: rgba(148, 163, 184, 0.18);
+    --line-strong: rgba(148, 163, 184, 0.4);
+    --tint: rgba(148, 163, 184, 0.06);
+
+    --surface: rgba(148, 163, 184, 0.07);
+    --surface-hover: rgba(148, 163, 184, 0.12);
+
+    /* rose-400 */
+    --accent: #fb7185;
+    --accent-soft: rgba(251, 113, 133, 0.12);
+    --folio: rgba(251, 113, 133, 0.6);
+
+    --on-accent: #1a0710;
+
+    --scrollbar-thumb: rgba(148, 163, 184, 0.24);
+    --scrollbar-thumb-hover: rgba(148, 163, 184, 0.45);
 }
 
 /* ==========================================================================
    BASE
    ========================================================================== */
 
-:root {
-    color-scheme: dark;
+@layer base {
+    * {
+        box-sizing: border-box;
+    }
 
-    --bg: #08060a;
-    --bg-elev: rgba(255, 255, 255, 0.025);
-    --bg-elev-hover: rgba(255, 255, 255, 0.045);
-    --fg: #e7e5e4;
-    --fg-muted: #8b8589;
-    --line: rgba(244, 63, 94, 0.14);
-    --line-strong: rgba(244, 63, 94, 0.35);
-    --accent: #f43f5e;
-    --accent-2: #ec4899;
-    --accent-soft: rgba(244, 63, 94, 0.16);
-    --glow: rgba(244, 63, 94, 0.4);
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
 
-    --scrollbar-track: #0d0910;
-    --scrollbar-thumb: #3d1220;
-    --scrollbar-thumb-hover: var(--accent);
-}
+    body {
+        margin: 0;
+        min-height: 100svh;
+        background-color: var(--bg);
+        color: var(--fg);
+        font-family: var(--font-sans);
+        font-size: 1rem;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        overflow-x: hidden;
+        transition:
+            background-color 0.3s ease,
+            color 0.3s ease;
+    }
 
-:root:not(.dark) {
-    color-scheme: light;
+    ::selection {
+        background: var(--accent);
+        color: var(--on-accent);
+    }
 
-    --bg: #fff7f8;
-    --bg-elev: rgba(255, 255, 255, 0.72);
-    --bg-elev-hover: rgba(255, 255, 255, 0.92);
-    --fg: #1c1117;
-    --fg-muted: #6b5560;
-    --line: rgba(244, 63, 94, 0.18);
-    --line-strong: rgba(244, 63, 94, 0.4);
-    --accent: #e11d48;
-    --accent-2: #db2777;
-    --accent-soft: rgba(244, 63, 94, 0.1);
-    --glow: rgba(244, 63, 94, 0.28);
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-thumb);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--scrollbar-thumb-hover);
+    }
 
-    --scrollbar-track: #ffe4e6;
-    --scrollbar-thumb: #fda4af;
-    --scrollbar-thumb-hover: #e11d48;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
-}
-
-body {
-    margin: 0;
-    min-height: 100svh;
-    background-color: var(--bg);
-    color: var(--fg);
-    font-feature-settings: 'ss01', 'cv01';
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    overflow-x: hidden;
-    transition:
-        background-color 0.5s ease,
-        color 0.5s ease;
-}
-
-::selection {
-    background: var(--accent);
-    color: #fff;
-}
-
-::-webkit-scrollbar {
-    width: 9px;
-    height: 9px;
-}
-::-webkit-scrollbar-track {
-    background-color: var(--scrollbar-track);
-}
-::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-thumb);
-    border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-thumb-hover);
-}
-
-:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 6px;
+    :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+    }
 }
 
 /* ==========================================================================
-   AMBIENT BACKDROP  (grid + aurora + noise)
-   ========================================================================== */
-
-.backdrop-layer {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.backdrop-grid {
-    position: absolute;
-    inset: -2px;
-    background-image:
-        linear-gradient(to right, var(--line) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--line) 1px, transparent 1px);
-    background-size: 72px 72px;
-    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 15%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 15%, transparent 75%);
-    opacity: 0.55;
-}
-
-.backdrop-aurora {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(90px);
-    opacity: 0.5;
-    will-change: transform;
-}
-
-.aurora-a {
-    top: -12%;
-    left: -8%;
-    width: 46vw;
-    height: 46vw;
-    min-width: 320px;
-    min-height: 320px;
-    background: radial-gradient(circle, rgba(244, 63, 94, 0.55), transparent 65%);
-    animation: var(--animate-drift);
-}
-
-.aurora-b {
-    bottom: -18%;
-    right: -10%;
-    width: 42vw;
-    height: 42vw;
-    min-width: 300px;
-    min-height: 300px;
-    background: radial-gradient(circle, rgba(236, 72, 153, 0.45), transparent 65%);
-    animation: var(--animate-drift-slow);
-}
-
-.aurora-c {
-    top: 38%;
-    left: 45%;
-    width: 30vw;
-    height: 30vw;
-    min-width: 240px;
-    min-height: 240px;
-    background: radial-gradient(circle, rgba(251, 113, 133, 0.3), transparent 65%);
-    animation: var(--animate-drift) 28s;
-}
-
-.backdrop-noise {
-    position: absolute;
-    inset: 0;
-    opacity: 0.5;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
-}
-
-:root:not(.dark) .backdrop-aurora {
-    opacity: 0.32;
-}
-:root:not(.dark) .backdrop-noise {
-    opacity: 0.25;
-}
-
-/* ==========================================================================
-   SURFACES
-   ========================================================================== */
-
-.panel {
-    position: relative;
-    background: var(--bg-elev);
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    transition:
-        border-color 0.35s ease,
-        background-color 0.35s ease,
-        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.35s ease;
-}
-
-/* thin top highlight line */
-.panel::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 1px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        var(--line-strong) 30%,
-        var(--line-strong) 70%,
-        transparent
-    );
-    opacity: 0.7;
-    pointer-events: none;
-}
-
-.panel-hover:hover {
-    background: var(--bg-elev-hover);
-    border-color: var(--line-strong);
-    transform: translateY(-4px);
-    box-shadow:
-        0 0 0 1px var(--accent-soft),
-        0 18px 40px -18px var(--glow);
-}
-
-/* glowing corner accent that fades in on hover */
-.panel-glow::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-        420px circle at var(--mx, 50%) var(--my, 0%),
-        var(--accent-soft),
-        transparent 45%
-    );
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-}
-
-.panel-glow:hover::after {
-    opacity: 1;
-}
-
-/* ==========================================================================
-   TYPE
-   ========================================================================== */
-
-.eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-}
-
-.eyebrow::before {
-    content: '';
-    width: 26px;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.6;
-}
-
-.display {
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 0.95;
-}
-
-/* small mono kicker above the name in the hero */
-.hero-greeting {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 0.3em;
-    font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--fg-muted);
-    margin-bottom: 0.1em;
-}
-
-.gradient-text {
-    background: linear-gradient(
-        100deg,
-        var(--fg) 0%,
-        var(--accent) 45%,
-        var(--accent-2) 70%,
-        var(--fg) 100%
-    );
-    background-size: 220% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: shimmer 9s linear infinite;
-}
-
-.text-muted {
-    color: var(--fg-muted);
-}
-
-.text-accent {
-    color: var(--accent);
-}
-
-.glow-text {
-    text-shadow: 0 0 26px var(--glow);
-}
-
-/* ==========================================================================
-   BUTTONS / CHIPS
-   ========================================================================== */
-
-.btn-neon {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    padding: 0.8rem 1.6rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(120deg, var(--accent), var(--accent-2));
-    box-shadow: 0 10px 30px -12px var(--glow);
-    overflow: hidden;
-    isolation: isolate;
-    transition:
-        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.3s ease;
-}
-
-.btn-neon::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.35),
-        transparent
-    );
-    transform: translateX(-120%);
-    transition: transform 0.7s ease;
-}
-
-.btn-neon:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 18px 44px -14px var(--glow);
-}
-
-.btn-neon:hover::before {
-    transform: translateX(120%);
-}
-
-.btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    padding: 0.8rem 1.6rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    color: var(--fg);
-    background: var(--bg-elev);
-    border: 1px solid var(--line);
-    backdrop-filter: blur(12px);
-    transition:
-        border-color 0.3s ease,
-        background-color 0.3s ease,
-        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.btn-ghost:hover {
-    border-color: var(--line-strong);
-    background: var(--bg-elev-hover);
-    transform: translateY(-2px);
-}
-
-.chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.35rem 0.8rem;
-    border-radius: 9999px;
-    border: 1px solid var(--line);
-    background: var(--bg-elev);
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.06em;
-    color: var(--fg-muted);
-}
-
-.icon-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
-    border-radius: 9999px;
-    border: 1px solid var(--line);
-    background: var(--bg-elev);
-    color: var(--fg-muted);
-    transition:
-        color 0.25s ease,
-        border-color 0.25s ease,
-        background-color 0.25s ease,
-        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.icon-btn:hover {
-    color: var(--accent);
-    border-color: var(--line-strong);
-    background: var(--bg-elev-hover);
-    transform: translateY(-2px);
-}
-
-/* ==========================================================================
-   RTL / ARABIC SCRIPT
+   COMPONENTS
    --------------------------------------------------------------------------
-   Persian has no letter case, and its glyphs join — letter-spacing breaks the
-   connections and a Latin mono face has no Arabic coverage at all. So in RTL
-   we fall back to Vazir and drop tracking/uppercase wherever they were applied
-   for the Latin layout.
+   Everything below sits in the `components` layer on purpose: Tailwind's
+   utilities layer is ordered after it, so a `grid` or `flex` class in the
+   markup still overrides the display these classes set. Unlayered CSS would
+   silently win against every utility and quietly break the layouts.
+
+   Every size below is written mobile-first: the bare rule is the phone, and
+   min-width queries add back the room a larger screen has.
    ========================================================================== */
 
-[dir='rtl'] .font-mono,
-[dir='rtl'] .eyebrow,
-[dir='rtl'] .chip,
-[dir='rtl'] .hero-greeting {
-    font-family: 'Vazir', sans-serif;
-}
+@layer components {
+    /* Pins a run of text to Vazirmatn. Needed only where a Persian word sits
+       inside otherwise-Latin chrome — the language toggle — since everywhere
+       else the font stack already falls through to it per glyph. */
+    .font-vazir {
+        font-family: 'Vazirmatn Variable', sans-serif;
+    }
 
-/* the kicker sits above a huge Latin word — give it breathing room in RTL */
-[dir='rtl'] .hero-greeting {
-    font-size: 0.26em;
-    line-height: 1.9;
-    margin-bottom: 0.05em;
-}
+    /* ---------------------------------------------------------------- layout */
 
-[dir='rtl'] .font-mono,
-[dir='rtl'] .eyebrow,
-[dir='rtl'] .chip,
-[dir='rtl'] .display,
-[dir='rtl'] .nav-link,
-[dir='rtl'] .hero-greeting {
-    letter-spacing: normal;
-    text-transform: none;
-}
+    .wrap {
+        margin-inline: auto;
+        width: 100%;
+        max-width: var(--wrap);
+        padding-inline: 1.25rem;
+    }
 
-/* Latin-only bits keep the mono face even in RTL (repo names, counters, dates) */
-[dir='rtl'] .force-mono {
-    font-family: var(--font-mono);
-}
+    @media (min-width: 640px) {
+        .wrap {
+            padding-inline: 2rem;
+        }
+    }
 
-/* Arabic ascenders/descenders need more room than the tight Latin display leading */
-[dir='rtl'] .display {
-    line-height: 1.25;
-}
+    @media (min-width: 1024px) {
+        .wrap {
+            padding-inline: 3rem;
+        }
+    }
 
-/* ==========================================================================
-   MISC UTILITIES
-   ========================================================================== */
+    .section {
+        padding-block: 4.5rem;
+    }
 
-.hairline {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
-    border: 0;
-}
+    @media (min-width: 640px) {
+        .section {
+            padding-block: 6rem;
+        }
+    }
 
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
+    @media (min-width: 1024px) {
+        .section {
+            padding-block: 8.5rem;
+        }
+    }
 
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
+    /* the second paper tone — sections alternate between the two */
+    .section-alt {
+        background-color: var(--bg-alt);
+        transition: background-color 0.3s ease;
+    }
 
-/* scroll reveal */
-.reveal {
-    opacity: 0;
-    transform: translateY(22px);
-    transition:
-        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
+    /* One column on a phone. The margin/field split only appears once there
+       is genuinely room for a margin. */
+    .field {
+        display: grid;
+        gap: 1.75rem;
+    }
 
-.reveal.is-visible {
-    opacity: 1;
-    transform: none;
-}
+    @media (min-width: 1024px) {
+        .field {
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 2.5rem 3rem;
+        }
+        .field-aside {
+            grid-column: 1 / span 3;
+        }
+        .field-body {
+            grid-column: 5 / span 8;
+        }
+    }
 
-/* avatar ring */
-.avatar-ring {
-    position: relative;
-    border-radius: 9999px;
-    padding: 3px;
-    background: conic-gradient(
-        from 0deg,
-        var(--accent),
-        var(--accent-2),
-        transparent 55%,
-        var(--accent)
-    );
-    animation: var(--animate-spin-slow);
-}
+    /* ------------------------------------------------------------------ type */
 
-.avatar-ring > img {
-    animation: spin 24s linear infinite reverse;
-}
+    /* Mono display type. Monospace is already wide, so the tracking goes
+       sharply negative at size to stop headings sprawling — that tightening
+       is most of what separates a set heading from raw terminal output. */
+    .display {
+        font-family: var(--font-display);
+        font-weight: 700;
+        letter-spacing: -0.045em;
+        line-height: 1.1;
+        text-wrap: balance;
+    }
 
-.avatar-halo {
-    position: absolute;
-    inset: -18%;
-    border-radius: 9999px;
-    background: radial-gradient(circle, var(--glow), transparent 62%);
-    filter: blur(24px);
-    animation: var(--animate-pulse-ring);
-    pointer-events: none;
-}
+    .display-xl {
+        font-size: clamp(2.75rem, 14vw, 7.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+    }
 
-/* marquee track */
-.marquee {
-    display: flex;
-    width: max-content;
-    animation: var(--animate-marquee);
-}
+    .display-lg {
+        font-size: clamp(1.75rem, 6.5vw, 3.25rem);
+        line-height: 1.05;
+        letter-spacing: -0.05em;
+    }
 
-.marquee-mask {
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
+    .display-md {
+        font-size: clamp(1.25rem, 4vw, 1.625rem);
+        line-height: 1.25;
+        letter-spacing: -0.035em;
+    }
 
-.marquee-mask:hover .marquee {
-    animation-play-state: paused;
+    /* Section kicker, set like a source comment. The `//` is generated rather
+       than typed into every call site, and it flows to whichever edge the
+       text direction starts from. */
+    .kicker {
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.4;
+        letter-spacing: -0.01em;
+        color: var(--fg-muted);
+    }
+
+    .kicker::before {
+        content: '//';
+        color: var(--accent);
+        margin-inline-end: 0.5em;
+    }
+
+    /* the folio numeral that sits in the margin */
+    .folio {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: clamp(1.75rem, 6vw, 2.5rem);
+        line-height: 1;
+        letter-spacing: -0.05em;
+        color: var(--folio);
+        font-variant-numeric: tabular-nums;
+        transition: color 0.3s ease;
+    }
+
+    /* Small all-caps label for column headers and meta. Everything below the
+       section level uses this rather than another `//` kicker — the comment
+       marker only earns its place if it means "new section". */
+    .label {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--fg-muted);
+    }
+
+    .label-ink {
+        color: var(--fg);
+    }
+
+    .label-accent {
+        color: var(--accent);
+    }
+
+    .lede {
+        max-width: 44ch;
+        font-size: 1.0625rem;
+        line-height: 1.7;
+        color: var(--fg-muted);
+        text-wrap: pretty;
+    }
+
+    @media (min-width: 640px) {
+        .lede {
+            font-size: 1.1875rem;
+        }
+    }
+
+    .prose-sm {
+        font-size: 0.9375rem;
+        line-height: 1.75;
+        color: var(--fg-muted);
+        text-wrap: pretty;
+    }
+
+    .text-muted {
+        color: var(--fg-muted);
+    }
+
+    .text-accent {
+        color: var(--accent);
+    }
+
+    .nums {
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* ----------------------------------------------------------------- rules */
+
+    .rule {
+        border: 0;
+        border-top: 1px solid var(--line);
+    }
+
+    .rule-ink {
+        border: 0;
+        border-top: 1px solid var(--line-strong);
+    }
+
+    .rule-heavy {
+        border: 0;
+        border-top: 1px solid var(--fg);
+    }
+
+    /* ----------------------------------------------------------------- card
+       For collections of like objects — repositories, archived servers,
+       games. A bordered box keeps a title and its description visibly bound
+       together, which is exactly what a full-width row failed to do once the
+       page was set right-to-left. */
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--surface);
+        padding: 1.125rem;
+        transition:
+            border-color 0.2s ease,
+            background-color 0.2s ease;
+    }
+
+    @media (min-width: 640px) {
+        .card {
+            padding: 1.375rem;
+        }
+    }
+
+    .card-link:hover {
+        border-color: var(--accent);
+        background: var(--surface-hover);
+    }
+
+    /* pushes the meta strip to the bottom so cards in a row line up */
+    .card-foot {
+        display: flex;
+        align-items: center;
+        gap: 1.125rem;
+        margin-top: auto;
+        padding-top: 1rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--fg-muted);
+    }
+
+    /* ------------------------------------------------------------------ rows
+       A row is defined by the line above it, not by a box with a radius and a
+       shadow. On a phone rows stack; the columns arrive at `sm`. */
+
+    .row {
+        position: relative;
+        border-top: 1px solid var(--line);
+        transition: background-color 0.25s ease;
+    }
+
+    .row-link:hover {
+        background-color: var(--tint);
+    }
+
+    /* a rule that draws itself from the leading edge — the only effect left */
+    .row-link::after {
+        content: '';
+        position: absolute;
+        inset-block-start: -1px;
+        inset-inline-start: 0;
+        height: 1px;
+        width: 0;
+        background: var(--accent);
+        transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .row-link:hover::after,
+    .row-link:focus-visible::after {
+        width: 100%;
+    }
+
+    /* -------------------------------------------------------- links, buttons
+       Every interactive target clears 44px on touch. */
+
+    .link {
+        color: var(--fg);
+        text-decoration: none;
+        background-image: linear-gradient(var(--accent), var(--accent));
+        background-repeat: no-repeat;
+        background-position: 0 100%;
+        background-size: 0% 1px;
+        transition:
+            background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            color 0.2s ease;
+    }
+
+    [dir='rtl'] .link {
+        background-position: 100% 100%;
+    }
+
+    .link:hover {
+        color: var(--accent);
+        background-size: 100% 1px;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        min-height: 2.875rem;
+        padding: 0.7rem 1.5rem;
+        border: 1px solid var(--accent);
+        background: var(--accent);
+        color: var(--on-accent);
+        font-size: 0.9375rem;
+        font-weight: 600;
+        transition:
+            background-color 0.25s ease,
+            border-color 0.25s ease,
+            color 0.25s ease;
+    }
+
+    .btn:hover {
+        background: transparent;
+        color: var(--accent);
+    }
+
+    .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        min-height: 2.875rem;
+        padding: 0.7rem 1.5rem;
+        border: 1px solid var(--line-strong);
+        background: transparent;
+        color: var(--fg);
+        font-size: 0.9375rem;
+        font-weight: 600;
+        transition:
+            border-color 0.25s ease,
+            background-color 0.25s ease,
+            color 0.25s ease;
+    }
+
+    .btn-outline:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    /* a flat text tag — no pill, no fill */
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        border: 1px solid var(--line);
+        padding: 0.25rem 0.6rem;
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        line-height: 1.5;
+        color: var(--fg-muted);
+    }
+
+    a.tag:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    /* solid square — replaces every pulsing dot on the site */
+    .marker {
+        display: inline-block;
+        width: 0.4rem;
+        height: 0.4rem;
+        background: var(--accent);
+    }
+
+    /* --------------------------------------------------- RTL / Arabic script
+       Persian glyphs join, so letter-spacing breaks the connections, and
+       there is no letter case, so uppercase is meaningless. Both go away in
+       RTL — including the heavy negative tracking the mono headings rely on,
+       which would otherwise pull Persian letters apart at the joins. */
+
+    [dir='rtl'] .label,
+    [dir='rtl'] .display,
+    [dir='rtl'] .display-xl,
+    [dir='rtl'] .display-lg,
+    [dir='rtl'] .display-md,
+    [dir='rtl'] .kicker,
+    [dir='rtl'] .folio,
+    [dir='rtl'] .tag,
+    [dir='rtl'] .nav-link,
+    [dir='rtl'] .stat2048-label {
+        letter-spacing: normal;
+        text-transform: none;
+    }
+
+    /* Persian headings run on Vazirmatn end to end. A monospaced Latin next
+       to a proportional Arabic inside one heading reads as a mistake, and
+       Arabic ascenders and descenders need far more leading than the tight
+       mono setting allows. */
+    [dir='rtl'] .display {
+        font-family: 'Vazirmatn Variable', var(--font-sans);
+        font-weight: 700;
+        line-height: 1.45;
+    }
+
+    [dir='rtl'] .display-xl {
+        font-size: clamp(2.5rem, 12vw, 6rem);
+        line-height: 1.25;
+    }
+
+    [dir='rtl'] .display-lg {
+        font-size: clamp(1.625rem, 5.5vw, 2.75rem);
+        line-height: 1.4;
+    }
+
+    [dir='rtl'] .display-md {
+        font-size: clamp(1.125rem, 3.5vw, 1.5rem);
+        line-height: 1.55;
+    }
+
+    /* The folio is a Latin numeral either way — keep it monospaced. */
+    [dir='rtl'] .folio {
+        font-family: var(--font-mono);
+    }
+
+    /* Latin-only content — repo names, hosts, frameworks — is pinned to the
+       mono face in both directions so it never picks up Vazirmatn's Latin.
+       Applied unconditionally, not just in RTL. */
+    .force-mono {
+        font-family: var(--font-mono);
+        font-style: normal;
+        letter-spacing: normal;
+    }
+
+    /* A run of Latin tokens — technology names, hostnames, versions — sitting
+       inside a block that may be RTL. Pair with `dir="ltr"` on the same
+       element.
+
+       `dir` alone is not enough here. It fixes the *order* (an RTL flex row
+       reverses the list, so "TypeScript … Vite" comes out as "Vite" first and
+       wraps from the wrong end) but it also flushes the run to the left of
+       its column, stranding it away from the label it belongs to. Pushing the
+       flow back to the end in RTL keeps the tokens reading left-to-right
+       while the block as a whole still hugs the reading edge.
+
+       One of the two declarations always applies and the other is inert:
+       flex rows use `justify-content`, plain text uses `text-align`. */
+    .ltr-run {
+        direction: ltr;
+    }
+
+    [dir='rtl'] .ltr-run {
+        justify-content: flex-end;
+        text-align: right;
+    }
+
+    /* --------------------------------------------------------------- bidi
+       Text that comes from GitHub is written by whoever wrote the repo, so
+       its direction cannot be assumed from the page's. Pair this with
+       `dir="auto"` in the markup: the browser resolves direction from the
+       first strong character, and `text-align: start` then follows *that*
+       rather than the surrounding page — which is what stops an English
+       sentence being flushed right with its full stop on the wrong side. */
+    .bidi-auto {
+        text-align: start;
+        text-wrap: pretty;
+    }
+
+    /* ---------------------------------------------------------------- motion */
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+            opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* loading: a rule that sweeps, instead of a spinner inside a glow */
+    .loader-track {
+        position: relative;
+        height: 2px;
+        overflow: hidden;
+        background: var(--line);
+    }
+
+    .loader-bar {
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: 0;
+        width: 40%;
+        background: var(--accent);
+        animation: loader-sweep 1.15s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    /* A GitHub avatar is a square image, so it is shown as one — cropping it
+       to a 4:5 editorial portrait only lopped the sides off. No filter
+       either: desaturating someone's avatar is a magazine device, not a
+       profile one. */
+    .avatar {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        background: var(--tint);
+    }
 }
 
 /* ==========================================================================
@@ -597,252 +699,239 @@ body {
    proportional at every board width without a single media query.
    ========================================================================== */
 
-.board2048-frame {
-    position: relative;
-    padding: 2.6%;
-    border-radius: 20px;
-    /* the board owns every gesture inside it — no scrolling, no pull-to-refresh */
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 26px 60px -38px var(--glow);
-    transition: opacity 0.35s ease, filter 0.35s ease;
-}
+@layer components {
+    .board2048-frame {
+        position: relative;
+        padding: 2.6%;
+        border: 1px solid var(--line-strong);
+        /* the board owns every gesture inside it — no scroll, no pull-to-refresh */
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: opacity 0.3s ease;
+    }
 
-.board2048-frozen {
-    opacity: 0.55;
-    filter: saturate(0.7);
-}
+    .board2048-frozen {
+        opacity: 0.5;
+    }
 
-.board2048 {
-    --cells: 4;
-    --gap: 2.6%;
-    --cell: calc((100% - (var(--cells) - 1) * var(--gap)) / var(--cells));
-    --step: calc(var(--cell) + var(--gap));
+    .board2048 {
+        --cells: 4;
+        --gap: 2.6%;
+        --cell: calc((100% - (var(--cells) - 1) * var(--gap)) / var(--cells));
+        --step: calc(var(--cell) + var(--gap));
 
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1;
-    container-type: inline-size;
-}
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1;
+        container-type: inline-size;
+    }
 
-.board2048-cells {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    grid-template-columns: repeat(var(--cells), 1fr);
-    gap: var(--gap);
-}
+    .board2048-cells {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        grid-template-columns: repeat(var(--cells), 1fr);
+        gap: var(--gap);
+    }
 
-.board2048-cell {
-    border-radius: 13%;
-    background: color-mix(in srgb, var(--fg) 4%, transparent);
-    border: 1px solid var(--line);
-}
+    .board2048-cell {
+        background: var(--tint);
+    }
 
-.tile2048 {
-    position: absolute;
-    width: var(--cell);
-    height: var(--cell);
-    left: calc(var(--col) * var(--step));
-    top: calc(var(--row) * var(--step));
-    z-index: 2;
+    .tile2048 {
+        position: absolute;
+        width: var(--cell);
+        height: var(--cell);
+        left: calc(var(--col) * var(--step));
+        top: calc(var(--row) * var(--step));
+        z-index: 2;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 13%;
-    font-weight: 700;
-    font-size: 10cqw;
-    line-height: 1;
-    letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 10cqw;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
 
-    transition:
-        left 130ms cubic-bezier(0.22, 1, 0.36, 1),
-        top 130ms cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: left, top;
-}
+        transition:
+            left 130ms cubic-bezier(0.22, 1, 0.36, 1),
+            top 130ms cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: left, top;
+    }
 
-/* Merge parents finish their slide underneath the tile they became. */
-.tile2048-ghost {
-    z-index: 1;
-}
+    /* Merge parents finish their slide underneath the tile they became. */
+    .tile2048-ghost {
+        z-index: 1;
+    }
 
-/* Longer numbers step down so 16384 still fits its tile. */
-.tile2048-d1 {
-    font-size: 11cqw;
-}
-.tile2048-d3 {
-    font-size: 8.4cqw;
-}
-.tile2048-d4 {
-    font-size: 6.6cqw;
-}
-.tile2048-d5 {
-    font-size: 5.4cqw;
-}
-.tile2048-d6 {
-    font-size: 4.6cqw;
-}
+    /* Longer numbers step down so 16384 still fits its tile. */
+    .tile2048-d1 {
+        font-size: 11cqw;
+    }
+    .tile2048-d3 {
+        font-size: 8.4cqw;
+    }
+    .tile2048-d4 {
+        font-size: 6.6cqw;
+    }
+    .tile2048-d5 {
+        font-size: 5.4cqw;
+    }
+    .tile2048-d6 {
+        font-size: 4.6cqw;
+    }
 
-/* --- value ramp: neutral surfaces climbing into the accent ---------------- */
+    /* --- value ramp ------------------------------------------------------
+       Low tiles are paper, the ramp climbs through ink, and only the last few
+       reach for the rose. No gradients, no glow — the board reads as a
+       printed value scale. */
 
-.tile2048-v2 {
-    background: color-mix(in srgb, var(--fg) 8%, transparent);
-    border: 1px solid var(--line);
-    color: var(--fg);
-}
-.tile2048-v4 {
-    background: color-mix(in srgb, var(--fg) 14%, transparent);
-    border: 1px solid var(--line);
-    color: var(--fg);
-}
-.tile2048-v8 {
-    background: rgba(244, 63, 94, 0.22);
-    border: 1px solid rgba(244, 63, 94, 0.34);
-    color: color-mix(in srgb, var(--fg) 65%, var(--accent));
-}
-.tile2048-v16 {
-    background: rgba(244, 63, 94, 0.36);
-    border: 1px solid rgba(244, 63, 94, 0.48);
-    color: #fff;
-}
-.tile2048-v32 {
-    background: rgba(244, 63, 94, 0.55);
-    border: 1px solid rgba(244, 63, 94, 0.65);
-    color: #fff;
-}
-.tile2048-v64 {
-    background: rgba(244, 63, 94, 0.78);
-    border: 1px solid rgba(244, 63, 94, 0.85);
-    color: #fff;
-}
-.tile2048-v128 {
-    background: linear-gradient(135deg, #f43f5e, #ec4899);
-    color: #fff;
-    box-shadow: 0 0 18px -4px rgba(244, 63, 94, 0.65);
-}
-.tile2048-v256 {
-    background: linear-gradient(135deg, #fb7185, #e11d48);
-    color: #fff;
-    box-shadow: 0 0 22px -4px rgba(244, 63, 94, 0.75);
-}
-.tile2048-v512 {
-    background: linear-gradient(135deg, #ec4899, #a21caf);
-    color: #fff;
-    box-shadow: 0 0 26px -4px rgba(236, 72, 153, 0.8);
-}
-.tile2048-v1024 {
-    background: linear-gradient(135deg, #f43f5e, #a21caf 60%, #6d28d9);
-    color: #fff;
-    box-shadow: 0 0 30px -4px rgba(168, 85, 247, 0.85);
-}
-.tile2048-v2048 {
-    background: linear-gradient(135deg, #fbbf24, #f43f5e 55%, #a21caf);
-    color: #fff;
-    box-shadow:
-        0 0 0 1px rgba(251, 191, 36, 0.55),
-        0 0 34px -2px rgba(251, 191, 36, 0.75);
-}
-.tile2048-max {
-    background: linear-gradient(135deg, #fde68a, #fb7185 45%, #6d28d9);
-    color: #1c1117;
-    box-shadow:
-        0 0 0 1px rgba(253, 230, 138, 0.7),
-        0 0 38px -2px rgba(253, 230, 138, 0.8);
-}
+    .tile2048-v2 {
+        background: color-mix(in srgb, var(--fg) 10%, var(--bg));
+        color: var(--fg);
+    }
+    .tile2048-v4 {
+        background: color-mix(in srgb, var(--fg) 20%, var(--bg));
+        color: var(--fg);
+    }
+    .tile2048-v8 {
+        background: color-mix(in srgb, var(--fg) 34%, var(--bg));
+        color: var(--bg);
+    }
+    .tile2048-v16 {
+        background: color-mix(in srgb, var(--fg) 50%, var(--bg));
+        color: var(--bg);
+    }
+    .tile2048-v32 {
+        background: color-mix(in srgb, var(--fg) 68%, var(--bg));
+        color: var(--bg);
+    }
+    .tile2048-v64 {
+        background: color-mix(in srgb, var(--fg) 86%, var(--bg));
+        color: var(--bg);
+    }
+    .tile2048-v128 {
+        background: var(--fg);
+        color: var(--bg);
+    }
+    .tile2048-v256 {
+        background: color-mix(in srgb, var(--accent) 55%, var(--fg));
+        color: var(--on-accent);
+    }
+    .tile2048-v512 {
+        background: color-mix(in srgb, var(--accent) 78%, var(--fg));
+        color: var(--on-accent);
+    }
+    .tile2048-v1024 {
+        background: var(--accent);
+        color: var(--on-accent);
+    }
+    .tile2048-v2048 {
+        background: var(--accent);
+        color: var(--on-accent);
+        box-shadow:
+            inset 0 0 0 3px var(--bg),
+            inset 0 0 0 4px var(--accent);
+    }
+    .tile2048-max {
+        background: var(--accent);
+        color: var(--on-accent);
+        box-shadow:
+            inset 0 0 0 3px var(--bg),
+            inset 0 0 0 4px var(--accent),
+            inset 0 0 0 7px var(--bg),
+            inset 0 0 0 8px var(--accent);
+    }
 
-/* The two lightest tiles need real ink behind them on the light theme. */
-:root:not(.dark) .tile2048-v2 {
-    background: rgba(255, 255, 255, 0.85);
-}
-:root:not(.dark) .tile2048-v4 {
-    background: rgba(255, 228, 230, 0.95);
-}
-:root:not(.dark) .tile2048-v8 {
-    color: #7f1d3a;
-}
+    /* --- entrances ------------------------------------------------------- */
 
-/* --- entrances ----------------------------------------------------------- */
+    /* Both wait out the slide (110ms) so the movement is visible first. */
+    .tile2048-new {
+        animation: tile2048-appear 160ms cubic-bezier(0.22, 1, 0.36, 1) 110ms
+            both;
+    }
 
-/* Both wait out the slide (110ms) so the movement is visible first. */
-.tile2048-new {
-    animation: tile2048-appear 180ms cubic-bezier(0.22, 1, 0.36, 1) 110ms both;
-}
+    .tile2048-merged {
+        animation: tile2048-pop 200ms cubic-bezier(0.22, 1, 0.36, 1) 110ms both;
+    }
 
-.tile2048-merged {
-    animation: tile2048-pop 220ms cubic-bezier(0.22, 1, 0.36, 1) 110ms both;
-}
+    /* --- HUD ------------------------------------------------------------- */
 
-/* --- HUD ----------------------------------------------------------------- */
+    .stat2048 {
+        position: relative;
+        display: flex;
+        min-width: 5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1rem;
+        border-top: 1px solid var(--fg);
+        padding: 0.5rem 0 0;
+    }
 
-.stat2048 {
-    position: relative;
-    display: flex;
-    min-width: 5.5rem;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.15rem;
-    border-radius: 14px;
-    border: 1px solid var(--line);
-    background: var(--bg-elev);
-    padding: 0.55rem 1rem;
-}
+    .stat2048-label {
+        font-size: 0.625rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--fg-muted);
+    }
 
-.stat2048-label {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg-muted);
-}
+    .stat2048-value {
+        font-family: var(--font-display);
+        font-size: 1.75rem;
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
+    }
 
-.stat2048-value {
-    font-family: var(--font-mono);
-    font-size: 1.15rem;
-    font-weight: 700;
-    line-height: 1.2;
-}
+    /* the floating "+8" that rises off the score when tiles merge */
+    .stat2048-gain {
+        position: absolute;
+        inset-inline-end: 0;
+        top: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--accent);
+        font-variant-numeric: tabular-nums;
+        pointer-events: none;
+        animation: stat2048-gain 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
 
-/* the floating "+8" that rises off the score when tiles merge */
-.stat2048-gain {
-    position: absolute;
-    inset-inline: 0;
-    top: 0.2rem;
-    font-family: var(--font-mono);
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--accent);
-    pointer-events: none;
-    animation: stat2048-gain 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.overlay2048 {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.1rem;
-    padding: 1.5rem;
-    text-align: center;
-    border-radius: inherit;
-    background: color-mix(in srgb, var(--bg) 78%, transparent);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    animation: tile2048-appear 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    .overlay2048 {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        text-align: center;
+        background: color-mix(in srgb, var(--bg) 93%, transparent);
+        animation: tile2048-appear 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
 }
 
 /* ==========================================================================
    KEYFRAMES
    ========================================================================== */
 
+@keyframes loader-sweep {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(250%);
+    }
+}
+
 @keyframes tile2048-appear {
     from {
-        transform: scale(0.4);
+        transform: scale(0.5);
         opacity: 0;
     }
     to {
@@ -856,7 +945,7 @@ body {
         transform: scale(0);
     }
     60% {
-        transform: scale(1.18);
+        transform: scale(1.14);
     }
     100% {
         transform: scale(1);
@@ -870,56 +959,7 @@ body {
     }
     to {
         opacity: 0;
-        transform: translateY(-1.6rem);
-    }
-}
-
-@keyframes drift {
-    0%,
-    100% {
-        transform: translate3d(0, 0, 0) scale(1);
-    }
-    33% {
-        transform: translate3d(6%, -8%, 0) scale(1.12);
-    }
-    66% {
-        transform: translate3d(-7%, 6%, 0) scale(0.94);
-    }
-}
-
-@keyframes shimmer {
-    to {
-        background-position: 220% center;
-    }
-}
-
-@keyframes scan {
-    0% {
-        transform: translateY(-100%);
-    }
-    100% {
-        transform: translateY(100%);
-    }
-}
-
-@keyframes pulse-ring {
-    0%,
-    100% {
-        opacity: 0.5;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.9;
-        transform: scale(1.08);
-    }
-}
-
-@keyframes marquee {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-50%);
+        transform: translateY(-1.4rem);
     }
 }
 
