@@ -12,8 +12,9 @@
         "format": "prettier --write ."
     },
     "dependencies": {
-        "@fontsource-variable/instrument-sans": "^5.3.0",
+        "@fontsource-variable/fraunces": "^5.3.0",
         "@fontsource-variable/jetbrains-mono": "^5.3.0",
+        "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
         "@fontsource-variable/vazirmatn": "^5.3.0",
         "@tabler/icons-react": "^3.35.0",
         "@tailwindcss/vite": "^4.1.13",
@@ -24,7 +25,8 @@
         "react-dom": "^19.1.1",
         "react-i18next": "^16.0.0",
         "react-router-dom": "^7.18.2",
-        "tailwindcss": "^4.1.13"
+        "tailwindcss": "^4.1.13",
+        "zustand": "^5.0.15"
     },
     "devDependencies": {
         "@eslint/js": "^9.36.0",

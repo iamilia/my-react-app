@@ -12,6 +12,8 @@ import type { GitHubUser } from '../types/github';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { useReveal } from '../hooks/useReveal';
+import { useMagnetic } from '../hooks/useMagnetic';
+import { SplitText } from './SplitText';
 
 interface HeroProps {
     user: GitHubUser | null;
@@ -39,6 +41,11 @@ const socials = [
 export const Hero = ({ user, scrollToSection }: HeroProps) => {
     const { t } = useTranslation();
     const ref = useReveal<HTMLElement>();
+
+    // One per button — the hook tracks a single element, and sharing a ref
+    // between the two would leave only the last one wired up.
+    const workBtn = useMagnetic<HTMLButtonElement>(0.22);
+    const contactBtn = useMagnetic<HTMLButtonElement>(0.22);
 
     /**
      * These used to cycle through a typewriter, then sat stacked in the
@@ -83,22 +90,25 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                             {t('hero.greeting')}
                         </p>
 
-                        <h1
-                            className="display display-xl reveal mt-2"
-                            data-delay="90"
-                        >
-                            {user?.name || 'Ilia'}
+                        {/* The name is the one place on the site that gets the
+                            word-by-word entrance. It is also the only element
+                            above the fold that reads as a statement rather
+                            than as chrome, so it is worth the extra second. */}
+                        <h1 className="display display-xl mt-2">
+                            <SplitText
+                                text={user?.name || 'Ilia'}
+                                delay={120}
+                                stagger={90}
+                            />
                         </h1>
 
                         <p
-                            className="display display-md reveal mt-5"
-                            data-delay="130"
+                            className="display display-md display-italic display-gradient reveal mt-5"
+                            data-delay="380"
                         >
                             {roles.map((role, i) => (
                                 <span key={role}>
-                                    {i > 0 && (
-                                        <span className="text-accent"> · </span>
-                                    )}
+                                    {i > 0 && <span> · </span>}
                                     {role}
                                 </span>
                             ))}
@@ -111,7 +121,7 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                             <p
                                 className="lede bidi-auto reveal mt-5"
                                 dir="auto"
-                                data-delay="160"
+                                data-delay="460"
                             >
                                 {user.bio}
                             </p>
@@ -119,9 +129,10 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
 
                         <div
                             className="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
-                            data-delay="190"
+                            data-delay="560"
                         >
                             <button
+                                ref={workBtn}
                                 onClick={() => scrollToSection('work')}
                                 className="btn"
                             >
@@ -129,6 +140,7 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                                 <IconArrowDown size={16} />
                             </button>
                             <button
+                                ref={contactBtn}
                                 onClick={() => scrollToSection('contact')}
                                 className="btn-outline"
                             >
@@ -139,8 +151,8 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
 
                     {/* ---------------------- profile card ---------------------- */}
                     <aside
-                        className="reveal lg:col-span-4 lg:col-start-9"
-                        data-delay="150"
+                        className="reveal-pop lg:col-span-4 lg:col-start-9"
+                        data-delay="300"
                     >
                         {/* The whole card is Latin content — a GitHub handle,
                             a year, four service names — so it is pinned LTR
@@ -150,14 +162,16 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                         <div className="card" dir="ltr">
                             <div className="flex items-start gap-4">
                                 {user?.avatar_url && (
-                                    <img
-                                        src={user.avatar_url}
-                                        alt={user.name || 'Ilia'}
-                                        loading="eager"
-                                        width={96}
-                                        height={96}
-                                        className="avatar w-20 shrink-0 sm:w-24"
-                                    />
+                                    <div className="avatar-ring w-20 shrink-0 sm:w-24">
+                                        <img
+                                            src={user.avatar_url}
+                                            alt={user.name || 'Ilia'}
+                                            loading="eager"
+                                            width={96}
+                                            height={96}
+                                            className="avatar"
+                                        />
+                                    </div>
                                 )}
 
                                 <div className="min-w-0 pt-0.5">

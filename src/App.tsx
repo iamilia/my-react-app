@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { Aurora } from './components/Aurora';
 import { PageLoader } from './components/PageLoader';
+import { ScrollProgress } from './components/ScrollProgress';
 import { ScrollToTop } from './components/ScrollToTop';
 import { usePageview } from './hooks/usePageview';
 import { Home } from './pages/Home';
@@ -27,6 +29,12 @@ function App() {
 
     return (
         <>
+            {/* Both sit outside <Routes> so they survive navigation: the
+                aurora would otherwise restart its 34-second drift from zero
+                every time someone opened a game, and the progress bar would
+                remount mid-scroll. */}
+            <Aurora />
+            <ScrollProgress />
             <ScrollToTop />
             <Suspense fallback={<PageLoader />}>
                 <Routes>

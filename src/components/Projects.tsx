@@ -64,7 +64,7 @@ export const Projects = ({ repos }: ProjectsProps) => {
                     {repos.map((repo, i) => (
                         <li
                             key={repo.id}
-                            className="reveal flex"
+                            className="reveal-pop flex"
                             data-delay={(i % 3) * 60}
                         >
                             <a

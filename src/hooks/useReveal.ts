@@ -1,8 +1,20 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Adds `.is-visible` to any descendant carrying `.reveal` once it scrolls
- * into view. Elements can opt into a stagger with `data-delay="120"` (ms).
+ * The three classes this hook drives. All of them behave identically here —
+ * they differ only in what the stylesheet animates once `.is-visible` lands:
+ *
+ *   .reveal        fade, rise and unblur (the default)
+ *   .reveal-pop    the same, plus a slight scale — for blocks with an edge
+ *   .reveal-words  no motion of its own; releases the `.split-word` children
+ *                  inside it (see SplitText)
+ */
+const SELECTOR = '.reveal, .reveal-pop, .reveal-words';
+
+/**
+ * Adds `.is-visible` to any descendant carrying one of the reveal classes
+ * once it scrolls into view. Elements can opt into a stagger with
+ * `data-delay="120"` (ms).
  */
 export const useReveal = <T extends HTMLElement = HTMLElement>() => {
     const ref = useRef<T | null>(null);
@@ -12,7 +24,7 @@ export const useReveal = <T extends HTMLElement = HTMLElement>() => {
         if (!root) return;
 
         const targets = Array.from(
-            root.querySelectorAll<HTMLElement>('.reveal')
+            root.querySelectorAll<HTMLElement>(SELECTOR)
         );
         if (targets.length === 0) return;
 

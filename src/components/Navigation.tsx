@@ -161,17 +161,29 @@ export const Navigation = ({
             }`}
         >
             {t(`navigation.${item.id}`)}
-            {!measuring && active === item.id && (
-                <span className="absolute inset-x-0 bottom-0 h-px bg-(--accent)" />
+            {/* Always mounted rather than conditional on `active`, so the
+                same element can grow on hover and stay grown while the
+                section is in view — a rule that only exists when active can
+                only ever appear, never animate.
+
+                Kept out of the off-screen ruler: it is absolutely positioned
+                and contributes nothing to the width being measured, and one
+                fewer node per item keeps that measurement cheap. */}
+            {!measuring && (
+                <span
+                    className={`nav-underline ${
+                        active === item.id ? 'nav-underline-active' : ''
+                    }`}
+                />
             )}
         </button>
     );
 
     return (
         <header
-            className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+            className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
                 scrolled || mobileMenuOpen
-                    ? 'border-b border-(--line) bg-(--bg)'
+                    ? 'glass border-b border-(--line)'
                     : 'border-b border-transparent'
             }`}
         >

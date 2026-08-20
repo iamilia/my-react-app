@@ -253,7 +253,7 @@ export const Work = () => {
                             {ARCHIVED.map((project, i) => (
                                 <li
                                     key={project.key}
-                                    className="reveal flex"
+                                    className="reveal-pop flex"
                                     data-delay={(i % 3) * 50}
                                 >
                                     <article className="card w-full">
