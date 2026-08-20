@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { IconRefresh, IconAlertTriangle } from '@tabler/icons-react';
-import { githubService } from '../services/githubService';
-import { useDarkMode } from '../hooks/useDarkMode';
-import { useLanguage } from '../hooks/useLanguage';
-import type { GitHubUser, GitHubRepo } from '../types/github';
+import { useGitHubStore } from '../store/githubStore';
+import { useThemeStore } from '../store/themeStore';
+import { useLanguageStore } from '../store/languageStore';
 import { Navigation } from '../components/Navigation';
 import { Hero } from '../components/Hero';
 import { About } from '../components/About';
@@ -17,13 +16,19 @@ import { Footer } from '../components/Footer';
 import { PageLoader } from '../components/PageLoader';
 import { smoothScrollToSection } from '../utils/scroll';
 
+const USERNAME = 'iamilia';
+const REPO_COUNT = 6;
+
 export const Home = () => {
-    const [user, setUser] = useState<GitHubUser | null>(null);
-    const [repos, setRepos] = useState<GitHubRepo[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const { darkMode, toggleDarkMode } = useDarkMode();
-    const { language, toggleLanguage } = useLanguage();
+    const user = useGitHubStore((s) => s.user);
+    const repos = useGitHubStore((s) => s.repos);
+    const status = useGitHubStore((s) => s.status);
+    const error = useGitHubStore((s) => s.error);
+    const load = useGitHubStore((s) => s.load);
+    const darkMode = useThemeStore((s) => s.darkMode);
+    const toggleDarkMode = useThemeStore((s) => s.toggleDarkMode);
+    const language = useLanguageStore((s) => s.language);
+    const toggleLanguage = useLanguageStore((s) => s.toggleLanguage);
     const { hash } = useLocation();
     const { t } = useTranslation();
 
@@ -32,27 +37,13 @@ export const Home = () => {
         document.title = 'Iam Ilia - Software Developer Portfolio';
     }, []);
 
+    // The store decides whether this actually hits the network — a fresh
+    // cache resolves it without a request.
     useEffect(() => {
-        const fetchGitHubData = async () => {
-            try {
-                setLoading(true);
-                const [userData, reposData] = await Promise.all([
-                    githubService.getUser('iamilia'),
-                    githubService.getUserRepos('iamilia', 6),
-                ]);
+        void load(USERNAME, REPO_COUNT);
+    }, [load]);
 
-                setUser(userData);
-                setRepos(reposData);
-            } catch (err) {
-                console.error('Error fetching GitHub data:', err);
-                setError('Failed to load GitHub data');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchGitHubData();
-    }, []);
+    const loading = status === 'loading' || status === 'idle';
 
     /**
      * Links on the sub-pages point at `/#contact` and friends. The sections
@@ -65,11 +56,12 @@ export const Home = () => {
         return () => cancelAnimationFrame(frame);
     }, [loading, hash]);
 
-    const scrollToSection = (sectionId: string) => smoothScrollToSection(sectionId);
+    const scrollToSection = (sectionId: string) =>
+        smoothScrollToSection(sectionId);
 
     if (loading) return <PageLoader />;
 
-    if (error) {
+    if (status === 'error') {
         return (
             <div className="flex min-h-svh items-center px-6">
                 <div className="mx-auto w-full max-w-md">
@@ -80,7 +72,7 @@ export const Home = () => {
                     </span>
                     <p className="prose-sm mt-3">{error}</p>
                     <button
-                        onClick={() => window.location.reload()}
+                        onClick={() => void load(USERNAME, REPO_COUNT)}
                         className="btn mt-7"
                     >
                         <IconRefresh size={16} />

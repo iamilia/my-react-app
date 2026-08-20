@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDarkMode } from '../hooks/useDarkMode';
-import { useLanguage } from '../hooks/useLanguage';
+import { useThemeStore } from '../store/themeStore';
+import { useLanguageStore } from '../store/languageStore';
 import { Navigation } from './Navigation';
 import { Footer } from './Footer';
 
@@ -10,8 +10,10 @@ import { Footer } from './Footer';
  * enough top padding to clear the fixed header.
  */
 export const SubPageShell = ({ children }: { children: ReactNode }) => {
-    const { darkMode, toggleDarkMode } = useDarkMode();
-    const { language, toggleLanguage } = useLanguage();
+    const darkMode = useThemeStore((s) => s.darkMode);
+    const toggleDarkMode = useThemeStore((s) => s.toggleDarkMode);
+    const language = useLanguageStore((s) => s.language);
+    const toggleLanguage = useLanguageStore((s) => s.toggleLanguage);
     const { t } = useTranslation();
 
     return (

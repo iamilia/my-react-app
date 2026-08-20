@@ -21,6 +21,12 @@ export default defineConfig({
                 target: 'http://localhost:3000',
                 changeOrigin: true,
             },
+            // Same deal for the GitHub proxy: the client only ever talks to
+            // our own origin, so dev has to forward it too.
+            '/_gh': {
+                target: 'http://localhost:3000',
+                changeOrigin: true,
+            },
         },
     },
 });

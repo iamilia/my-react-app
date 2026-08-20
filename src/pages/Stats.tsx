@@ -7,6 +7,7 @@ import {
     IconUsers,
 } from '@tabler/icons-react';
 import { SubPageShell } from '../components/SubPageShell';
+import { useStatsAuthStore } from '../store/statsAuthStore';
 import {
     fetchStats,
     StatsError,
@@ -18,7 +19,6 @@ import {
     type StatsResponse,
 } from '../services/analyticsService';
 
-const TOKEN_KEY = 'ilia:analytics-token';
 const RANGES = [7, 30, 90] as const;
 
 const num = (n: number) => n.toLocaleString('en-US');
@@ -244,9 +244,9 @@ const TokenGate = ({
 };
 
 export const Stats = () => {
-    const [token, setToken] = useState<string | null>(() =>
-        localStorage.getItem(TOKEN_KEY)
-    );
+    const token = useStatsAuthStore((s) => s.token);
+    const signIn = useStatsAuthStore((s) => s.signIn);
+    const signOut = useStatsAuthStore((s) => s.signOut);
     const [days, setDays] = useState<number>(30);
     const [data, setData] = useState<StatsResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -283,8 +283,7 @@ export const Stats = () => {
                 if (id !== requestId.current) return;
 
                 if (err instanceof StatsError && err.status === 401) {
-                    localStorage.removeItem(TOKEN_KEY);
-                    setToken(null);
+                    signOut();
                     setData(null);
                     setError('Wrong token.');
                     return;
@@ -297,21 +296,15 @@ export const Stats = () => {
                 if (id === requestId.current) setLoading(false);
             }
         },
-        []
+        [signOut]
     );
 
     useEffect(() => {
         if (token) void load(token, days);
     }, [token, days, load]);
 
-    const signIn = (value: string) => {
-        localStorage.setItem(TOKEN_KEY, value);
-        setToken(value);
-    };
-
-    const signOut = () => {
-        localStorage.removeItem(TOKEN_KEY);
-        setToken(null);
+    const handleSignOut = () => {
+        signOut();
         setData(null);
         setError(null);
     };
@@ -388,7 +381,7 @@ export const Stats = () => {
 
                     <button
                         type="button"
-                        onClick={signOut}
+                        onClick={handleSignOut}
                         className="tag cursor-pointer"
                         aria-label="Forget token"
                     >
