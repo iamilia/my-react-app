@@ -75,7 +75,7 @@ export const Projects = ({ repos }: ProjectsProps) => {
                             >
                                 <div className="flex items-start justify-between gap-3">
                                     <h3
-                                        className="force-mono min-w-0 text-[0.9375rem] font-bold tracking-tight break-words transition-colors duration-200 group-hover:text-(--accent)"
+                                        className="force-mono min-w-0 text-[0.9375rem] font-bold tracking-tight wrap-break-word transition-colors duration-200 group-hover:text-(--accent)"
                                         dir="ltr"
                                     >
                                         {repo.name}
