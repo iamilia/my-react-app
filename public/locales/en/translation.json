@@ -15,11 +15,7 @@
         "ctaContact": "Get in touch",
         "available": "Open to projects",
         "scroll": "Scroll",
-        "roles": [
-            "Software Developer",
-            "Game Developer",
-            "Tech Enthusiast"
-        ],
+        "roles": ["Software Developer", "Game Developer", "Tech Enthusiast"],
         "rolesLabel": "Working as"
     },
     "about": {

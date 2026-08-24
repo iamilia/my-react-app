@@ -9,6 +9,9 @@ import { useLocation } from 'react-router-dom';
 export const ScrollToTop = () => {
     const { pathname, hash } = useLocation();
 
+    // `pathname` is the trigger, not an input: the effect exists to run on
+    // every route change even though it never reads the value.
+    // biome-ignore lint/correctness/useExhaustiveDependencies: intentional trigger
     useEffect(() => {
         if (hash) return;
         window.scrollTo(0, 0);

@@ -69,28 +69,29 @@
           hand. Keep these two hex values in step with --bg in src/style.css.
         -->
         <script>
-            (function () {
-                var LIGHT = '#faf7f2';
-                var DARK = '#0b0f1a';
-                var dark = false;
+            (() => {
+                const LIGHT = '#faf7f2';
+                const DARK = '#0b0f1a';
+                const prefersDark = () =>
+                    window.matchMedia?.('(prefers-color-scheme: dark)')
+                        .matches ?? false;
+
+                let dark = false;
                 try {
-                    var saved = localStorage.getItem('theme');
+                    const saved = localStorage.getItem('theme');
                     dark =
                         saved === 'dark' ||
-                        (saved !== 'light' &&
-                            window.matchMedia('(prefers-color-scheme: dark)')
-                                .matches);
-                } catch (e) {
+                        (saved !== 'light' && prefersDark());
+                } catch {
                     /* localStorage blocked — fall back to the media query */
-                    dark =
-                        window.matchMedia &&
-                        window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    dark = prefersDark();
                 }
-                var root = document.documentElement;
+
+                const root = document.documentElement;
                 root.classList.toggle('dark', dark);
                 root.style.colorScheme = dark ? 'dark' : 'light';
                 root.style.backgroundColor = dark ? DARK : LIGHT;
-                var meta = document.querySelector('meta[name="theme-color"]');
+                const meta = document.querySelector('meta[name="theme-color"]');
                 if (meta) meta.setAttribute('content', dark ? DARK : LIGHT);
             })();
         </script>

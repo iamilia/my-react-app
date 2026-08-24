@@ -133,6 +133,7 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                         >
                             <button
                                 ref={workBtn}
+                                type="button"
                                 onClick={() => scrollToSection('work')}
                                 className="btn"
                             >
@@ -141,6 +142,7 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                             </button>
                             <button
                                 ref={contactBtn}
+                                type="button"
                                 onClick={() => scrollToSection('contact')}
                                 className="btn-outline"
                             >
@@ -225,7 +227,10 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                                             rel="noopener noreferrer"
                                             className="text-muted group flex min-h-10 items-center gap-2.5 text-sm transition-colors hover:text-(--accent)"
                                         >
-                                            <Icon size={16} className="shrink-0" />
+                                            <Icon
+                                                size={16}
+                                                className="shrink-0"
+                                            />
                                             <span className="force-mono flex-1">
                                                 {label}
                                             </span>

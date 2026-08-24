@@ -37,7 +37,11 @@ export const useBoardInput = (
 
             const target = event.target as HTMLElement | null;
             const tag = target?.tagName;
-            if (tag === 'INPUT' || tag === 'TEXTAREA' || target?.isContentEditable)
+            if (
+                tag === 'INPUT' ||
+                tag === 'TEXTAREA' ||
+                target?.isContentEditable
+            )
                 return;
 
             const direction = KEY_MAP[event.key];

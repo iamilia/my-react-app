@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IconMenu2, IconX, IconSun, IconMoon } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
@@ -116,7 +122,10 @@ export const Navigation = ({
         return () => ro.disconnect();
     }, [measure]);
 
-    // Re-measure when the labels themselves change length
+    // Re-measure when the labels themselves change length. `language` and `t`
+    // are triggers, not inputs — `measure` reads the widths off the DOM, so
+    // the only way to catch a label swap is to depend on what caused it.
+    // biome-ignore lint/correctness/useExhaustiveDependencies: intentional triggers
     useLayoutEffect(() => {
         measure();
     }, [language, t, measure]);
@@ -152,6 +161,7 @@ export const Navigation = ({
     ) => (
         <button
             key={item.id}
+            type="button"
             onClick={measuring ? undefined : () => go(item)}
             tabIndex={measuring ? -1 : undefined}
             className={`nav-link relative py-2 text-[0.9375rem] whitespace-nowrap transition-colors duration-200 ${
@@ -195,6 +205,7 @@ export const Navigation = ({
                     {/* Wordmark */}
                     <button
                         ref={wordmarkRef}
+                        type="button"
                         onClick={goHome}
                         className="display shrink-0 text-xl whitespace-nowrap transition-colors hover:text-(--accent) sm:text-2xl"
                     >
@@ -219,8 +230,12 @@ export const Navigation = ({
 
                     {/* Controls */}
                     <div className="flex shrink-0 items-center gap-2">
-                        <div ref={controlsRef} className="flex items-center gap-2">
+                        <div
+                            ref={controlsRef}
+                            className="flex items-center gap-2"
+                        >
                             <button
+                                type="button"
                                 onClick={toggleLanguage}
                                 className="text-muted inline-flex h-11 min-w-11 items-center justify-center px-1 text-xs font-semibold transition-colors hover:text-(--fg)"
                                 title={
@@ -249,6 +264,7 @@ export const Navigation = ({
                             </button>
 
                             <button
+                                type="button"
                                 onClick={toggleDarkMode}
                                 className="text-muted inline-flex h-11 w-11 items-center justify-center transition-colors hover:text-(--fg)"
                                 aria-label="Toggle theme"
@@ -263,7 +279,10 @@ export const Navigation = ({
 
                         {compact && (
                             <button
-                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                type="button"
+                                onClick={() =>
+                                    setMobileMenuOpen(!mobileMenuOpen)
+                                }
                                 className={`inline-flex h-11 w-11 items-center justify-center transition-colors ${
                                     mobileMenuOpen
                                         ? 'text-accent'
@@ -293,6 +312,7 @@ export const Navigation = ({
                     {NAV_ITEMS.map((item, i) => (
                         <button
                             key={item.id}
+                            type="button"
                             onClick={() => go(item)}
                             className={`nav-link flex w-full items-baseline gap-4 border-t border-(--line) py-3.5 text-start transition-colors hover:text-(--accent) ${
                                 active === item.id ? 'text-accent' : ''

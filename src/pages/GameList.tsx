@@ -9,7 +9,10 @@ import { GAMES, type GameMeta } from '../games/registry';
 
 const GameCard = ({ game }: { game: GameMeta }) => {
     const { t } = useTranslation();
-    const live = game.status === 'live' && game.path !== null;
+    // One binding for both questions ("is it playable?" and "where to?") so
+    // the link target narrows on its own.
+    const livePath = game.status === 'live' ? game.path : null;
+    const live = livePath !== null;
 
     const body = (
         <>
@@ -52,8 +55,8 @@ const GameCard = ({ game }: { game: GameMeta }) => {
         </>
     );
 
-    return live ? (
-        <Link to={game.path!} className="card card-link group w-full">
+    return livePath ? (
+        <Link to={livePath} className="card card-link group w-full">
             {body}
         </Link>
     ) : (

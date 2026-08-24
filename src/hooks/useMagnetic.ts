@@ -57,7 +57,8 @@ export const useMagnetic = <T extends HTMLElement = HTMLElement>(
             // needs its own transition — the class's `transition` list covers
             // colour and shadow only, and adding `transform` there would put
             // a lag on the tracking itself.
-            el.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+            el.style.transition =
+                'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
             el.style.transform = '';
         };
 

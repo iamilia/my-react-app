@@ -98,15 +98,17 @@ const DailyChart = ({ days }: { days: DayStats[] }) => {
 
 /** Hour-of-day histogram, summed over the whole range. */
 const HourChart = ({ days, tz }: { days: DayStats[]; tz: string }) => {
+    // Keyed by hour rather than by position: the hour *is* the identity here,
+    // and carrying it on the item keeps the bars off array-index keys.
     const hours = useMemo(() => {
-        const out = new Array(24).fill(0) as number[];
+        const totals = new Array<number>(24).fill(0);
         for (const day of days) {
-            day.hours.forEach((n, i) => (out[i] += n));
+            for (const [i, n] of day.hours.entries()) totals[i] += n;
         }
-        return out;
+        return totals.map((count, hour) => ({ hour, count }));
     }, [days]);
 
-    const peak = Math.max(1, ...hours);
+    const peak = Math.max(1, ...hours.map((h) => h.count));
 
     return (
         <div className="card">
@@ -116,16 +118,16 @@ const HourChart = ({ days, tz }: { days: DayStats[]; tz: string }) => {
             </div>
 
             <div className="ltr-run flex h-24 items-end gap-0.5" dir="ltr">
-                {hours.map((n, i) => (
-                    <div key={i} className="group relative flex-1">
+                {hours.map(({ hour, count }) => (
+                    <div key={hour} className="group relative flex-1">
                         <div className="flex h-24 flex-col justify-end">
                             <div
                                 className="min-h-px w-full bg-(--accent) opacity-60 transition-opacity group-hover:opacity-100"
-                                style={{ height: `${(n / peak) * 100}%` }}
+                                style={{ height: `${(count / peak) * 100}%` }}
                             />
                         </div>
                         <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 hidden -translate-x-1/2 border border-(--line) bg-(--bg-alt) px-2 py-1 font-mono text-[10px] whitespace-nowrap group-hover:block">
-                            {String(i).padStart(2, '0')}:00 · {num(n)}
+                            {String(hour).padStart(2, '0')}:00 · {num(count)}
                         </span>
                     </div>
                 ))}

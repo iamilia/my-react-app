@@ -35,7 +35,10 @@ const readSaved = (): SavedState | null => {
     try {
         const raw = localStorage.getItem(STATE_KEY);
         if (!raw) return null;
-        const parsed = JSON.parse(raw) as { board?: unknown; dismissedWin?: unknown };
+        const parsed = JSON.parse(raw) as {
+            board?: unknown;
+            dismissedWin?: unknown;
+        };
         if (!isBoard(parsed.board)) return null;
         // Ghosts are a per-turn animation detail; never restore them.
         const board: Board = { ...parsed.board, ghosts: [] };
@@ -61,9 +64,10 @@ export const use2048 = () => {
         () => readSaved() ?? freshState()
     );
     const [previous, setPrevious] = useState<Board | null>(null);
-    const [gained, setGained] = useState<{ amount: number; key: number } | null>(
-        null
-    );
+    const [gained, setGained] = useState<{
+        amount: number;
+        key: number;
+    } | null>(null);
 
     const settleTimer = useRef<number | undefined>(undefined);
 
@@ -72,7 +76,10 @@ export const use2048 = () => {
         try {
             localStorage.setItem(
                 STATE_KEY,
-                JSON.stringify({ board: { ...board, ghosts: [] }, dismissedWin })
+                JSON.stringify({
+                    board: { ...board, ghosts: [] },
+                    dismissedWin,
+                })
             );
             localStorage.setItem(BEST_KEY, String(best));
         } catch {

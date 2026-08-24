@@ -72,6 +72,7 @@ export const Home = () => {
                     </span>
                     <p className="prose-sm mt-3">{error}</p>
                     <button
+                        type="button"
                         onClick={() => void load(USERNAME, REPO_COUNT)}
                         className="btn mt-7"
                     >

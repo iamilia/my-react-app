@@ -166,7 +166,10 @@ export const Work = () => {
                             {t('work.platformsLabel')}
                         </p>
 
-                        <ul className="reveal m-0 mt-4 list-none p-0" data-delay="100">
+                        <ul
+                            className="reveal m-0 mt-4 list-none p-0"
+                            data-delay="100"
+                        >
                             {PLATFORMS.map((platform) => (
                                 <li
                                     key={platform.key}
@@ -201,7 +204,10 @@ export const Work = () => {
                             {t('work.endpoints')}
                         </p>
 
-                        <ul className="reveal m-0 mt-4 list-none p-0" data-delay="100">
+                        <ul
+                            className="reveal m-0 mt-4 list-none p-0"
+                            data-delay="100"
+                        >
                             {SITES.map((site) => (
                                 <li key={site.key}>
                                     <a
@@ -244,8 +250,12 @@ export const Work = () => {
                 {/* ========================== ARCHIVED ========================== */}
                 <div className="field mt-20 lg:mt-28">
                     <div className="field-aside reveal">
-                        <span className="label">{t('work.archived.label')}</span>
-                        <p className="prose-sm mt-3">{t('work.archived.note')}</p>
+                        <span className="label">
+                            {t('work.archived.label')}
+                        </span>
+                        <p className="prose-sm mt-3">
+                            {t('work.archived.note')}
+                        </p>
                     </div>
 
                     <div className="field-body">
@@ -278,14 +288,20 @@ export const Work = () => {
                                             )}
                                         </p>
 
-                                        <p className="prose-sm bidi-auto mt-2.5" dir="auto">
+                                        <p
+                                            className="prose-sm bidi-auto mt-2.5"
+                                            dir="auto"
+                                        >
                                             {t(
                                                 `work.archived.items.${project.key}.description`
                                             )}
                                         </p>
 
                                         {project.framework && (
-                                            <div className="card-foot" dir="ltr">
+                                            <div
+                                                className="card-foot"
+                                                dir="ltr"
+                                            >
                                                 <span className="truncate">
                                                     {project.framework}
                                                 </span>

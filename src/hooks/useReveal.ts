@@ -29,7 +29,7 @@ export const useReveal = <T extends HTMLElement = HTMLElement>() => {
         if (targets.length === 0) return;
 
         if (!('IntersectionObserver' in window)) {
-            targets.forEach((el) => el.classList.add('is-visible'));
+            for (const el of targets) el.classList.add('is-visible');
             return;
         }
 
@@ -49,7 +49,7 @@ export const useReveal = <T extends HTMLElement = HTMLElement>() => {
             { rootMargin: '0px 0px -12% 0px', threshold: 0.12 }
         );
 
-        targets.forEach((el) => observer.observe(el));
+        for (const el of targets) observer.observe(el);
         return () => observer.disconnect();
     }, []);
 

@@ -101,7 +101,10 @@ export const Projects = ({ repos }: ProjectsProps) => {
                                     pinned LTR so the icon always leads, and
                                     pushed back to the reading edge so the
                                     strip still lines up with the card above. */}
-                                <div className="card-foot ltr-run nums" dir="ltr">
+                                <div
+                                    className="card-foot ltr-run nums"
+                                    dir="ltr"
+                                >
                                     {repo.language && (
                                         <span className="flex min-w-0 items-center gap-1.5">
                                             <span
@@ -139,7 +142,10 @@ export const Projects = ({ repos }: ProjectsProps) => {
                         className="btn-outline"
                     >
                         {t('projects.viewAllProjects')}
-                        <IconArrowUpRight size={16} className="rtl:-scale-x-100" />
+                        <IconArrowUpRight
+                            size={16}
+                            className="rtl:-scale-x-100"
+                        />
                     </a>
                 </div>
             </div>

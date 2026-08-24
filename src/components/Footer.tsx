@@ -55,6 +55,7 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                     {/* colophon in the margin, index in the field */}
                     <div className="field-aside reveal">
                         <button
+                            type="button"
                             onClick={scrollToTop}
                             className="display text-3xl transition-colors hover:text-(--accent)"
                         >
@@ -79,6 +80,7 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                                     {NAV_ITEMS.map((item, i) => (
                                         <li key={item.id}>
                                             <button
+                                                type="button"
                                                 onClick={() => go(item)}
                                                 className="text-muted flex min-h-9 w-full items-baseline gap-4 py-1.5 text-start text-[0.9375rem] transition-colors hover:text-(--accent)"
                                             >
@@ -123,6 +125,7 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                     </p>
 
                     <button
+                        type="button"
                         onClick={scrollToTop}
                         className="text-muted label inline-flex min-h-11 items-center gap-2 transition-colors hover:text-(--accent)"
                         aria-label={t('footer.backToTop')}

@@ -35,7 +35,13 @@ export const SplitText = ({
     return (
         <span className={`reveal-words ${className}`}>
             {words.map((word, i) => (
-                <Fragment key={`${word}-${i}`}>
+                // The list is a fixed split of one string — never reordered,
+                // filtered or appended to — and a repeated word carries no
+                // other identity, so the position is the only stable key.
+                <Fragment
+                    // biome-ignore lint/suspicious/noArrayIndexKey: static list, never reordered
+                    key={`${word}-${i}`}
+                >
                     {i > 0 && ' '}
                     <span className="split">
                         <span

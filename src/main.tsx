@@ -4,7 +4,10 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './i18n';
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('index.html is missing #root');
+
+createRoot(rootElement).render(
     <StrictMode>
         <BrowserRouter>
             <App />

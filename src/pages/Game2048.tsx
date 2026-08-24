@@ -90,16 +90,20 @@ export const Game2048 = () => {
                 </div>
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
-                    <button onClick={restart} className="btn">
+                    <button type="button" onClick={restart} className="btn">
                         <IconRefresh size={16} />
                         {t('game2048.newGame')}
                     </button>
                     <button
+                        type="button"
                         onClick={undo}
                         disabled={!canUndo}
                         className="btn-outline disabled:pointer-events-none disabled:opacity-40"
                     >
-                        <IconArrowBackUp size={16} className="rtl:-scale-x-100" />
+                        <IconArrowBackUp
+                            size={16}
+                            className="rtl:-scale-x-100"
+                        />
                         {t('game2048.undo')}
                     </button>
                 </div>
@@ -123,12 +127,14 @@ export const Game2048 = () => {
                                 </p>
                                 <div className="flex flex-wrap justify-center gap-3">
                                     <button
+                                        type="button"
                                         onClick={keepPlaying}
                                         className="btn"
                                     >
                                         {t('game2048.win.keepPlaying')}
                                     </button>
                                     <button
+                                        type="button"
                                         onClick={restart}
                                         className="btn-outline"
                                     >
@@ -149,12 +155,17 @@ export const Game2048 = () => {
                                     })}
                                 </p>
                                 <div className="flex flex-wrap justify-center gap-3">
-                                    <button onClick={restart} className="btn">
+                                    <button
+                                        type="button"
+                                        onClick={restart}
+                                        className="btn"
+                                    >
                                         <IconRefresh size={16} />
                                         {t('game2048.lose.tryAgain')}
                                     </button>
                                     {canUndo && (
                                         <button
+                                            type="button"
                                             onClick={undo}
                                             className="btn-outline"
                                         >

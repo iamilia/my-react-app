@@ -8,7 +8,7 @@
  */
 
 const easeInOutCubic = (x: number) =>
-    x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2;
 
 const prefersReducedMotion = () =>
     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
@@ -41,7 +41,9 @@ export const smoothScrollToSection = (sectionId: string, offset = 80) => {
     const element = document.getElementById(sectionId);
     if (!element) return;
 
-    smoothScrollTo(element.getBoundingClientRect().top + window.scrollY - offset);
+    smoothScrollTo(
+        element.getBoundingClientRect().top + window.scrollY - offset
+    );
 };
 
 /** Scroll back to the very top of the page. Longer, since it travels further. */
