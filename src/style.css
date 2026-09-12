@@ -176,6 +176,15 @@
     --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
     --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
     --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+    /* The mobile nav panel opens with the calm settle and closes on the
+       quick curve, faster than it opened — clearing the way should read as
+       one quick motion, not as the entrance played backwards. The stagger
+       is deliberately tighter than a page reveal's: nobody should have to
+       wait out six list items' worth of delay to tap the last link. */
+    --menu-open-duration: 260ms;
+    --menu-close-duration: 150ms;
+    --menu-stagger: 40ms;
 }
 
 /* ==========================================================================
@@ -820,6 +829,74 @@
     .nav-link:hover .nav-underline,
     .nav-underline-active {
         transform: scaleX(1);
+    }
+
+    /* ------------------------------------------------------- mobile menu
+       Used to animate `max-height`, a layout property whose eased curve
+       plays out against an arbitrary cap (32rem) rather than the panel's
+       real height — the visible motion sped through most of the range and
+       then idled, which is what actually read as rough. Opacity and
+       transform settle as one motion no matter how tall the list is.
+
+       `position: absolute` takes the panel out of flow entirely, closed
+       or open: it can't inflate the fixed header's own box and sit,
+       invisible but still full-height, over whatever renders beneath it
+       (the header's remaining in-flow content is just the bar, so `top:
+       100%` lands the panel right under it).
+
+       It carries its own backing rather than reusing `.glass`: the
+       header's tint is 72% opacity because blur alone hides a one-line
+       sliver of whatever scrolls under a slim bar. Stretched over a
+       panel this tall, sitting on top of a whole page's worth of text,
+       that same 72% read as see-through rather than frosted — the text
+       behind kept its edges instead of dissolving into the blur. A
+       panel that has to hide real content needs to be nearly solid;
+       the blur behind it is then just softening for the 6% that
+       isn't. */
+    .mobile-menu {
+        position: absolute;
+        inset-inline: 0;
+        top: 100%;
+        background: color-mix(in srgb, var(--bg) 96%, transparent);
+        -webkit-backdrop-filter: blur(20px) saturate(150%);
+        backdrop-filter: blur(20px) saturate(150%);
+        border-bottom: 1px solid var(--line);
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition:
+            opacity var(--menu-close-duration) var(--ease-out),
+            transform var(--menu-close-duration) var(--ease-out);
+    }
+
+    .mobile-menu.is-open {
+        pointer-events: auto;
+        opacity: 1;
+        transform: none;
+        transition:
+            opacity var(--menu-open-duration) var(--ease-calm),
+            transform var(--menu-open-duration) var(--ease-calm);
+    }
+
+    /* Each row rises in behind the panel fade, staggered in document
+       order via `--menu-i` (set inline per button). Outside `.is-open` the
+       rule below doesn't apply, so closing drops the stagger entirely —
+       on the way out every row moves together. */
+    .mobile-menu-item {
+        opacity: 0;
+        transform: translateY(10px);
+        transition:
+            opacity var(--menu-close-duration) var(--ease-out),
+            transform var(--menu-close-duration) var(--ease-out);
+    }
+
+    .mobile-menu.is-open .mobile-menu-item {
+        opacity: 1;
+        transform: none;
+        transition:
+            opacity var(--menu-open-duration) var(--ease-calm),
+            transform var(--menu-open-duration) var(--ease-calm);
+        transition-delay: calc(var(--menu-i, 0) * var(--menu-stagger));
     }
 
     /* --------------------------------------------------- RTL / Arabic script
@@ -1569,6 +1646,13 @@
     .split-word {
         opacity: 1;
         transform: none;
+    }
+
+    /* The blanket rule above zeroes every transition's *duration*, not its
+       *delay* — left alone, the mobile menu's per-item stagger would still
+       hold each row invisible for its full delay and then snap it in. */
+    .mobile-menu-item {
+        transition-delay: 0ms !important;
     }
 
     .aurora-blob {

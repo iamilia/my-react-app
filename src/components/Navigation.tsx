@@ -58,6 +58,8 @@ export const Navigation = ({
     const wordmarkRef = useRef<HTMLButtonElement>(null);
     const controlsRef = useRef<HTMLDivElement>(null);
     const rulerRef = useRef<HTMLDivElement>(null);
+    const burgerRef = useRef<HTMLButtonElement>(null);
+    const menuPanelRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 12);
@@ -134,6 +136,38 @@ export const Navigation = ({
     useEffect(() => {
         if (!compact) setMobileMenuOpen(false);
     }, [compact]);
+
+    // Escape and an outside click both close the panel and hand focus back
+    // to the button that opened it, same as a click on a nav item would.
+    useEffect(() => {
+        if (!mobileMenuOpen) return;
+
+        const close = () => {
+            setMobileMenuOpen(false);
+            burgerRef.current?.focus();
+        };
+
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') close();
+        };
+        const onPointerDown = (e: PointerEvent) => {
+            const target = e.target as Node;
+            if (
+                menuPanelRef.current?.contains(target) ||
+                burgerRef.current?.contains(target)
+            ) {
+                return;
+            }
+            close();
+        };
+
+        document.addEventListener('keydown', onKeyDown);
+        document.addEventListener('pointerdown', onPointerDown);
+        return () => {
+            document.removeEventListener('keydown', onKeyDown);
+            document.removeEventListener('pointerdown', onPointerDown);
+        };
+    }, [mobileMenuOpen]);
 
     /**
      * On the home page the section links scroll; from anywhere else they route
@@ -279,6 +313,7 @@ export const Navigation = ({
 
                         {compact && (
                             <button
+                                ref={burgerRef}
                                 type="button"
                                 onClick={() =>
                                     setMobileMenuOpen(!mobileMenuOpen)
@@ -290,6 +325,7 @@ export const Navigation = ({
                                 }`}
                                 aria-label="Toggle menu"
                                 aria-expanded={mobileMenuOpen}
+                                aria-controls="mobile-menu"
                             >
                                 {mobileMenuOpen ? (
                                     <IconX size={22} />
@@ -302,32 +338,49 @@ export const Navigation = ({
                 </div>
             </div>
 
-            {/* Collapsed menu */}
-            <div
-                className={`overflow-hidden transition-[max-height] duration-400 ease-out ${
-                    compact && mobileMenuOpen ? 'max-h-[32rem]' : 'max-h-0'
-                }`}
-            >
-                <div className="wrap pt-1 pb-8">
-                    {NAV_ITEMS.map((item, i) => (
-                        <button
-                            key={item.id}
-                            type="button"
-                            onClick={() => go(item)}
-                            className={`nav-link flex w-full items-baseline gap-4 border-t border-(--line) py-3.5 text-start transition-colors hover:text-(--accent) ${
-                                active === item.id ? 'text-accent' : ''
-                            }`}
-                        >
-                            <span className="force-mono text-accent nums text-xs">
-                                {n(i + 1, 'padded')}
-                            </span>
-                            <span className="display text-2xl">
-                                {t(`navigation.${item.id}`)}
-                            </span>
-                        </button>
-                    ))}
+            {/* Collapsed menu. Opacity and transform only — no max-height —
+                so the panel settles as one motion instead of racing an
+                eased curve against an arbitrary height cap. `.mobile-menu`
+                is absolutely positioned (see style.css), so it never adds
+                its real height to the fixed header above — closed, it
+                can't sit, invisible but still full-height, over the hero
+                underneath. It carries its own solid backing there too
+                (nearly opaque, not the header's thin 72% glass tint) since
+                it's no longer part of the header's box, and because a
+                panel this tall sitting over a page's worth of text needs
+                to actually hide it, not just tint it. Only mounted in
+                `compact` layouts, so nothing lingers over the hero on a
+                desktop viewport that never shows a burger at all. */}
+            {compact && (
+                <div
+                    ref={menuPanelRef}
+                    id="mobile-menu"
+                    className={`mobile-menu ${mobileMenuOpen ? 'is-open' : ''}`}
+                    aria-hidden={!mobileMenuOpen}
+                    inert={!mobileMenuOpen}
+                >
+                    <div className="wrap pt-1 pb-8">
+                        {NAV_ITEMS.map((item, i) => (
+                            <button
+                                key={item.id}
+                                type="button"
+                                onClick={() => go(item)}
+                                className={`nav-link mobile-menu-item flex w-full items-baseline gap-4 border-t border-(--line) py-3.5 text-start transition-colors hover:text-(--accent) ${
+                                    active === item.id ? 'text-accent' : ''
+                                }`}
+                                style={{ ['--menu-i' as string]: i }}
+                            >
+                                <span className="force-mono text-accent nums text-xs">
+                                    {n(i + 1, 'padded')}
+                                </span>
+                                <span className="display text-2xl">
+                                    {t(`navigation.${item.id}`)}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </header>
     );
 };
