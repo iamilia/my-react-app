@@ -1,0 +1,410 @@
+{
+    "id": "4",
+    "name": {
+        "fa": "خط ۴",
+        "en": "Line 4"
+    },
+    "color": "#f2c318",
+    "source": {
+        "file": "4_ ایستگاهی خط چهار - مهر 1404.xls",
+        "sheets": [
+            "علامه - عادي",
+            "علامه - پنجشنبه",
+            "علامه - جمعه",
+            "شهيد كلاهدوز - عادي",
+            "شهيد كلاهدوز - پنجشنبه",
+            "شهيد كلاهدوز - جمعه"
+        ],
+        "extractedOn": "2026-09-28",
+        "note": "Station timetable (جدول ایستگاهی). Times at each terminal; segment times are station-to-station and include dwell."
+    },
+    "segmentsIncludeDwell": true,
+    "dwellSeconds": null,
+    "stations": [
+        {
+            "id": "shahid-kolahdooz",
+            "fa": "شهید کلاهدوز",
+            "en": "Shahid Kolahdooz"
+        },
+        {
+            "id": "niroo-havaei",
+            "fa": "نیروهوایی",
+            "en": "Niroo Havaei"
+        },
+        {
+            "id": "nabard",
+            "fa": "نبرد",
+            "en": "Nabard"
+        },
+        {
+            "id": "piroozi",
+            "fa": "پیروزی",
+            "en": "Piroozi"
+        },
+        {
+            "id": "ebn-e-sina",
+            "fa": "ابن سینا",
+            "en": "Ebn-e Sina"
+        },
+        {
+            "id": "meydan-e-shohada",
+            "fa": "میدان شهدا",
+            "en": "Shohada Square"
+        },
+        {
+            "id": "darvazeh-shemiran",
+            "fa": "دروازه شمیران",
+            "en": "Darvazeh Shemiran"
+        },
+        {
+            "id": "darvazeh-dowlat",
+            "fa": "دروازه دولت",
+            "en": "Darvazeh Dowlat"
+        },
+        {
+            "id": "ferdowsi",
+            "fa": "فردوسی",
+            "en": "Ferdowsi"
+        },
+        {
+            "id": "teatr-e-shahr",
+            "fa": "تئاتر شهر",
+            "en": "Teatr-e Shahr"
+        },
+        {
+            "id": "meydan-e-enghelab",
+            "fa": "میدان انقلاب اسلامی",
+            "en": "Enghelab Square"
+        },
+        {
+            "id": "towhid",
+            "fa": "توحید",
+            "en": "Towhid"
+        },
+        {
+            "id": "shademan",
+            "fa": "شادمان",
+            "en": "Shademan"
+        },
+        {
+            "id": "doctor-habibollah",
+            "fa": "دکتر حبیب‌اله",
+            "en": "Doctor Habibollah"
+        },
+        {
+            "id": "ostad-moein",
+            "fa": "استاد معین",
+            "en": "Ostad Moein"
+        },
+        {
+            "id": "meydan-e-azadi",
+            "fa": "میدان آزادی",
+            "en": "Azadi Square"
+        },
+        {
+            "id": "bimeh",
+            "fa": "بیمه",
+            "en": "Bimeh"
+        },
+        {
+            "id": "shahrak-e-ekbatan",
+            "fa": "شهرک اکباتان",
+            "en": "Shahrak-e Ekbatan"
+        },
+        {
+            "id": "eram-e-sabz",
+            "fa": "ارم سبز",
+            "en": "Eram-e Sabz"
+        },
+        {
+            "id": "allameh-jafari",
+            "fa": "علامه جعفری",
+            "en": "Allameh Jafari"
+        }
+    ],
+    "directions": {
+        "forward": {
+            "towards": "allameh-jafari",
+            "segmentSeconds": [
+                120, 120, 120, 120, 120, 180, 180, 120, 180, 180, 120, 120, 180,
+                120, 120, 120, 180, 120, 240
+            ],
+            "service": {
+                "weekday": [
+                    {
+                        "from": "shahid-kolahdooz",
+                        "to": "allameh-jafari",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "09:00",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "09:00",
+                                "to": "15:00",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "15:00",
+                                "to": "19:00",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "19:00",
+                                "to": "19:48",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "19:48",
+                                "to": "20:20",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "20:20",
+                                "to": "22:00",
+                                "minutes": 10
+                            }
+                        ]
+                    }
+                ],
+                "thursday": [
+                    {
+                        "from": "shahid-kolahdooz",
+                        "to": "allameh-jafari",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "08:30",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "08:30",
+                                "to": "18:36",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "18:36",
+                                "to": "19:40",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "19:40",
+                                "to": "22:00",
+                                "minutes": 10
+                            }
+                        ]
+                    }
+                ],
+                "holiday": [
+                    {
+                        "from": "shahid-kolahdooz",
+                        "to": "allameh-jafari",
+                        "firstDeparture": "06:00",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "06:00",
+                                "to": "06:40",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "06:40",
+                                "to": "06:48",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "06:48",
+                                "to": "19:31",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "19:31",
+                                "to": "19:40",
+                                "minutes": 9
+                            },
+                            {
+                                "from": "19:40",
+                                "to": "21:00",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "21:00",
+                                "to": "22:00",
+                                "minutes": 15
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "backward": {
+            "towards": "shahid-kolahdooz",
+            "segmentSeconds": [
+                120, 120, 120, 120, 120, 180, 180, 120, 180, 180, 120, 120, 180,
+                120, 120, 120, 180, 120, 180
+            ],
+            "service": {
+                "weekday": [
+                    {
+                        "from": "allameh-jafari",
+                        "to": "shahid-kolahdooz",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "06:02",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "06:02",
+                                "to": "06:20",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "06:20",
+                                "to": "09:50",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "09:50",
+                                "to": "15:50",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "15:50",
+                                "to": "19:30",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "19:30",
+                                "to": "20:00",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "20:00",
+                                "to": "20:40",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "20:40",
+                                "to": "22:00",
+                                "minutes": 10
+                            }
+                        ]
+                    }
+                ],
+                "thursday": [
+                    {
+                        "from": "allameh-jafari",
+                        "to": "shahid-kolahdooz",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "05:40",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "05:40",
+                                "to": "05:48",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "05:48",
+                                "to": "06:02",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "06:02",
+                                "to": "06:14",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "06:14",
+                                "to": "09:09",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "09:09",
+                                "to": "09:13",
+                                "minutes": 4
+                            },
+                            {
+                                "from": "09:13",
+                                "to": "19:07",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "19:07",
+                                "to": "19:14",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "19:14",
+                                "to": "19:30",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "19:30",
+                                "to": "21:30",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "21:30",
+                                "to": "22:00",
+                                "minutes": 15
+                            }
+                        ]
+                    }
+                ],
+                "holiday": [
+                    {
+                        "from": "allameh-jafari",
+                        "to": "shahid-kolahdooz",
+                        "firstDeparture": "06:00",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "06:00",
+                                "to": "07:30",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:30",
+                                "to": "19:52",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "19:52",
+                                "to": "20:00",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "20:00",
+                                "to": "21:30",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "21:30",
+                                "to": "22:00",
+                                "minutes": 15
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "missing": [
+        "Bimeh → Mehrabad Airport branch: not present in the source timetable, so it is not modelled.",
+        "Station dwell time is not published separately; segment times are station-to-station timetable times with dwell already included.",
+        "Timetable times are whole minutes, so every segment (and every ride) has one-minute resolution."
+    ]
+}

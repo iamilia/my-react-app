@@ -1,0 +1,852 @@
+{
+    "$comment": "Hand-maintained station metadata. Order = the line's canonical order (index 0 is the 'forward' origin). Ids are network-wide: an interchange uses the same id on every line it serves, even when the timetables spell it differently. Persian names are matched against the timetable headers after normalising ي/ك/ـ/ZWNJ/spaces. English names are transliterations — check them before publishing. 'color' is a visual choice, not timetable data.",
+    "1": {
+        "name": {
+            "fa": "خط ۱",
+            "en": "Line 1"
+        },
+        "color": "#e0001b",
+        "stations": [
+            {
+                "id": "tajrish",
+                "fa": "تجریش",
+                "en": "Tajrish"
+            },
+            {
+                "id": "gheytarieh",
+                "fa": "قیطریه",
+                "en": "Gheytarieh"
+            },
+            {
+                "id": "shahid-sadr",
+                "fa": "شهید صدر",
+                "en": "Shahid Sadr"
+            },
+            {
+                "id": "gholhak",
+                "fa": "قلهک",
+                "en": "Gholhak"
+            },
+            {
+                "id": "doctor-shariati",
+                "fa": "دکتر شریعتی",
+                "en": "Doctor Shariati"
+            },
+            {
+                "id": "mirdamad",
+                "fa": "میرداماد",
+                "en": "Mirdamad"
+            },
+            {
+                "id": "shahid-haghani",
+                "fa": "شهید حقانی",
+                "en": "Shahid Haghani"
+            },
+            {
+                "id": "shahid-hemmat",
+                "fa": "شهید همت",
+                "en": "Shahid Hemmat"
+            },
+            {
+                "id": "mosalla",
+                "fa": "مصلی امام خمینی(ره)",
+                "en": "Mosalla"
+            },
+            {
+                "id": "shahid-beheshti",
+                "fa": "شهید بهشتی",
+                "en": "Shahid Beheshti"
+            },
+            {
+                "id": "shahid-mofatteh",
+                "fa": "شهید مفتح",
+                "en": "Shahid Mofatteh"
+            },
+            {
+                "id": "haft-e-tir",
+                "fa": "شهدای هفت تیر",
+                "en": "Haft-e Tir"
+            },
+            {
+                "id": "taleghani",
+                "fa": "طالقانی",
+                "en": "Taleghani"
+            },
+            {
+                "id": "darvazeh-dowlat",
+                "fa": "دروازه دولت",
+                "en": "Darvazeh Dowlat"
+            },
+            {
+                "id": "saadi",
+                "fa": "سعدی",
+                "en": "Saadi"
+            },
+            {
+                "id": "emam-khomeini",
+                "fa": "امام خمینی (ره)",
+                "en": "Emam Khomeini"
+            },
+            {
+                "id": "panzdah-e-khordad",
+                "fa": "پانزده خرداد",
+                "en": "Panzdah-e Khordad"
+            },
+            {
+                "id": "khayyam",
+                "fa": "خیام",
+                "en": "Khayyam"
+            },
+            {
+                "id": "meydan-e-mohammadieh",
+                "fa": "میدان محمدیه",
+                "en": "Mohammadieh Square"
+            },
+            {
+                "id": "shoush",
+                "fa": "شوش",
+                "en": "Shoush"
+            },
+            {
+                "id": "payaneh-jonoub",
+                "fa": "پایانه جنوب",
+                "en": "South Terminal"
+            },
+            {
+                "id": "shahid-bokharaei",
+                "fa": "شهید بخارائی",
+                "en": "Shahid Bokharaei"
+            },
+            {
+                "id": "aliabad",
+                "fa": "علی آباد",
+                "en": "Aliabad"
+            },
+            {
+                "id": "javanmard-e-ghassab",
+                "fa": "جوانمرد قصاب",
+                "en": "Javanmard-e Ghassab"
+            },
+            {
+                "id": "shahr-e-rey",
+                "fa": "شهرری",
+                "en": "Shahr-e Rey"
+            },
+            {
+                "id": "palayeshgah",
+                "fa": "پالایشگاه",
+                "en": "Palayeshgah"
+            },
+            {
+                "id": "shahed",
+                "fa": "شاهد",
+                "en": "Shahed"
+            },
+            {
+                "id": "haram-e-motahhar",
+                "fa": "حرم مطهر امام خمینی(ره)",
+                "en": "Haram-e Motahhar"
+            },
+            {
+                "id": "kahrizak",
+                "fa": "کهریزک",
+                "en": "Kahrizak"
+            }
+        ],
+        "missing": [
+            "Shahed → Imam Khomeini Airport / Parand branch: not present in the source timetable, so it is not modelled."
+        ]
+    },
+    "2": {
+        "name": {
+            "fa": "خط ۲",
+            "en": "Line 2"
+        },
+        "color": "#2f4390",
+        "stations": [
+            {
+                "id": "sadeghieh",
+                "fa": "تهران (صادقیه)",
+                "en": "Sadeghieh"
+            },
+            {
+                "id": "tarasht",
+                "fa": "طرشت",
+                "en": "Tarasht"
+            },
+            {
+                "id": "sharif-university",
+                "fa": "دانشگاه شریف",
+                "en": "Sharif University"
+            },
+            {
+                "id": "shademan",
+                "fa": "شادمان",
+                "en": "Shademan"
+            },
+            {
+                "id": "navvab-safavi",
+                "fa": "شهید نواب صفوی",
+                "en": "Navvab-e Safavi"
+            },
+            {
+                "id": "meydan-e-hor",
+                "fa": "میدان حر",
+                "en": "Hor Square"
+            },
+            {
+                "id": "emam-ali-university",
+                "fa": "دانشگاه امام علی(ع)",
+                "en": "Emam Ali University"
+            },
+            {
+                "id": "hasanabad",
+                "fa": "حسن آباد",
+                "en": "Hasanabad"
+            },
+            {
+                "id": "emam-khomeini",
+                "fa": "امام خمینی (ره)",
+                "en": "Emam Khomeini"
+            },
+            {
+                "id": "mellat",
+                "fa": "ملت",
+                "en": "Mellat"
+            },
+            {
+                "id": "baharestan",
+                "fa": "بهارستان",
+                "en": "Baharestan"
+            },
+            {
+                "id": "darvazeh-shemiran",
+                "fa": "دروازه شمیران",
+                "en": "Darvazeh Shemiran"
+            },
+            {
+                "id": "emam-hossein",
+                "fa": "امام حسین (ع)",
+                "en": "Emam Hossein"
+            },
+            {
+                "id": "shahid-madani",
+                "fa": "شهید مدنی",
+                "en": "Shahid Madani"
+            },
+            {
+                "id": "sabalan",
+                "fa": "سبلان",
+                "en": "Sabalan"
+            },
+            {
+                "id": "fadak",
+                "fa": "فدک",
+                "en": "Fadak"
+            },
+            {
+                "id": "janbazan",
+                "fa": "جانبازان",
+                "en": "Janbazan"
+            },
+            {
+                "id": "sarsabz",
+                "fa": "سرسبز",
+                "en": "Sarsabz"
+            },
+            {
+                "id": "elm-o-sanat-university",
+                "fa": "دانشگاه علم وصنعت",
+                "en": "Elm-o Sanat University"
+            },
+            {
+                "id": "shahid-bagheri",
+                "fa": "شهید باقری",
+                "en": "Shahid Bagheri"
+            },
+            {
+                "id": "tehranpars",
+                "fa": "تهرانپارس",
+                "en": "Tehranpars"
+            },
+            {
+                "id": "farhangsara",
+                "fa": "فرهنگسرا",
+                "en": "Farhangsara"
+            }
+        ]
+    },
+    "3": {
+        "name": {
+            "fa": "خط ۳",
+            "en": "Line 3"
+        },
+        "color": "#4fb3e8",
+        "stations": [
+            {
+                "id": "azadegan",
+                "fa": "آزادگان",
+                "en": "Azadegan"
+            },
+            {
+                "id": "nematabad",
+                "fa": "نعمت آباد",
+                "en": "Nematabad"
+            },
+            {
+                "id": "abdolabad",
+                "fa": "عبدل آباد",
+                "en": "Abdolabad"
+            },
+            {
+                "id": "shahrak-e-shariati",
+                "fa": "شهرک شریعتی",
+                "en": "Shahrak-e Shariati"
+            },
+            {
+                "id": "zamzam",
+                "fa": "زمزم",
+                "en": "Zamzam"
+            },
+            {
+                "id": "javadieh",
+                "fa": "جوادیه",
+                "en": "Javadieh"
+            },
+            {
+                "id": "rah-ahan",
+                "fa": "راه آهن",
+                "en": "Rah Ahan"
+            },
+            {
+                "id": "mahdieh",
+                "fa": "مهدیه",
+                "en": "Mahdieh"
+            },
+            {
+                "id": "monirieh",
+                "fa": "منیریه",
+                "en": "Monirieh"
+            },
+            {
+                "id": "teatr-e-shahr",
+                "fa": "تئاتر شهر",
+                "en": "Teatr-e Shahr"
+            },
+            {
+                "id": "meydan-e-valiasr",
+                "fa": "میدان ولیعصر (عج)",
+                "en": "Valiasr Square"
+            },
+            {
+                "id": "meydan-e-jahad",
+                "fa": "میدان جهاد",
+                "en": "Jahad Square"
+            },
+            {
+                "id": "mirza-ye-shirazi",
+                "fa": "میرزای شیرازی",
+                "en": "Mirza-ye Shirazi"
+            },
+            {
+                "id": "shahid-beheshti",
+                "fa": "شهید بهشتی",
+                "en": "Shahid Beheshti"
+            },
+            {
+                "id": "sohrevardi",
+                "fa": "سهروردی",
+                "en": "Sohrevardi"
+            },
+            {
+                "id": "shahid-ghoddousi",
+                "fa": "شهید قدوسی",
+                "en": "Shahid Ghoddousi"
+            },
+            {
+                "id": "sayad-shirazi",
+                "fa": "شهید صیاد شیرازی",
+                "en": "Sayad Shirazi"
+            },
+            {
+                "id": "khajeh-abdollah-ansari",
+                "fa": "خواجه عبداله انصاری",
+                "en": "Khajeh Abdollah Ansari"
+            },
+            {
+                "id": "shahid-zeynoddin",
+                "fa": "شهید زین الدین",
+                "en": "Shahid Zeynoddin"
+            },
+            {
+                "id": "heravi",
+                "fa": "هروی",
+                "en": "Heravi"
+            },
+            {
+                "id": "hosseinabad",
+                "fa": "حسین آباد",
+                "en": "Hosseinabad"
+            },
+            {
+                "id": "nobonyad",
+                "fa": "نوبنیاد",
+                "en": "Nobonyad"
+            },
+            {
+                "id": "aghdasieh",
+                "fa": "اقدسیه",
+                "en": "Aghdasieh"
+            },
+            {
+                "id": "shahid-mahallati",
+                "fa": "شهید محلاتی",
+                "en": "Shahid Mahallati"
+            },
+            {
+                "id": "ghaem",
+                "fa": "قائم",
+                "en": "Ghaem"
+            }
+        ]
+    },
+    "4": {
+        "name": {
+            "fa": "خط ۴",
+            "en": "Line 4"
+        },
+        "color": "#f2c318",
+        "stations": [
+            {
+                "id": "shahid-kolahdooz",
+                "fa": "شهید کلاهدوز",
+                "en": "Shahid Kolahdooz"
+            },
+            {
+                "id": "niroo-havaei",
+                "fa": "نیروهوایی",
+                "en": "Niroo Havaei"
+            },
+            {
+                "id": "nabard",
+                "fa": "نبرد",
+                "en": "Nabard"
+            },
+            {
+                "id": "piroozi",
+                "fa": "پیروزی",
+                "en": "Piroozi"
+            },
+            {
+                "id": "ebn-e-sina",
+                "fa": "ابن سینا",
+                "en": "Ebn-e Sina"
+            },
+            {
+                "id": "meydan-e-shohada",
+                "fa": "میدان شهدا",
+                "en": "Shohada Square"
+            },
+            {
+                "id": "darvazeh-shemiran",
+                "fa": "دروازه شمیران",
+                "en": "Darvazeh Shemiran"
+            },
+            {
+                "id": "darvazeh-dowlat",
+                "fa": "دروازه دولت",
+                "en": "Darvazeh Dowlat"
+            },
+            {
+                "id": "ferdowsi",
+                "fa": "فردوسی",
+                "en": "Ferdowsi"
+            },
+            {
+                "id": "teatr-e-shahr",
+                "fa": "تئاتر شهر",
+                "en": "Teatr-e Shahr"
+            },
+            {
+                "id": "meydan-e-enghelab",
+                "fa": "میدان انقلاب اسلامی",
+                "en": "Enghelab Square"
+            },
+            {
+                "id": "towhid",
+                "fa": "توحید",
+                "en": "Towhid"
+            },
+            {
+                "id": "shademan",
+                "fa": "شادمان",
+                "en": "Shademan"
+            },
+            {
+                "id": "doctor-habibollah",
+                "fa": "دکتر حبیب‌اله",
+                "en": "Doctor Habibollah"
+            },
+            {
+                "id": "ostad-moein",
+                "fa": "استاد معین",
+                "en": "Ostad Moein"
+            },
+            {
+                "id": "meydan-e-azadi",
+                "fa": "میدان آزادی",
+                "en": "Azadi Square"
+            },
+            {
+                "id": "bimeh",
+                "fa": "بیمه",
+                "en": "Bimeh"
+            },
+            {
+                "id": "shahrak-e-ekbatan",
+                "fa": "شهرک اکباتان",
+                "en": "Shahrak-e Ekbatan"
+            },
+            {
+                "id": "eram-e-sabz",
+                "fa": "ارم سبز",
+                "en": "Eram-e Sabz"
+            },
+            {
+                "id": "allameh-jafari",
+                "fa": "علامه جعفری",
+                "en": "Allameh Jafari"
+            }
+        ],
+        "missing": [
+            "Bimeh → Mehrabad Airport branch: not present in the source timetable, so it is not modelled.",
+            "Station dwell time is not published separately; segment times are station-to-station timetable times with dwell already included.",
+            "Timetable times are whole minutes, so every segment (and every ride) has one-minute resolution."
+        ]
+    },
+    "5": {
+        "name": {
+            "fa": "خط ۵",
+            "en": "Line 5"
+        },
+        "color": "#0a8f4a",
+        "stations": [
+            {
+                "id": "golshahr",
+                "fa": "گلشهر",
+                "en": "Golshahr"
+            },
+            {
+                "id": "mohammadshahr",
+                "fa": "محمدشهر",
+                "en": "Mohammadshahr"
+            },
+            {
+                "id": "karaj",
+                "fa": "کرج",
+                "en": "Karaj"
+            },
+            {
+                "id": "atmosfer",
+                "fa": "اتمسفر",
+                "en": "Atmosfer"
+            },
+            {
+                "id": "garmdareh",
+                "fa": "گرمدره",
+                "en": "Garmdareh"
+            },
+            {
+                "id": "vardavard",
+                "fa": "وردآورد",
+                "en": "Vardavard"
+            },
+            {
+                "id": "iran-khodro",
+                "fa": "ایران خودرو",
+                "en": "Iran Khodro"
+            },
+            {
+                "id": "chitgar",
+                "fa": "چیتگر",
+                "en": "Chitgar"
+            },
+            {
+                "id": "azadi-stadium",
+                "fa": "ورزشگاه آزادی",
+                "en": "Azadi Stadium"
+            },
+            {
+                "id": "eram-e-sabz",
+                "fa": "ارم سبز",
+                "en": "Eram-e Sabz"
+            },
+            {
+                "id": "sadeghieh",
+                "fa": "صادقیه",
+                "en": "Sadeghieh"
+            }
+        ],
+        "missing": [
+            "Express (EXP) trains are not modelled; estimates use the all-stops trains."
+        ]
+    },
+    "6": {
+        "name": {
+            "fa": "خط ۶",
+            "en": "Line 6"
+        },
+        "color": "#e5609b",
+        "stations": [
+            {
+                "id": "shahid-arman",
+                "fa": "شهید آرمان",
+                "en": "Shahid Arman"
+            },
+            {
+                "id": "shohada-ye-kan",
+                "fa": "شهدای کن",
+                "en": "Shohada-ye Kan"
+            },
+            {
+                "id": "shahran",
+                "fa": "شهران",
+                "en": "Shahran"
+            },
+            {
+                "id": "shahr-e-ziba",
+                "fa": "شهرزیبا",
+                "en": "Shahr-e Ziba"
+            },
+            {
+                "id": "ayatollah-kashani",
+                "fa": "آیت اله کاشانی",
+                "en": "Ayatollah Kashani"
+            },
+            {
+                "id": "shahid-sattari",
+                "fa": "شهید ستاری",
+                "en": "Shahid Sattari"
+            },
+            {
+                "id": "ashrafi-esfahani",
+                "fa": "اشرفی اصفهانی",
+                "en": "Ashrafi Esfahani"
+            },
+            {
+                "id": "yadegar-e-emam",
+                "fa": "یادگار امام",
+                "en": "Yadegar-e Emam"
+            },
+            {
+                "id": "marzdaran",
+                "fa": "مرزداران",
+                "en": "Marzdaran"
+            },
+            {
+                "id": "shahrak-e-azmayesh",
+                "fa": "شهرک آزمایش",
+                "en": "Shahrak-e Azmayesh"
+            },
+            {
+                "id": "tarbiat-modares",
+                "fa": "دانشگاه تربیت مدرس",
+                "en": "Tarbiat Modares University"
+            },
+            {
+                "id": "kargar",
+                "fa": "کارگر",
+                "en": "Kargar"
+            },
+            {
+                "id": "boostan-e-laleh",
+                "fa": "بوستان لاله",
+                "en": "Boostan-e Laleh"
+            },
+            {
+                "id": "meydan-e-valiasr",
+                "fa": "میدان ولیعصر (عج)",
+                "en": "Valiasr Square"
+            },
+            {
+                "id": "maryam-e-moghaddas",
+                "fa": "مریم مقدس(س)",
+                "en": "Maryam-e Moghaddas"
+            },
+            {
+                "id": "haft-e-tir",
+                "fa": "شهدای هفتم تیر",
+                "en": "Haft-e Tir"
+            },
+            {
+                "id": "bahar-shiraz",
+                "fa": "بهار شیراز",
+                "en": "Bahar Shiraz"
+            },
+            {
+                "id": "sarbaz-vatan",
+                "fa": "سربازوطن",
+                "en": "Sarbaz Vatan"
+            },
+            {
+                "id": "emam-hossein",
+                "fa": "امام حسین(ع)",
+                "en": "Emam Hossein"
+            },
+            {
+                "id": "meydan-e-shohada",
+                "fa": "میدان شهدا",
+                "en": "Shohada Square"
+            },
+            {
+                "id": "amir-kabir",
+                "fa": "امیرکبیر",
+                "en": "Amir Kabir"
+            },
+            {
+                "id": "meydan-e-khorasan",
+                "fa": "میدان خراسان",
+                "en": "Khorasan Square"
+            },
+            {
+                "id": "shahid-rezaei",
+                "fa": "شهید رضایی",
+                "en": "Shahid Rezaei"
+            },
+            {
+                "id": "besat",
+                "fa": "بعثت",
+                "en": "Be'sat"
+            },
+            {
+                "id": "kianshahr",
+                "fa": "کیانشهر",
+                "en": "Kianshahr"
+            },
+            {
+                "id": "dowlatabad",
+                "fa": "دولت آباد",
+                "en": "Dowlatabad"
+            }
+        ]
+    },
+    "7": {
+        "name": {
+            "fa": "خط ۷",
+            "en": "Line 7"
+        },
+        "color": "#8a3f9e",
+        "stations": [
+            {
+                "id": "meydan-e-ketab",
+                "fa": "میدان کتاب",
+                "en": "Ketab Square"
+            },
+            {
+                "id": "shahid-dadman",
+                "fa": "شهید دادمان",
+                "en": "Shahid Dadman"
+            },
+            {
+                "id": "meydan-e-sanat",
+                "fa": "میدان صنعت",
+                "en": "Sanat Square"
+            },
+            {
+                "id": "borj-e-milad",
+                "fa": "برج میلاد",
+                "en": "Milad Tower"
+            },
+            {
+                "id": "boostan-e-goftegou",
+                "fa": "بوستان گفتگو",
+                "en": "Boostan-e Goftegou"
+            },
+            {
+                "id": "tarbiat-modares",
+                "fa": "تربیت مدرس",
+                "en": "Tarbiat Modares"
+            },
+            {
+                "id": "modafean-e-salamat",
+                "fa": "مدافعان سلامت",
+                "en": "Modafean-e Salamat"
+            },
+            {
+                "id": "towhid",
+                "fa": "توحید",
+                "en": "Towhid"
+            },
+            {
+                "id": "navvab-safavi",
+                "fa": "شهید نواب صفوی",
+                "en": "Navvab-e Safavi"
+            },
+            {
+                "id": "roudaki",
+                "fa": "رودکی",
+                "en": "Roudaki"
+            },
+            {
+                "id": "komeil",
+                "fa": "کمیل",
+                "en": "Komeil"
+            },
+            {
+                "id": "beryanak",
+                "fa": "بریانک",
+                "en": "Beryanak"
+            },
+            {
+                "id": "helal-e-ahmar",
+                "fa": "هلال احمر",
+                "en": "Helal-e Ahmar"
+            },
+            {
+                "id": "mahdieh",
+                "fa": "مهدیه",
+                "en": "Mahdieh"
+            },
+            {
+                "id": "meydan-e-mohammadieh",
+                "fa": "میدان محمدیه",
+                "en": "Mohammadieh Square"
+            },
+            {
+                "id": "mowlavi",
+                "fa": "مولوی",
+                "en": "Mowlavi"
+            },
+            {
+                "id": "meydan-e-ghiam",
+                "fa": "میدان قیام",
+                "en": "Ghiam Square"
+            },
+            {
+                "id": "shohada-ye-17-shahrivar",
+                "fa": "شهدای ۱۷ شهریور",
+                "en": "17 Shahrivar"
+            },
+            {
+                "id": "chehel-tan-e-doulab",
+                "fa": "چهل‌تن دولاب",
+                "en": "Chehel Tan-e Doulab"
+            },
+            {
+                "id": "ahang",
+                "fa": "آهنگ",
+                "en": "Ahang"
+            },
+            {
+                "id": "basij",
+                "fa": "بسیج",
+                "en": "Basij"
+            },
+            {
+                "id": "takhti-stadium",
+                "fa": "ورزشگاه تختی",
+                "en": "Takhti Stadium"
+            }
+        ]
+    }
+}

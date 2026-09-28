@@ -1,0 +1,326 @@
+{
+    "id": "7",
+    "name": {
+        "fa": "خط ۷",
+        "en": "Line 7"
+    },
+    "color": "#8a3f9e",
+    "source": {
+        "file": "7_-ايستگاهي-خط-هفت---خرداد-1405.xls",
+        "sheets": [
+            "كتاب - عادي",
+            "کتاب- پنجشنبه",
+            "كتاب - تعطیل",
+            "تختی - عادي",
+            "تختی- پنجشنبه",
+            "تختی - تعطيل"
+        ],
+        "extractedOn": "2026-09-28",
+        "note": "Station timetable (جدول ایستگاهی). Times at each terminal; segment times are station-to-station and include dwell."
+    },
+    "segmentsIncludeDwell": true,
+    "dwellSeconds": null,
+    "stations": [
+        {
+            "id": "meydan-e-ketab",
+            "fa": "میدان کتاب",
+            "en": "Ketab Square"
+        },
+        {
+            "id": "shahid-dadman",
+            "fa": "شهید دادمان",
+            "en": "Shahid Dadman"
+        },
+        {
+            "id": "meydan-e-sanat",
+            "fa": "میدان صنعت",
+            "en": "Sanat Square"
+        },
+        {
+            "id": "borj-e-milad",
+            "fa": "برج میلاد",
+            "en": "Milad Tower"
+        },
+        {
+            "id": "boostan-e-goftegou",
+            "fa": "بوستان گفتگو",
+            "en": "Boostan-e Goftegou"
+        },
+        {
+            "id": "tarbiat-modares",
+            "fa": "تربیت مدرس",
+            "en": "Tarbiat Modares"
+        },
+        {
+            "id": "modafean-e-salamat",
+            "fa": "مدافعان سلامت",
+            "en": "Modafean-e Salamat"
+        },
+        {
+            "id": "towhid",
+            "fa": "توحید",
+            "en": "Towhid"
+        },
+        {
+            "id": "navvab-safavi",
+            "fa": "شهید نواب صفوی",
+            "en": "Navvab-e Safavi"
+        },
+        {
+            "id": "roudaki",
+            "fa": "رودکی",
+            "en": "Roudaki"
+        },
+        {
+            "id": "komeil",
+            "fa": "کمیل",
+            "en": "Komeil"
+        },
+        {
+            "id": "beryanak",
+            "fa": "بریانک",
+            "en": "Beryanak"
+        },
+        {
+            "id": "helal-e-ahmar",
+            "fa": "هلال احمر",
+            "en": "Helal-e Ahmar"
+        },
+        {
+            "id": "mahdieh",
+            "fa": "مهدیه",
+            "en": "Mahdieh"
+        },
+        {
+            "id": "meydan-e-mohammadieh",
+            "fa": "میدان محمدیه",
+            "en": "Mohammadieh Square"
+        },
+        {
+            "id": "mowlavi",
+            "fa": "مولوی",
+            "en": "Mowlavi"
+        },
+        {
+            "id": "meydan-e-ghiam",
+            "fa": "میدان قیام",
+            "en": "Ghiam Square"
+        },
+        {
+            "id": "shohada-ye-17-shahrivar",
+            "fa": "شهدای ۱۷ شهریور",
+            "en": "17 Shahrivar"
+        },
+        {
+            "id": "chehel-tan-e-doulab",
+            "fa": "چهل‌تن دولاب",
+            "en": "Chehel Tan-e Doulab"
+        },
+        {
+            "id": "ahang",
+            "fa": "آهنگ",
+            "en": "Ahang"
+        },
+        {
+            "id": "basij",
+            "fa": "بسیج",
+            "en": "Basij"
+        },
+        {
+            "id": "takhti-stadium",
+            "fa": "ورزشگاه تختی",
+            "en": "Takhti Stadium"
+        }
+    ],
+    "directions": {
+        "forward": {
+            "towards": "takhti-stadium",
+            "segmentSeconds": [
+                120, 180, 120, 180, 120, 180, 120, 120, 180, 120, 120, 120, 120,
+                180, 180, 120, 120, 180, 180, 180, 240
+            ],
+            "segmentSecondsByDayType": {
+                "thursday": [
+                    120, 180, 120, 180, 120, 180, 120, 120, 180, 120, 120, 120,
+                    120, 180, 180, 120, 120, 180, 180, 180, 180
+                ],
+                "holiday": [
+                    120, 180, 120, 180, 120, 180, 120, 120, 180, 120, 120, 120,
+                    120, 180, 180, 120, 120, 180, 180, 180, 180
+                ]
+            },
+            "service": {
+                "weekday": [
+                    {
+                        "from": "meydan-e-ketab",
+                        "to": "takhti-stadium",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "23:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "06:22",
+                                "minutes": 13
+                            },
+                            {
+                                "from": "06:22",
+                                "to": "06:29",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "06:29",
+                                "to": "06:35",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "06:35",
+                                "to": "22:24",
+                                "minutes": 13
+                            },
+                            {
+                                "from": "22:24",
+                                "to": "22:40",
+                                "minutes": 16
+                            },
+                            {
+                                "from": "22:40",
+                                "to": "23:00",
+                                "minutes": 20
+                            }
+                        ]
+                    }
+                ],
+                "thursday": [
+                    {
+                        "from": "meydan-e-ketab",
+                        "to": "takhti-stadium",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "06:00",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "06:00",
+                                "to": "20:00",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "20:00",
+                                "to": "22:00",
+                                "minutes": 15
+                            }
+                        ]
+                    }
+                ],
+                "holiday": [
+                    {
+                        "from": "meydan-e-ketab",
+                        "to": "takhti-stadium",
+                        "firstDeparture": "06:00",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "06:00",
+                                "to": "22:00",
+                                "minutes": 15
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "backward": {
+            "towards": "meydan-e-ketab",
+            "segmentSeconds": [
+                120, 180, 180, 180, 240, 180, 120, 180, 120, 120, 120, 120, 120,
+                180, 120, 120, 120, 120, 180, 120, 240
+            ],
+            "segmentSecondsByDayType": {
+                "thursday": [
+                    120, 180, 180, 180, 240, 180, 120, 180, 120, 120, 120, 120,
+                    120, 180, 120, 120, 120, 120, 180, 120, 180
+                ],
+                "holiday": [
+                    120, 180, 180, 180, 240, 180, 120, 180, 120, 120, 120, 120,
+                    120, 180, 120, 120, 120, 120, 180, 120, 180
+                ]
+            },
+            "service": {
+                "weekday": [
+                    {
+                        "from": "takhti-stadium",
+                        "to": "meydan-e-ketab",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "23:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "05:37",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "05:37",
+                                "to": "22:31",
+                                "minutes": 13
+                            },
+                            {
+                                "from": "22:31",
+                                "to": "22:45",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "22:45",
+                                "to": "23:00",
+                                "minutes": 15
+                            }
+                        ]
+                    }
+                ],
+                "thursday": [
+                    {
+                        "from": "takhti-stadium",
+                        "to": "meydan-e-ketab",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "06:00",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "06:00",
+                                "to": "20:00",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "20:00",
+                                "to": "22:00",
+                                "minutes": 15
+                            }
+                        ]
+                    }
+                ],
+                "holiday": [
+                    {
+                        "from": "takhti-stadium",
+                        "to": "meydan-e-ketab",
+                        "firstDeparture": "06:00",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "06:00",
+                                "to": "22:00",
+                                "minutes": 15
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "missing": []
+}

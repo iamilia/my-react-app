@@ -1,0 +1,107 @@
+{
+    "$comment": "Platform-to-platform walking time at each interchange, in seconds. Not in the timetables: every value is null (TODO) until measured. Journeys through a transfer with null walkSeconds show ride + wait but no total.",
+    "transfers": [
+        {
+            "stationId": "shahid-beheshti",
+            "lines": ["1", "3"],
+            "name": "Shahid Beheshti",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "haft-e-tir",
+            "lines": ["1", "6"],
+            "name": "Haft-e Tir",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "darvazeh-dowlat",
+            "lines": ["1", "4"],
+            "name": "Darvazeh Dowlat",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "emam-khomeini",
+            "lines": ["1", "2"],
+            "name": "Emam Khomeini",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "meydan-e-mohammadieh",
+            "lines": ["1", "7"],
+            "name": "Mohammadieh Square",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "sadeghieh",
+            "lines": ["2", "5"],
+            "name": "Sadeghieh",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "shademan",
+            "lines": ["2", "4"],
+            "name": "Shademan",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "navvab-safavi",
+            "lines": ["2", "7"],
+            "name": "Navvab-e Safavi",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "darvazeh-shemiran",
+            "lines": ["2", "4"],
+            "name": "Darvazeh Shemiran",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "emam-hossein",
+            "lines": ["2", "6"],
+            "name": "Emam Hossein",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "mahdieh",
+            "lines": ["3", "7"],
+            "name": "Mahdieh",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "teatr-e-shahr",
+            "lines": ["3", "4"],
+            "name": "Teatr-e Shahr",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "meydan-e-valiasr",
+            "lines": ["3", "6"],
+            "name": "Valiasr Square",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "meydan-e-shohada",
+            "lines": ["4", "6"],
+            "name": "Shohada Square",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "towhid",
+            "lines": ["4", "7"],
+            "name": "Towhid",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "eram-e-sabz",
+            "lines": ["4", "5"],
+            "name": "Eram-e Sabz",
+            "walkSeconds": null
+        },
+        {
+            "stationId": "tarbiat-modares",
+            "lines": ["6", "7"],
+            "name": "Tarbiat Modares University",
+            "walkSeconds": null
+        }
+    ]
+}

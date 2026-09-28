@@ -6,7 +6,8 @@
         "projects": "Projects",
         "contact": "Contact",
         "userName": "Ilia",
-        "games": "Games"
+        "games": "Games",
+        "metro": "Metro"
     },
     "hero": {
         "greeting": "Hi, I'm",
@@ -181,6 +182,116 @@
                 "title": "Minesweeper",
                 "description": "Read the numbers, flag the mines, and clear the field without a single misstep."
             }
+        }
+    },
+    "metro": {
+        "title": "Tehran Metro travel time",
+        "subtitle": "Pick any two stations on Tehran's seven metro lines to see how long the trip takes, where to change, and watch the train make the journey.",
+        "estimateBadge": "Estimated, based on schedule",
+        "disclaimer": "Tehran Metro has no public live feed, so this is worked out from the published station timetable, not from real train positions. Delays and crowding are not reflected.",
+        "sourceNote": "(station timetable). The diagram is schematic, not to scale.",
+        "form": {
+            "label": "Choose a ride",
+            "from": "From",
+            "to": "To",
+            "swap": "Swap origin and destination",
+            "dayType": "Day",
+            "time": "Arriving at the platform",
+            "now": "Now"
+        },
+        "dayTypes": {
+            "weekday": "Sat–Wed",
+            "thursday": "Thursday",
+            "holiday": "Fri / holiday"
+        },
+        "result": {
+            "label": "Estimated travel time",
+            "ride": "On the train",
+            "minutes": "min",
+            "stops_one": "{{n}} stop",
+            "stops_other": "{{n}} stops",
+            "towards": "towards {{station}}",
+            "wait": "Average wait",
+            "waitHint": "Half the gap between trains, for each train you board",
+            "total": "Wait + ride",
+            "totalHint": "From the first platform to arrival",
+            "direct": "no changes",
+            "changes_one": "{{n}} change",
+            "changes_other": "{{n}} changes",
+            "totalWithoutWalk_one": "Plus walking at {{n}} change — not in the timetable yet",
+            "totalWithoutWalk_other": "Plus walking at {{n}} changes — not in the timetable yet",
+            "legTime_one": "{{ride}} min · {{n}} stop",
+            "legTime_other": "{{ride}} min · {{n}} stops",
+            "legWait": "wait ≈ {{wait}} min (a train every {{headway}} min)",
+            "changeUnknown": "Change at {{station}} — walking time not in the timetable",
+            "changeKnown": "Change at {{station}} — about {{walk}} min on foot",
+            "routes": "Routes",
+            "routeOption_one": "{{ride}} min on the train · {{n}} change",
+            "routeOption_other": "{{ride}} min on the train · {{n}} changes",
+            "routesHint": "Routes with fewer unmeasured walks are suggested first — the planner won't guess how long a change takes."
+        },
+        "errors": {
+            "UNKNOWN_STATION": "“{{id}}” is not a station on this line.",
+            "SAME_STATION": "Origin and destination are the same — pick two different stations.",
+            "MISSING_SEGMENT_TIME": "The timetable has no running time between {{a}} and {{b}}, so there is no estimate for this ride.",
+            "MISSING_DWELL_TIME": "The timetable is missing the dwell time at stations, so there is no estimate for this ride.",
+            "NO_SERVICE_DATA": "There is no timetable for this day type, so the wait can't be estimated.",
+            "MISSING_HEADWAY": "The timetable has no headway for this time, so the wait can't be estimated.",
+            "OUT_OF_SERVICE": "No trains at this time. Trains leave this station between {{first}} and {{last}}.",
+            "INVALID_TIME": "Enter a time as HH:MM to estimate the wait.",
+            "INVALID_LINE_DATA": "The timetable data for this line is invalid.",
+            "NO_ROUTE": "No route between {{from}} and {{to}} in the timetable data."
+        },
+        "scene": {
+            "title": "Route animation",
+            "view": "View",
+            "label": "Animated diagram of the ride from {{from}} to {{to}}",
+            "schematic": "Schematic",
+            "fallback": {
+                "reduced-motion": "Showing the lightweight diagram because your device asks for reduced motion. Press play to run it.",
+                "no-webgl": "Showing the lightweight diagram because WebGL isn't available in this browser.",
+                "low-end": "Showing the lightweight diagram to keep things smooth on this device."
+            }
+        },
+        "playback": {
+            "play": "Play ride",
+            "pause": "Pause ride",
+            "restart": "Restart ride",
+            "speed": "Speed",
+            "realtime": "Real time",
+            "times": "{{x}}×",
+            "scrub": "Ride progress",
+            "nextStation": "Next: {{station}}",
+            "arrived": "Arrived at {{station}}"
+        },
+        "sources": "Sources: {{n}} station timetables",
+        "sep": " · ",
+        "view": {
+            "label": "Map shows",
+            "journey": "My journey",
+            "network": "Every train (scheduled)"
+        },
+        "network": {
+            "play": "Run the clock",
+            "pause": "Stop the clock",
+            "count_one": "{{n}} train running, according to the timetables",
+            "count_other": "{{n}} trains running, according to the timetables",
+            "note": "Positions come from the published departure times, not from the trains: where the timetable says each train should be. Trains in the two directions are drawn on either side of the line."
+        },
+        "live": {
+            "title": "Where are my trains?",
+            "clock": "Timetable time",
+            "platform": "at {{station}}, towards {{towards}}",
+            "later": "Shown for when you reach this platform, about {{time}}",
+            "at": "At {{station}}",
+            "between": "Between {{a}} and {{b}}",
+            "waiting": "Waiting at {{station}}, leaves {{time}}",
+            "stopsAway_one": "{{n}} stop away",
+            "stopsAway_other": "{{n}} stops away",
+            "now": "at the platform",
+            "eta": "in {{min}} min",
+            "none": "No more trains for this ride today, according to the timetable.",
+            "note": "Worked out from the published departure times — where each train should be, not a live position."
         }
     },
     "game2048": {

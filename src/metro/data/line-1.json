@@ -1,0 +1,1525 @@
+{
+    "id": "1",
+    "name": {
+        "fa": "خط ۱",
+        "en": "Line 1"
+    },
+    "color": "#e0001b",
+    "source": {
+        "file": "1_ ايستگاهي خط يك - مهر 1404.xls",
+        "sheets": [
+            "تجريش عادي",
+            "تجريش پنجشنبه",
+            "تجریش جمعه",
+            "كهريزك عادي",
+            "كهريزك پنجشنبه",
+            "کهریزک جمعه"
+        ],
+        "extractedOn": "2026-09-28",
+        "note": "Station timetable (جدول ایستگاهی). Times at each terminal; segment times are station-to-station and include dwell."
+    },
+    "segmentsIncludeDwell": true,
+    "dwellSeconds": null,
+    "stations": [
+        {
+            "id": "tajrish",
+            "fa": "تجریش",
+            "en": "Tajrish"
+        },
+        {
+            "id": "gheytarieh",
+            "fa": "قیطریه",
+            "en": "Gheytarieh"
+        },
+        {
+            "id": "shahid-sadr",
+            "fa": "شهید صدر",
+            "en": "Shahid Sadr"
+        },
+        {
+            "id": "gholhak",
+            "fa": "قلهک",
+            "en": "Gholhak"
+        },
+        {
+            "id": "doctor-shariati",
+            "fa": "دکتر شریعتی",
+            "en": "Doctor Shariati"
+        },
+        {
+            "id": "mirdamad",
+            "fa": "میرداماد",
+            "en": "Mirdamad"
+        },
+        {
+            "id": "shahid-haghani",
+            "fa": "شهید حقانی",
+            "en": "Shahid Haghani"
+        },
+        {
+            "id": "shahid-hemmat",
+            "fa": "شهید همت",
+            "en": "Shahid Hemmat"
+        },
+        {
+            "id": "mosalla",
+            "fa": "مصلی امام خمینی(ره)",
+            "en": "Mosalla"
+        },
+        {
+            "id": "shahid-beheshti",
+            "fa": "شهید بهشتی",
+            "en": "Shahid Beheshti"
+        },
+        {
+            "id": "shahid-mofatteh",
+            "fa": "شهید مفتح",
+            "en": "Shahid Mofatteh"
+        },
+        {
+            "id": "haft-e-tir",
+            "fa": "شهدای هفت تیر",
+            "en": "Haft-e Tir"
+        },
+        {
+            "id": "taleghani",
+            "fa": "طالقانی",
+            "en": "Taleghani"
+        },
+        {
+            "id": "darvazeh-dowlat",
+            "fa": "دروازه دولت",
+            "en": "Darvazeh Dowlat"
+        },
+        {
+            "id": "saadi",
+            "fa": "سعدی",
+            "en": "Saadi"
+        },
+        {
+            "id": "emam-khomeini",
+            "fa": "امام خمینی (ره)",
+            "en": "Emam Khomeini"
+        },
+        {
+            "id": "panzdah-e-khordad",
+            "fa": "پانزده خرداد",
+            "en": "Panzdah-e Khordad"
+        },
+        {
+            "id": "khayyam",
+            "fa": "خیام",
+            "en": "Khayyam"
+        },
+        {
+            "id": "meydan-e-mohammadieh",
+            "fa": "میدان محمدیه",
+            "en": "Mohammadieh Square"
+        },
+        {
+            "id": "shoush",
+            "fa": "شوش",
+            "en": "Shoush"
+        },
+        {
+            "id": "payaneh-jonoub",
+            "fa": "پایانه جنوب",
+            "en": "South Terminal"
+        },
+        {
+            "id": "shahid-bokharaei",
+            "fa": "شهید بخارائی",
+            "en": "Shahid Bokharaei"
+        },
+        {
+            "id": "aliabad",
+            "fa": "علی آباد",
+            "en": "Aliabad"
+        },
+        {
+            "id": "javanmard-e-ghassab",
+            "fa": "جوانمرد قصاب",
+            "en": "Javanmard-e Ghassab"
+        },
+        {
+            "id": "shahr-e-rey",
+            "fa": "شهرری",
+            "en": "Shahr-e Rey"
+        },
+        {
+            "id": "palayeshgah",
+            "fa": "پالایشگاه",
+            "en": "Palayeshgah"
+        },
+        {
+            "id": "shahed",
+            "fa": "شاهد",
+            "en": "Shahed"
+        },
+        {
+            "id": "haram-e-motahhar",
+            "fa": "حرم مطهر امام خمینی(ره)",
+            "en": "Haram-e Motahhar"
+        },
+        {
+            "id": "kahrizak",
+            "fa": "کهریزک",
+            "en": "Kahrizak"
+        }
+    ],
+    "directions": {
+        "forward": {
+            "towards": "kahrizak",
+            "segmentSeconds": [
+                120, 120, 180, 180, 180, 180, 120, 120, 120, 120, 120, 180, 120,
+                120, 180, 120, 120, 180, 120, 120, 120, 180, 180, 240, 300, 180,
+                180, 300
+            ],
+            "service": {
+                "weekday": [
+                    {
+                        "from": "tajrish",
+                        "to": "kahrizak",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "06:10",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "06:10",
+                                "to": "06:25",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "06:25",
+                                "to": "10:25",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "10:25",
+                                "to": "10:36",
+                                "minutes": 11
+                            },
+                            {
+                                "from": "10:36",
+                                "to": "15:00",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "15:00",
+                                "to": "19:40",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "19:40",
+                                "to": "19:45",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "19:45",
+                                "to": "19:55",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "19:55",
+                                "to": "20:31",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "20:31",
+                                "to": "20:48",
+                                "minutes": 17
+                            },
+                            {
+                                "from": "20:48",
+                                "to": "21:20",
+                                "minutes": 16
+                            },
+                            {
+                                "from": "21:20",
+                                "to": "22:00",
+                                "minutes": 10
+                            }
+                        ]
+                    },
+                    {
+                        "from": "tajrish",
+                        "to": "shahr-e-rey",
+                        "firstDeparture": "06:40",
+                        "lastDeparture": "21:12",
+                        "headways": [
+                            {
+                                "from": "06:40",
+                                "to": "10:30",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "10:30",
+                                "to": "14:54",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "14:54",
+                                "to": "15:05",
+                                "minutes": 11
+                            },
+                            {
+                                "from": "15:05",
+                                "to": "19:35",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "19:35",
+                                "to": "19:50",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "19:50",
+                                "to": "20:01",
+                                "minutes": 11
+                            },
+                            {
+                                "from": "20:01",
+                                "to": "20:25",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "20:25",
+                                "to": "20:40",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "20:40",
+                                "to": "21:12",
+                                "minutes": 16
+                            }
+                        ]
+                    }
+                ],
+                "thursday": [
+                    {
+                        "from": "tajrish",
+                        "to": "kahrizak",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "06:10",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "06:10",
+                                "to": "06:25",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "06:25",
+                                "to": "06:35",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "06:35",
+                                "to": "06:45",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "06:45",
+                                "to": "07:05",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:05",
+                                "to": "07:15",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "07:15",
+                                "to": "07:35",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:35",
+                                "to": "07:45",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "07:45",
+                                "to": "08:05",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "08:05",
+                                "to": "08:15",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "08:15",
+                                "to": "08:25",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "08:25",
+                                "to": "08:50",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "08:50",
+                                "to": "09:00",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "09:00",
+                                "to": "09:20",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "09:20",
+                                "to": "09:30",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "09:30",
+                                "to": "09:50",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "09:50",
+                                "to": "10:00",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "10:00",
+                                "to": "10:10",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "10:10",
+                                "to": "10:16",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "10:16",
+                                "to": "10:28",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "10:28",
+                                "to": "10:46",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "10:46",
+                                "to": "10:58",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "10:58",
+                                "to": "11:16",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "11:16",
+                                "to": "11:28",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "11:28",
+                                "to": "11:46",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "11:46",
+                                "to": "11:58",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "11:58",
+                                "to": "12:16",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "12:16",
+                                "to": "12:28",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "12:28",
+                                "to": "12:46",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "12:46",
+                                "to": "12:58",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "12:58",
+                                "to": "13:16",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "13:16",
+                                "to": "13:28",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "13:28",
+                                "to": "13:46",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "13:46",
+                                "to": "13:58",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "13:58",
+                                "to": "14:16",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "14:16",
+                                "to": "14:28",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "14:28",
+                                "to": "14:46",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "14:46",
+                                "to": "14:58",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "14:58",
+                                "to": "15:16",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "15:16",
+                                "to": "15:28",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "15:28",
+                                "to": "15:46",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "15:46",
+                                "to": "15:58",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "15:58",
+                                "to": "16:16",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "16:16",
+                                "to": "16:28",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "16:28",
+                                "to": "16:40",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "16:40",
+                                "to": "16:58",
+                                "minutes": 18
+                            },
+                            {
+                                "from": "16:58",
+                                "to": "17:16",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "17:16",
+                                "to": "17:34",
+                                "minutes": 18
+                            },
+                            {
+                                "from": "17:34",
+                                "to": "17:46",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "17:46",
+                                "to": "17:58",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "17:58",
+                                "to": "18:04",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "18:04",
+                                "to": "18:40",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "18:40",
+                                "to": "18:46",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "18:46",
+                                "to": "19:10",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "19:10",
+                                "to": "19:17",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "19:17",
+                                "to": "19:59",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "19:59",
+                                "to": "20:06",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "20:06",
+                                "to": "20:20",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "20:20",
+                                "to": "21:02",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "21:02",
+                                "to": "21:10",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "21:10",
+                                "to": "22:00",
+                                "minutes": 10
+                            }
+                        ]
+                    },
+                    {
+                        "from": "tajrish",
+                        "to": "shahr-e-rey",
+                        "firstDeparture": "06:50",
+                        "lastDeparture": "20:13",
+                        "headways": [
+                            {
+                                "from": "06:50",
+                                "to": "07:00",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:00",
+                                "to": "07:20",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "07:20",
+                                "to": "07:30",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:30",
+                                "to": "07:50",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "07:50",
+                                "to": "08:00",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "08:00",
+                                "to": "08:20",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "08:20",
+                                "to": "08:55",
+                                "minutes": 35
+                            },
+                            {
+                                "from": "08:55",
+                                "to": "09:55",
+                                "minutes": 30
+                            },
+                            {
+                                "from": "09:55",
+                                "to": "10:22",
+                                "minutes": 27
+                            },
+                            {
+                                "from": "10:22",
+                                "to": "16:22",
+                                "minutes": 30
+                            },
+                            {
+                                "from": "16:22",
+                                "to": "16:46",
+                                "minutes": 24
+                            },
+                            {
+                                "from": "16:46",
+                                "to": "16:52",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "16:52",
+                                "to": "17:22",
+                                "minutes": 30
+                            },
+                            {
+                                "from": "17:22",
+                                "to": "17:28",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "17:28",
+                                "to": "17:52",
+                                "minutes": 24
+                            },
+                            {
+                                "from": "17:52",
+                                "to": "18:10",
+                                "minutes": 18
+                            },
+                            {
+                                "from": "18:10",
+                                "to": "18:34",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "18:34",
+                                "to": "18:52",
+                                "minutes": 18
+                            },
+                            {
+                                "from": "18:52",
+                                "to": "19:04",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "19:04",
+                                "to": "19:24",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "19:24",
+                                "to": "19:52",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "19:52",
+                                "to": "20:13",
+                                "minutes": 21
+                            }
+                        ]
+                    }
+                ],
+                "holiday": [
+                    {
+                        "from": "tajrish",
+                        "to": "kahrizak",
+                        "firstDeparture": "06:00",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "06:00",
+                                "to": "07:00",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "07:00",
+                                "to": "07:20",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:20",
+                                "to": "20:52",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "20:52",
+                                "to": "21:00",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "21:00",
+                                "to": "22:00",
+                                "minutes": 10
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "backward": {
+            "towards": "tajrish",
+            "segmentSeconds": [
+                180, 120, 180, 180, 180, 180, 120, 120, 120, 120, 120, 180, 120,
+                120, 180, 120, 120, 180, 120, 120, 120, 180, 180, 180, 360, 120,
+                180, 300
+            ],
+            "service": {
+                "weekday": [
+                    {
+                        "from": "kahrizak",
+                        "to": "tajrish",
+                        "firstDeparture": "05:34",
+                        "lastDeparture": "21:44",
+                        "headways": [
+                            {
+                                "from": "05:34",
+                                "to": "05:49",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "05:49",
+                                "to": "07:19",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:19",
+                                "to": "07:34",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "07:34",
+                                "to": "09:24",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "09:24",
+                                "to": "09:48",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "09:48",
+                                "to": "09:54",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "09:54",
+                                "to": "10:18",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "10:18",
+                                "to": "10:24",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "10:24",
+                                "to": "10:48",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "10:48",
+                                "to": "10:54",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "10:54",
+                                "to": "11:18",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "11:18",
+                                "to": "11:24",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "11:24",
+                                "to": "13:48",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "13:48",
+                                "to": "13:59",
+                                "minutes": 11
+                            },
+                            {
+                                "from": "13:59",
+                                "to": "14:04",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "14:04",
+                                "to": "14:24",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "14:24",
+                                "to": "14:39",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "14:39",
+                                "to": "14:59",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "14:59",
+                                "to": "15:14",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "15:14",
+                                "to": "15:24",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "15:24",
+                                "to": "15:39",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "15:39",
+                                "to": "18:29",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "18:29",
+                                "to": "18:53",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "18:53",
+                                "to": "18:59",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "18:59",
+                                "to": "19:11",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "19:11",
+                                "to": "19:25",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "19:25",
+                                "to": "19:49",
+                                "minutes": 8
+                            },
+                            {
+                                "from": "19:49",
+                                "to": "20:39",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "20:39",
+                                "to": "21:24",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "21:24",
+                                "to": "21:44",
+                                "minutes": 20
+                            }
+                        ]
+                    },
+                    {
+                        "from": "shahr-e-rey",
+                        "to": "tajrish",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "19:33",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "05:45",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "05:45",
+                                "to": "05:55",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "05:55",
+                                "to": "06:00",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "06:00",
+                                "to": "07:40",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:40",
+                                "to": "07:45",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "07:45",
+                                "to": "09:35",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "09:35",
+                                "to": "09:46",
+                                "minutes": 11
+                            },
+                            {
+                                "from": "09:46",
+                                "to": "09:58",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "09:58",
+                                "to": "10:16",
+                                "minutes": 18
+                            },
+                            {
+                                "from": "10:16",
+                                "to": "10:28",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "10:28",
+                                "to": "10:46",
+                                "minutes": 18
+                            },
+                            {
+                                "from": "10:46",
+                                "to": "10:58",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "10:58",
+                                "to": "11:16",
+                                "minutes": 18
+                            },
+                            {
+                                "from": "11:16",
+                                "to": "11:28",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "11:28",
+                                "to": "11:46",
+                                "minutes": 18
+                            },
+                            {
+                                "from": "11:46",
+                                "to": "14:10",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "14:10",
+                                "to": "14:25",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "14:25",
+                                "to": "14:45",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "14:45",
+                                "to": "14:50",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "14:50",
+                                "to": "15:20",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "15:20",
+                                "to": "15:25",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "15:25",
+                                "to": "15:45",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "15:45",
+                                "to": "15:50",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "15:50",
+                                "to": "18:40",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "18:40",
+                                "to": "18:51",
+                                "minutes": 11
+                            },
+                            {
+                                "from": "18:51",
+                                "to": "19:03",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "19:03",
+                                "to": "19:21",
+                                "minutes": 18
+                            },
+                            {
+                                "from": "19:21",
+                                "to": "19:33",
+                                "minutes": 12
+                            }
+                        ]
+                    }
+                ],
+                "thursday": [
+                    {
+                        "from": "kahrizak",
+                        "to": "tajrish",
+                        "firstDeparture": "05:39",
+                        "lastDeparture": "21:44",
+                        "headways": [
+                            {
+                                "from": "05:39",
+                                "to": "07:29",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:29",
+                                "to": "07:44",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "07:44",
+                                "to": "07:54",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:54",
+                                "to": "08:04",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "08:04",
+                                "to": "08:24",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "08:24",
+                                "to": "08:34",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "08:34",
+                                "to": "08:44",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "08:44",
+                                "to": "08:55",
+                                "minutes": 11
+                            },
+                            {
+                                "from": "08:55",
+                                "to": "09:07",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "09:07",
+                                "to": "09:19",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "09:19",
+                                "to": "11:37",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "11:37",
+                                "to": "11:49",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "11:49",
+                                "to": "12:07",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "12:07",
+                                "to": "12:19",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "12:19",
+                                "to": "12:37",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "12:37",
+                                "to": "12:49",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "12:49",
+                                "to": "13:07",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "13:07",
+                                "to": "13:19",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "13:19",
+                                "to": "13:37",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "13:37",
+                                "to": "13:49",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "13:49",
+                                "to": "14:07",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "14:07",
+                                "to": "14:19",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "14:19",
+                                "to": "14:37",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "14:37",
+                                "to": "14:49",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "14:49",
+                                "to": "15:07",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "15:07",
+                                "to": "15:19",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "15:19",
+                                "to": "15:37",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "15:37",
+                                "to": "15:49",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "15:49",
+                                "to": "16:07",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "16:07",
+                                "to": "16:19",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "16:19",
+                                "to": "16:37",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "16:37",
+                                "to": "16:49",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "16:49",
+                                "to": "17:07",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "17:07",
+                                "to": "17:19",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "17:19",
+                                "to": "17:37",
+                                "minutes": 6
+                            },
+                            {
+                                "from": "17:37",
+                                "to": "17:49",
+                                "minutes": 12
+                            },
+                            {
+                                "from": "17:49",
+                                "to": "18:03",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "18:03",
+                                "to": "18:17",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "18:17",
+                                "to": "18:38",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "18:38",
+                                "to": "18:52",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "18:52",
+                                "to": "19:06",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "19:06",
+                                "to": "19:20",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "19:20",
+                                "to": "19:34",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "19:34",
+                                "to": "19:49",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "19:49",
+                                "to": "20:39",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "20:39",
+                                "to": "21:24",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "21:24",
+                                "to": "21:44",
+                                "minutes": 20
+                            }
+                        ]
+                    },
+                    {
+                        "from": "shahr-e-rey",
+                        "to": "tajrish",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "19:57",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "05:50",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "05:50",
+                                "to": "07:50",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "07:50",
+                                "to": "07:55",
+                                "minutes": 5
+                            },
+                            {
+                                "from": "07:55",
+                                "to": "08:05",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "08:05",
+                                "to": "08:25",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "08:25",
+                                "to": "08:35",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "08:35",
+                                "to": "08:55",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "08:55",
+                                "to": "09:05",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "09:05",
+                                "to": "09:29",
+                                "minutes": 24
+                            },
+                            {
+                                "from": "09:29",
+                                "to": "11:59",
+                                "minutes": 150
+                            },
+                            {
+                                "from": "11:59",
+                                "to": "17:59",
+                                "minutes": 30
+                            },
+                            {
+                                "from": "17:59",
+                                "to": "18:26",
+                                "minutes": 27
+                            },
+                            {
+                                "from": "18:26",
+                                "to": "19:01",
+                                "minutes": 35
+                            },
+                            {
+                                "from": "19:01",
+                                "to": "19:57",
+                                "minutes": 28
+                            }
+                        ]
+                    }
+                ],
+                "holiday": [
+                    {
+                        "from": "kahrizak",
+                        "to": "tajrish",
+                        "firstDeparture": "06:04",
+                        "lastDeparture": "21:44",
+                        "headways": [
+                            {
+                                "from": "06:04",
+                                "to": "06:20",
+                                "minutes": 16
+                            },
+                            {
+                                "from": "06:20",
+                                "to": "07:02",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "07:02",
+                                "to": "08:05",
+                                "minutes": 21
+                            },
+                            {
+                                "from": "08:05",
+                                "to": "08:33",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "08:33",
+                                "to": "19:45",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "19:45",
+                                "to": "19:54",
+                                "minutes": 9
+                            },
+                            {
+                                "from": "19:54",
+                                "to": "20:14",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "20:14",
+                                "to": "21:44",
+                                "minutes": 15
+                            }
+                        ]
+                    },
+                    {
+                        "from": "shahr-e-rey",
+                        "to": "tajrish",
+                        "firstDeparture": "06:00",
+                        "lastDeparture": "08:42",
+                        "headways": [
+                            {
+                                "from": "06:00",
+                                "to": "06:10",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "06:10",
+                                "to": "06:30",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "06:30",
+                                "to": "06:43",
+                                "minutes": 13
+                            },
+                            {
+                                "from": "06:43",
+                                "to": "07:25",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "07:25",
+                                "to": "07:32",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "07:32",
+                                "to": "07:46",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "07:46",
+                                "to": "07:53",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "07:53",
+                                "to": "08:07",
+                                "minutes": 14
+                            },
+                            {
+                                "from": "08:07",
+                                "to": "08:14",
+                                "minutes": 7
+                            },
+                            {
+                                "from": "08:14",
+                                "to": "08:42",
+                                "minutes": 14
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "missing": [
+        "Shahed → Imam Khomeini Airport / Parand branch: not present in the source timetable, so it is not modelled."
+    ]
+}

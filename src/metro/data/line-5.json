@@ -1,0 +1,369 @@
+{
+    "id": "5",
+    "name": {
+        "fa": "خط ۵",
+        "en": "Line 5"
+    },
+    "color": "#0a8f4a",
+    "source": {
+        "file": "5_ ايستگاهي خط پنج - مهر 1404.xls",
+        "sheets": [
+            "گلشهر- عادي",
+            "گلشهر- پنجشنبه",
+            "گلشهر - جمعه و تعطيلات",
+            "صادقيه - عادي",
+            "صادقيه - پنجشنبه",
+            "صادقيه - تعطيل"
+        ],
+        "extractedOn": "2026-09-28",
+        "note": "Station timetable (جدول ایستگاهی). Times at each terminal; segment times are station-to-station and include dwell."
+    },
+    "segmentsIncludeDwell": true,
+    "dwellSeconds": null,
+    "stations": [
+        {
+            "id": "golshahr",
+            "fa": "گلشهر",
+            "en": "Golshahr"
+        },
+        {
+            "id": "mohammadshahr",
+            "fa": "محمدشهر",
+            "en": "Mohammadshahr"
+        },
+        {
+            "id": "karaj",
+            "fa": "کرج",
+            "en": "Karaj"
+        },
+        {
+            "id": "atmosfer",
+            "fa": "اتمسفر",
+            "en": "Atmosfer"
+        },
+        {
+            "id": "garmdareh",
+            "fa": "گرمدره",
+            "en": "Garmdareh"
+        },
+        {
+            "id": "vardavard",
+            "fa": "وردآورد",
+            "en": "Vardavard"
+        },
+        {
+            "id": "iran-khodro",
+            "fa": "ایران خودرو",
+            "en": "Iran Khodro"
+        },
+        {
+            "id": "chitgar",
+            "fa": "چیتگر",
+            "en": "Chitgar"
+        },
+        {
+            "id": "azadi-stadium",
+            "fa": "ورزشگاه آزادی",
+            "en": "Azadi Stadium"
+        },
+        {
+            "id": "eram-e-sabz",
+            "fa": "ارم سبز",
+            "en": "Eram-e Sabz"
+        },
+        {
+            "id": "sadeghieh",
+            "fa": "صادقیه",
+            "en": "Sadeghieh"
+        }
+    ],
+    "directions": {
+        "forward": {
+            "towards": "sadeghieh",
+            "segmentSeconds": [
+                300, 360, 420, 240, 480, 360, 360, 300, 240, 360
+            ],
+            "segmentSecondsByDayType": {
+                "thursday": [300, 360, 420, 240, 420, 360, 360, 300, 240, 420],
+                "holiday": [300, 360, 420, 240, 420, 360, 360, 300, 240, 420]
+            },
+            "segmentPeriods": [
+                {
+                    "dayType": "weekday",
+                    "from": "05:30",
+                    "to": "08:50",
+                    "segmentSeconds": [
+                        300, 360, 420, 240, 720, 360, 360, 300, 240, 360
+                    ]
+                }
+            ],
+            "service": {
+                "weekday": [
+                    {
+                        "from": "golshahr",
+                        "to": "sadeghieh",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "08:50",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "08:50",
+                                "to": "09:15",
+                                "minutes": 25
+                            },
+                            {
+                                "from": "09:15",
+                                "to": "13:15",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "13:15",
+                                "to": "18:15",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "18:15",
+                                "to": "19:30",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "19:30",
+                                "to": "21:30",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "21:30",
+                                "to": "22:00",
+                                "minutes": 30
+                            }
+                        ]
+                    }
+                ],
+                "thursday": [
+                    {
+                        "from": "golshahr",
+                        "to": "sadeghieh",
+                        "firstDeparture": "05:20",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:20",
+                                "to": "09:00",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "09:00",
+                                "to": "13:15",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "13:15",
+                                "to": "17:45",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "17:45",
+                                "to": "19:00",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "19:00",
+                                "to": "21:00",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "21:00",
+                                "to": "22:00",
+                                "minutes": 30
+                            }
+                        ]
+                    }
+                ],
+                "holiday": [
+                    {
+                        "from": "golshahr",
+                        "to": "sadeghieh",
+                        "firstDeparture": "06:00",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "06:00",
+                                "to": "16:00",
+                                "minutes": 30
+                            },
+                            {
+                                "from": "16:00",
+                                "to": "20:00",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "20:00",
+                                "to": "22:00",
+                                "minutes": 30
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "backward": {
+            "towards": "golshahr",
+            "segmentSeconds": [
+                300, 420, 420, 240, 480, 360, 360, 300, 240, 300
+            ],
+            "segmentSecondsByDayType": {
+                "thursday": [300, 420, 420, 300, 420, 360, 360, 300, 240, 300],
+                "holiday": [300, 420, 360, 240, 420, 360, 300, 300, 240, 300]
+            },
+            "segmentPeriods": [
+                {
+                    "dayType": "weekday",
+                    "from": "14:50",
+                    "to": "19:50",
+                    "segmentSeconds": [
+                        300, 420, 420, 240, 480, 360, 720, 300, 240, 300
+                    ]
+                }
+            ],
+            "service": {
+                "weekday": [
+                    {
+                        "from": "sadeghieh",
+                        "to": "golshahr",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "06:00",
+                                "minutes": 30
+                            },
+                            {
+                                "from": "06:00",
+                                "to": "06:20",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "06:20",
+                                "to": "09:30",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "09:30",
+                                "to": "14:30",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "14:30",
+                                "to": "14:50",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "14:50",
+                                "to": "19:50",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "19:50",
+                                "to": "20:15",
+                                "minutes": 25
+                            },
+                            {
+                                "from": "20:15",
+                                "to": "21:00",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "21:00",
+                                "to": "22:00",
+                                "minutes": 20
+                            }
+                        ]
+                    }
+                ],
+                "thursday": [
+                    {
+                        "from": "sadeghieh",
+                        "to": "golshahr",
+                        "firstDeparture": "05:30",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "05:30",
+                                "to": "06:00",
+                                "minutes": 30
+                            },
+                            {
+                                "from": "06:00",
+                                "to": "06:20",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "06:20",
+                                "to": "09:30",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "09:30",
+                                "to": "14:00",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "14:00",
+                                "to": "19:00",
+                                "minutes": 10
+                            },
+                            {
+                                "from": "19:00",
+                                "to": "20:00",
+                                "minutes": 15
+                            },
+                            {
+                                "from": "20:00",
+                                "to": "22:00",
+                                "minutes": 20
+                            }
+                        ]
+                    }
+                ],
+                "holiday": [
+                    {
+                        "from": "sadeghieh",
+                        "to": "golshahr",
+                        "firstDeparture": "06:15",
+                        "lastDeparture": "22:00",
+                        "headways": [
+                            {
+                                "from": "06:15",
+                                "to": "15:45",
+                                "minutes": 30
+                            },
+                            {
+                                "from": "15:45",
+                                "to": "16:10",
+                                "minutes": 25
+                            },
+                            {
+                                "from": "16:10",
+                                "to": "20:30",
+                                "minutes": 20
+                            },
+                            {
+                                "from": "20:30",
+                                "to": "22:00",
+                                "minutes": 30
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "missing": [
+        "Express (EXP) trains are not modelled; estimates use the all-stops trains."
+    ]
+}

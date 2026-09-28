@@ -27,6 +27,7 @@ const SECTIONS = ['about', 'skills', 'work', 'projects', 'contact'] as const;
 const NAV_ITEMS = [
     ...SECTIONS.map((id) => ({ id, to: `/#${id}` })),
     { id: 'games', to: '/game' },
+    { id: 'metro', to: '/metro' },
 ] as const;
 
 /** Space the burger button occupies once it appears (36px button + 12px gap). */
@@ -53,6 +54,7 @@ export const Navigation = ({
 
     const onHome = pathname === '/';
     const onGames = pathname.startsWith('/game');
+    const onMetro = pathname.startsWith('/metro');
 
     const barRef = useRef<HTMLDivElement>(null);
     const wordmarkRef = useRef<HTMLButtonElement>(null);
@@ -70,7 +72,7 @@ export const Navigation = ({
 
     useEffect(() => {
         if (!onHome) {
-            setActive(onGames ? 'games' : '');
+            setActive(onGames ? 'games' : onMetro ? 'metro' : '');
             return;
         }
         const observer = new IntersectionObserver(
@@ -86,7 +88,7 @@ export const Navigation = ({
             if (el) observer.observe(el);
         });
         return () => observer.disconnect();
-    }, [onHome, onGames]);
+    }, [onHome, onGames, onMetro]);
 
     /**
      * Decide between the full link row and the burger by measuring, not by a
@@ -175,7 +177,7 @@ export const Navigation = ({
      */
     const go = (item: (typeof NAV_ITEMS)[number]) => {
         setMobileMenuOpen(false);
-        if (item.id === 'games') {
+        if (item.id === 'games' || item.id === 'metro') {
             navigate(item.to);
             return;
         }

@@ -17,6 +17,10 @@ const GameList = lazy(() =>
 const Game2048 = lazy(() =>
     import('./pages/Game2048').then((m) => ({ default: m.Game2048 }))
 );
+// Pulls in the metro data and Motion; the 3D scene is split off again inside.
+const Metro = lazy(() =>
+    import('./pages/Metro').then((m) => ({ default: m.Metro }))
+);
 
 // Only I ever open this, so it has no business in the bundle everyone else
 // downloads.
@@ -41,6 +45,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/game" element={<GameList />} />
                     <Route path="/game/2048" element={<Game2048 />} />
+                    <Route path="/metro" element={<Metro />} />
                     {/* /games is the URL people guess — keep it working. */}
                     <Route
                         path="/games"
