@@ -16,6 +16,7 @@ import {
     networkStations,
     parseClock,
     planJourneys,
+    stationBoard,
     tehranClock,
 } from '../metro/core';
 import { DEFAULT_ROUTE, LINES, NETWORK } from '../metro/data/lines';
@@ -26,6 +27,7 @@ import { NetworkBar } from '../metro/NetworkBar';
 import { PlaybackBar } from '../metro/PlaybackBar';
 import { RouteDiagram2D } from '../metro/RouteDiagram2D';
 import { SceneErrorBoundary } from '../metro/SceneErrorBoundary';
+import { StationBoard } from '../metro/StationBoard';
 import { StationPicker } from '../metro/StationPicker';
 import { useLiveSeconds } from '../metro/useLiveSeconds';
 import {
@@ -133,6 +135,15 @@ export const Metro = () => {
                 : [],
         [journey, dayType, now]
     );
+    // "When does the train come to my station?" — every line leaving From.
+    const board = useMemo(
+        () => stationBoard(NETWORK, from, dayType, now),
+        [from, dayType, now]
+    );
+    const firstLeg = journey?.legs[0];
+    const boarding = firstLeg
+        ? { lineId: firstLeg.lineId, direction: firstLeg.plan.direction }
+        : null;
 
     const resetToNow = () => {
         const now = tehranClock(new Date());
@@ -171,7 +182,7 @@ export const Metro = () => {
 
     return (
         <MotionConfig reducedMotion="user">
-            <SubPageShell>
+            <SubPageShell title={t('navigation.metro')}>
                 <header className="max-w-3xl">
                     <span className="label">{t('navigation.metro')}</span>
                     <h1 className="display display-lg mt-2">
@@ -286,6 +297,15 @@ export const Metro = () => {
                                 </button>
                             </div>
                         </form>
+
+                        <StationBoard
+                            lines={LINES}
+                            stations={STATIONS}
+                            stationId={from}
+                            board={board}
+                            boarding={boarding}
+                            language={language}
+                        />
 
                         <JourneyCard
                             lines={LINES}

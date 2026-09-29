@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { IconArrowUpRight, IconLock } from '@tabler/icons-react';
 import { SubPageShell } from '../components/SubPageShell';
 import { SectionHeading } from '../components/SectionHeading';
-import { useReveal } from '../hooks/useReveal';
 import { GAMES, type GameMeta } from '../games/registry';
 
 const GameCard = ({ game }: { game: GameMeta }) => {
@@ -17,13 +16,13 @@ const GameCard = ({ game }: { game: GameMeta }) => {
     const body = (
         <>
             <div className="flex items-start justify-between gap-3">
-                <h3 className="display display-md min-w-0 transition-colors duration-200 group-hover:text-(--accent)">
+                <h3 className="display display-md min-w-0">
                     {t(`games.items.${game.id}.title`)}
                 </h3>
                 {live ? (
                     <IconArrowUpRight
                         size={16}
-                        className="text-muted mt-1 shrink-0 transition-colors duration-200 group-hover:text-(--accent) rtl:-scale-x-100"
+                        className="mt-1 shrink-0 rtl:-scale-x-100"
                     />
                 ) : (
                     <IconLock size={14} className="text-muted mt-1 shrink-0" />
@@ -56,7 +55,7 @@ const GameCard = ({ game }: { game: GameMeta }) => {
     );
 
     return livePath ? (
-        <Link to={livePath} className="card card-link group w-full">
+        <Link to={livePath} className="card card-link invert-on-hover w-full">
             {body}
         </Link>
     ) : (
@@ -68,37 +67,29 @@ const GameCard = ({ game }: { game: GameMeta }) => {
 
 export const GameList = () => {
     const { t } = useTranslation();
-    const ref = useReveal<HTMLDivElement>();
 
     useEffect(() => {
         document.title = `${t('games.title')} — ${t('navigation.userName')}`;
     }, [t]);
 
     return (
-        <SubPageShell>
-            <div ref={ref}>
+        <SubPageShell title={t('navigation.games')}>
+            <div>
                 <SectionHeading
-                    index={1}
-                    label={t('navigation.games')}
+                    as="h1"
                     title={t('games.title')}
                     subtitle={t('games.subtitle')}
                 />
 
                 <ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
-                    {GAMES.map((game, i) => (
-                        <li
-                            key={game.id}
-                            className="reveal flex"
-                            data-delay={(i % 3) * 60}
-                        >
+                    {GAMES.map((game) => (
+                        <li key={game.id} className="flex">
                             <GameCard game={game} />
                         </li>
                     ))}
                 </ul>
 
-                <p className="prose-sm reveal mt-10" data-delay="80">
-                    {t('games.footnote')}
-                </p>
+                <p className="prose-sm mt-10">{t('games.footnote')}</p>
             </div>
         </SubPageShell>
     );

@@ -1,7 +1,6 @@
 import { IconArrowUp } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useReveal } from '../hooks/useReveal';
 import { useNumbers } from '../hooks/useNumbers';
 import { smoothScrollToTop } from '../utils/scroll';
 
@@ -16,6 +15,7 @@ const SECTIONS = ['about', 'skills', 'work', 'projects', 'contact'] as const;
 const NAV_ITEMS = [
     ...SECTIONS.map((id) => ({ id, to: `/#${id}` })),
     { id: 'games', to: '/game' },
+    { id: 'metro', to: '/metro' },
 ] as const;
 
 const STACK = [
@@ -25,9 +25,12 @@ const STACK = [
     { label: 'Vite', href: 'https://vite.dev' },
 ];
 
+/**
+ * The bottom of the desktop: a solid strip, not another window. It holds
+ * the site map, the colophon and the copyright line.
+ */
 export const Footer = ({ userName, scrollToSection }: FooterProps) => {
     const { t } = useTranslation();
-    const ref = useReveal<HTMLElement>();
     const n = useNumbers();
     const navigate = useNavigate();
     const { pathname } = useLocation();
@@ -41,7 +44,8 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
 
     /** Same rule as the header: scroll on home, route with a hash elsewhere. */
     const go = (item: (typeof NAV_ITEMS)[number]) => {
-        if (item.id !== 'games' && onHome && scrollToSection) {
+        const isSection = item.id !== 'games' && item.id !== 'metro';
+        if (isSection && onHome && scrollToSection) {
             scrollToSection(item.id);
             return;
         }
@@ -49,22 +53,21 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
     };
 
     return (
-        <footer ref={ref} className="section-alt">
+        <footer className="section-alt mt-6 border-t-2 border-(--fg) sm:mt-10">
             <div className="wrap">
-                <div className="field py-12 sm:py-14 lg:py-20">
-                    {/* colophon in the margin, index in the field */}
-                    <div className="field-aside reveal">
+                <div className="field py-10 sm:py-12 lg:py-16">
+                    <div className="field-aside">
                         <button
                             type="button"
                             onClick={scrollToTop}
-                            className="display text-3xl transition-colors hover:text-(--accent)"
+                            className="display text-3xl hover:underline"
                         >
                             {userName}
                         </button>
-                        <p className="prose-sm mt-3 max-w-xs">
+                        <p className="prose-sm mt-2 max-w-xs">
                             {t('footer.tagline')}
                         </p>
-                        <p className="mt-6 flex items-center gap-2.5">
+                        <p className="mt-5 flex items-center gap-2.5">
                             <span className="marker" />
                             <span className="label label-ink">
                                 {t('hero.available')}
@@ -73,20 +76,19 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                     </div>
 
                     <div className="field-body">
-                        <div className="grid gap-12 sm:grid-cols-2">
-                            <nav className="reveal" data-delay="60">
-                                <p className="label">{t('footer.navigate')}</p>
-                                <ul className="m-0 mt-4 list-none p-0">
-                                    {NAV_ITEMS.map((item, i) => (
+                        <div className="grid gap-10 sm:grid-cols-2">
+                            <nav aria-label={t('footer.navigate')}>
+                                <p className="label label-ink">
+                                    {t('footer.navigate')}
+                                </p>
+                                <ul className="m-0 mt-3 list-none p-0">
+                                    {NAV_ITEMS.map((item) => (
                                         <li key={item.id}>
                                             <button
                                                 type="button"
                                                 onClick={() => go(item)}
-                                                className="text-muted flex min-h-9 w-full items-baseline gap-4 py-1.5 text-start text-[0.9375rem] transition-colors hover:text-(--accent)"
+                                                className="invert-on-hover -mx-2 flex min-h-10 w-[calc(100%+1rem)] items-center px-2 text-start"
                                             >
-                                                <span className="force-mono nums text-[0.6875rem] opacity-50">
-                                                    {n(i + 1, 'padded')}
-                                                </span>
                                                 {t(`navigation.${item.id}`)}
                                             </button>
                                         </li>
@@ -94,16 +96,18 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                                 </ul>
                             </nav>
 
-                            <div className="reveal" data-delay="120">
-                                <p className="label">{t('footer.colophon')}</p>
-                                <ul className="m-0 mt-4 list-none p-0">
+                            <div>
+                                <p className="label label-ink">
+                                    {t('footer.colophon')}
+                                </p>
+                                <ul className="m-0 mt-3 list-none p-0">
                                     {STACK.map(({ label, href }) => (
                                         <li key={label}>
                                             <a
                                                 href={href}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="link force-mono inline-block py-1.5 text-sm"
+                                                className="link force-mono inline-flex min-h-10 items-center text-sm"
                                                 dir="ltr"
                                             >
                                                 {label}
@@ -118,8 +122,8 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
 
                 <hr className="rule" />
 
-                <div className="flex flex-col-reverse items-start justify-between gap-3 py-6 sm:flex-row sm:items-center sm:py-7">
-                    <p className="text-muted nums text-xs">
+                <div className="flex flex-col-reverse items-start justify-between gap-2 py-5 sm:flex-row sm:items-center">
+                    <p className="text-muted nums text-sm">
                         © {n(new Date().getFullYear(), 'plain')} {userName} —{' '}
                         {t('footer.rights')}
                     </p>
@@ -127,11 +131,10 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                     <button
                         type="button"
                         onClick={scrollToTop}
-                        className="text-muted label inline-flex min-h-11 items-center gap-2 transition-colors hover:text-(--accent)"
-                        aria-label={t('footer.backToTop')}
+                        className="menubar-item invert-on-hover -ms-2.5"
                     >
                         {t('footer.backToTop')}
-                        <IconArrowUp size={14} />
+                        <IconArrowUp size={15} />
                     </button>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { useReveal } from '../hooks/useReveal';
 import { SectionHeading } from './SectionHeading';
+import { Window } from './Window';
 
 /**
  * Grouped rather than gridded. Twenty logo tiles say "I can name twenty
@@ -27,56 +27,43 @@ const GROUPS = [
 
 export const Skills = () => {
     const { t } = useTranslation();
-    const ref = useReveal<HTMLElement>();
 
     return (
-        <section
-            ref={ref}
-            id="skills"
-            className="section section-alt scroll-mt-16"
-        >
+        <section id="skills" className="section scroll-mt-16">
             <div className="wrap">
-                <SectionHeading
-                    index={2}
-                    label={t('navigation.skills')}
-                    title={t('skills.title')}
-                    subtitle={t('skills.subtitle')}
-                />
+                <Window title={t('navigation.skills')}>
+                    <SectionHeading
+                        title={t('skills.title')}
+                        subtitle={t('skills.subtitle')}
+                    />
 
-                <div className="field">
-                    <div className="field-body">
-                        <dl className="m-0">
-                            {GROUPS.map((group, i) => (
-                                <div
-                                    key={group.id}
-                                    className="reveal grid gap-2 border-t border-(--line) py-5 sm:grid-cols-[11rem_1fr] sm:gap-8 sm:py-6"
-                                    data-delay={i * 50}
+                    <dl className="m-0">
+                        {GROUPS.map((group) => (
+                            <div
+                                key={group.id}
+                                className="row grid gap-3 py-4 sm:grid-cols-[11rem_1fr] sm:items-baseline sm:gap-8 sm:py-5"
+                            >
+                                <dt className="label label-ink">
+                                    {t(`skills.groups.${group.id}`)}
+                                </dt>
+                                {/* Every entry is a Latin technology name,
+                                    so the run reads left-to-right in source
+                                    order regardless of the page. */}
+                                <dd
+                                    className="ltr-run m-0 flex flex-wrap gap-2"
+                                    dir="ltr"
                                 >
-                                    <dt className="label pt-1">
-                                        {t(`skills.groups.${group.id}`)}
-                                    </dt>
-                                    {/* Every entry is a Latin technology name,
-                                        so the run reads left-to-right in
-                                        source order regardless of the page. */}
-                                    <dd
-                                        className="ltr-run m-0 flex flex-wrap items-baseline gap-x-5 gap-y-2"
-                                        dir="ltr"
-                                    >
-                                        {group.items.map((item) => (
-                                            <span
-                                                key={item}
-                                                className="force-mono text-[0.9375rem]"
-                                            >
-                                                {item}
-                                            </span>
-                                        ))}
-                                    </dd>
-                                </div>
-                            ))}
-                        </dl>
-                        <hr className="rule" />
-                    </div>
-                </div>
+                                    {group.items.map((item) => (
+                                        <span key={item} className="tag">
+                                            {item}
+                                        </span>
+                                    ))}
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
+                    <hr className="rule" />
+                </Window>
             </div>
         </section>
     );

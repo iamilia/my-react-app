@@ -40,6 +40,8 @@ export {
     approachingTrains,
     patternDepartures,
     type ScheduledTrain,
+    type StationPlatform,
+    stationBoard,
     type TrainWhere,
     trainsAt,
 } from './trains';

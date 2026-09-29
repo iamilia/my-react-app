@@ -331,14 +331,14 @@ export const Stats = () => {
 
     if (!token) {
         return (
-            <SubPageShell>
+            <SubPageShell title="Analytics">
                 <TokenGate onSubmit={signIn} error={error} />
             </SubPageShell>
         );
     }
 
     return (
-        <SubPageShell>
+        <SubPageShell title="Analytics">
             <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
                     <h1 className="display display-md">Analytics</h1>

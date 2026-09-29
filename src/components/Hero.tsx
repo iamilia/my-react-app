@@ -11,9 +11,7 @@ import {
 import type { GitHubUser } from '../types/github';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
-import { useReveal } from '../hooks/useReveal';
-import { useMagnetic } from '../hooks/useMagnetic';
-import { SplitText } from './SplitText';
+import { Window } from './Window';
 
 interface HeroProps {
     user: GitHubUser | null;
@@ -40,19 +38,7 @@ const socials = [
 
 export const Hero = ({ user, scrollToSection }: HeroProps) => {
     const { t } = useTranslation();
-    const ref = useReveal<HTMLElement>();
 
-    // One per button — the hook tracks a single element, and sharing a ref
-    // between the two would leave only the last one wired up.
-    const workBtn = useMagnetic<HTMLButtonElement>(0.22);
-    const contactBtn = useMagnetic<HTMLButtonElement>(0.22);
-
-    /**
-     * These used to cycle through a typewriter, then sat stacked in the
-     * margin column where they ended up jammed against the viewport edge.
-     * One line under the name is enough: it reads in a glance and stays part
-     * of the same block as everything else.
-     */
     const roles = useMemo(() => {
         const value = t('hero.roles', { returnObjects: true });
         return Array.isArray(value) ? (value as string[]) : [];
@@ -69,70 +55,61 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
           ]
         : socials;
 
-    return (
-        <section
-            ref={ref}
-            className="pt-24 pb-16 sm:pt-32 sm:pb-20 lg:pt-40 lg:pb-28"
-        >
-            <div className="wrap">
-                <p className="reveal flex items-center gap-2.5">
-                    <span className="marker" />
-                    <span className="label label-ink">{t('hero.status')}</span>
-                </p>
+    const login = user?.login || 'iamilia';
 
-                {/* Two columns that both carry weight: the statement on one
-                    side, the profile card on the other. The old layout put a
-                    cropped portrait opposite a one-word bio and left a dead
-                    band between them. */}
-                <div className="mt-8 grid gap-10 lg:mt-10 lg:grid-cols-12 lg:gap-12">
-                    <div className="lg:col-span-7">
-                        <p className="kicker reveal block" data-delay="60">
+    return (
+        <section className="pt-18 pb-3.5 sm:pt-22 sm:pb-5 lg:pt-28 lg:pb-7">
+            <div className="wrap">
+                {/* Two windows on the desktop. On a phone they stack; from
+                    `lg` the profile window is pulled up and over the edge of
+                    the first, the way two open documents overlap. */}
+                <div className="grid gap-6 lg:grid-cols-12 lg:gap-0">
+                    <Window
+                        zoom
+                        title="iamilia.ir"
+                        className="lg:col-span-8 lg:row-start-1"
+                    >
+                        <p className="flex items-center gap-2.5">
+                            <span className="marker" />
+                            <span className="label label-ink">
+                                {t('hero.status')}
+                            </span>
+                        </p>
+
+                        <p className="kicker mt-8 sm:mt-10">
                             {t('hero.greeting')}
                         </p>
 
-                        {/* The name is the one place on the site that gets the
-                            word-by-word entrance. It is also the only element
-                            above the fold that reads as a statement rather
-                            than as chrome, so it is worth the extra second. */}
-                        <h1 className="display display-xl mt-2">
-                            <SplitText
-                                text={user?.name || 'Ilia'}
-                                delay={120}
-                                stagger={90}
-                            />
+                        {/* The name is Latin in both languages, so it keeps the
+                            pixel face even on the Persian page. */}
+                        <h1 className="display display-xl force-pixel mt-2">
+                            {user?.name || 'Ilia'}
                         </h1>
 
-                        <p
-                            className="display display-md display-italic display-gradient reveal mt-5"
-                            data-delay="380"
-                        >
-                            {roles.map((role, i) => (
-                                <span key={role}>
-                                    {i > 0 && <span> · </span>}
+                        {/* Each role gets a square pixel bullet, so the three
+                            read as separate items when they share a line. */}
+                        <ul className="display-md display m-0 mt-5 flex list-none flex-wrap gap-x-6 gap-y-1 p-0 sm:mt-6">
+                            {roles.map((role) => (
+                                <li
+                                    key={role}
+                                    className="flex items-center gap-2.5 before:size-2 before:shrink-0 before:bg-current before:content-['']"
+                                >
                                     {role}
-                                </span>
+                                </li>
                             ))}
-                        </p>
+                        </ul>
 
                         {/* The bio is whatever is on the GitHub profile —
                             usually English, even when the page is Persian.
                             `dir="auto"` lets it pick its own side. */}
                         {user?.bio && (
-                            <p
-                                className="lede bidi-auto reveal mt-5"
-                                dir="auto"
-                                data-delay="460"
-                            >
+                            <p className="lede bidi-auto mt-5" dir="auto">
                                 {user.bio}
                             </p>
                         )}
 
-                        <div
-                            className="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
-                            data-delay="560"
-                        >
+                        <div className="mt-8 flex flex-col items-stretch gap-4 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center">
                             <button
-                                ref={workBtn}
                                 type="button"
                                 onClick={() => scrollToSection('work')}
                                 className="btn"
@@ -141,7 +118,6 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                                 <IconArrowDown size={16} />
                             </button>
                             <button
-                                ref={contactBtn}
                                 type="button"
                                 onClick={() => scrollToSection('contact')}
                                 className="btn-outline"
@@ -149,101 +125,88 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                                 {t('hero.ctaContact')}
                             </button>
                         </div>
-                    </div>
+                    </Window>
 
-                    {/* ---------------------- profile card ---------------------- */}
-                    <aside
-                        className="reveal-pop lg:col-span-4 lg:col-start-9"
-                        data-delay="300"
+                    {/* The whole profile is Latin content — a handle, a year,
+                        four service names — so it is pinned LTR end to end. */}
+                    <Window
+                        title={`@${login}`}
+                        dir="ltr"
+                        className="z-10 self-start lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:-ms-10 lg:mt-24"
+                        bodyClassName="p-5! sm:p-6!"
                     >
-                        {/* The whole card is Latin content — a GitHub handle,
-                            a year, four service names — so it is pinned LTR
-                            end to end. Half of it flipping with the page was
-                            what put the avatar on the opposite side from the
-                            link list underneath it. */}
-                        <div className="card" dir="ltr">
-                            <div className="flex items-start gap-4">
-                                {user?.avatar_url && (
-                                    <div className="avatar-ring w-20 shrink-0 sm:w-24">
-                                        <img
-                                            src={user.avatar_url}
-                                            alt={user.name || 'Ilia'}
-                                            loading="eager"
-                                            width={96}
-                                            height={96}
-                                            className="avatar"
+                        <div className="flex items-center gap-4">
+                            {user?.avatar_url && (
+                                <img
+                                    src={user.avatar_url}
+                                    alt={user.name || 'Ilia'}
+                                    loading="eager"
+                                    width={88}
+                                    height={88}
+                                    className="avatar w-20 shrink-0 sm:w-22"
+                                />
+                            )}
+
+                            <div className="min-w-0">
+                                <p className="force-mono truncate text-[0.9375rem] font-bold">
+                                    @{login}
+                                </p>
+
+                                {/* the one field a user could write in
+                                    Persian, so it still decides for itself */}
+                                {user?.location && (
+                                    <p
+                                        className="text-muted bidi-auto mt-1.5 flex items-center gap-1.5 text-sm"
+                                        dir="auto"
+                                    >
+                                        <IconMapPin
+                                            size={14}
+                                            className="shrink-0"
                                         />
-                                    </div>
+                                        <span className="truncate">
+                                            {user.location}
+                                        </span>
+                                    </p>
                                 )}
 
-                                <div className="min-w-0 pt-0.5">
-                                    <p className="force-mono truncate text-[0.9375rem] font-bold">
-                                        @{user?.login || 'iamilia'}
+                                {user?.created_at && (
+                                    <p className="text-muted nums mt-0.5 flex items-center gap-1.5 text-sm">
+                                        <IconCalendar
+                                            size={14}
+                                            className="shrink-0"
+                                        />
+                                        {new Date(
+                                            user.created_at
+                                        ).getFullYear()}
                                     </p>
-
-                                    {/* the one field a user could write in
-                                        Persian, so it still decides for itself */}
-                                    {user?.location && (
-                                        <p
-                                            className="text-muted bidi-auto mt-2 flex items-center gap-1.5 text-xs"
-                                            dir="auto"
-                                        >
-                                            <IconMapPin
-                                                size={13}
-                                                className="shrink-0"
-                                            />
-                                            <span className="truncate">
-                                                {user.location}
-                                            </span>
-                                        </p>
-                                    )}
-
-                                    {user?.created_at && (
-                                        <p className="text-muted force-mono nums mt-1 flex items-center gap-1.5 text-xs">
-                                            <IconCalendar
-                                                size={13}
-                                                className="shrink-0"
-                                            />
-                                            {new Date(
-                                                user.created_at
-                                            ).getFullYear()}
-                                        </p>
-                                    )}
-                                </div>
+                                )}
                             </div>
-
-                            <hr className="rule my-4" />
-
-                            <ul className="m-0 list-none p-0">
-                                {links.map(({ href, label, Icon }) => (
-                                    <li key={label}>
-                                        <a
-                                            href={href}
-                                            target={
-                                                href.startsWith('mailto')
-                                                    ? undefined
-                                                    : '_blank'
-                                            }
-                                            rel="noopener noreferrer"
-                                            className="text-muted group flex min-h-10 items-center gap-2.5 text-sm transition-colors hover:text-(--accent)"
-                                        >
-                                            <Icon
-                                                size={16}
-                                                className="shrink-0"
-                                            />
-                                            <span className="force-mono flex-1">
-                                                {label}
-                                            </span>
-                                            <IconArrowUpRight
-                                                size={14}
-                                                className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
-                                            />
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
                         </div>
-                    </aside>
+
+                        <ul className="m-0 mt-5 list-none p-0">
+                            {links.map(({ href, label, Icon }) => (
+                                <li key={label} className="row">
+                                    <a
+                                        href={href}
+                                        target={
+                                            href.startsWith('mailto')
+                                                ? undefined
+                                                : '_blank'
+                                        }
+                                        rel="noopener noreferrer"
+                                        className="invert-on-hover -mx-2 flex min-h-11 items-center gap-3 px-2 text-[0.9375rem]"
+                                    >
+                                        <Icon size={17} className="shrink-0" />
+                                        <span className="flex-1">{label}</span>
+                                        <IconArrowUpRight
+                                            size={15}
+                                            className="shrink-0"
+                                        />
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </Window>
                 </div>
             </div>
         </section>

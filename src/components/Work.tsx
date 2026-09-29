@@ -1,7 +1,7 @@
 import { IconArrowUpRight } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { useReveal } from '../hooks/useReveal';
 import { SectionHeading } from './SectionHeading';
+import { Window } from './Window';
 
 type Platform = {
     /** i18n key under `work.genesis.platforms` */
@@ -118,201 +118,197 @@ const ARCHIVED: Archived[] = [
 
 export const Work = () => {
     const { t } = useTranslation();
-    const ref = useReveal<HTMLElement>();
 
     return (
-        <section ref={ref} id="work" className="section scroll-mt-16">
+        <section id="work" className="section scroll-mt-16">
             <div className="wrap">
-                <SectionHeading
-                    index={3}
-                    label={t('navigation.work')}
-                    title={t('work.title')}
-                    subtitle={t('work.subtitle')}
-                />
+                <Window title={t('navigation.work')}>
+                    <SectionHeading
+                        title={t('work.title')}
+                        subtitle={t('work.subtitle')}
+                    />
 
-                {/* ============================ LIVE ============================ */}
-                <div className="field">
-                    <div className="field-aside reveal">
-                        <span className="flex items-center gap-2.5">
-                            <span className="marker" />
-                            <span className="label label-ink">
-                                {t('work.live')}
+                    {/* ============================ LIVE ============================ */}
+                    <div className="field">
+                        <div className="field-aside">
+                            <span className="flex items-center gap-2.5">
+                                <span className="marker" />
+                                <span className="label label-ink">
+                                    {t('work.live')}
+                                </span>
                             </span>
-                        </span>
-                        <p className="prose-sm mt-3">{t('work.liveLabel')}</p>
-                    </div>
-
-                    <div className="field-body">
-                        <div className="reveal" data-delay="60">
-                            <h3 className="display display-lg" dir="ltr">
-                                {t('work.genesis.name')}
-                            </h3>
-                            <p className="label label-accent mt-3">
-                                {t('work.genesis.role')}
-                            </p>
-                            <p className="lede mt-5">
-                                {t('work.genesis.description')}
-                            </p>
-                            <p
-                                className="text-muted force-mono ltr-run mt-5 text-xs"
-                                dir="ltr"
-                            >
-                                {STACK.join('  ·  ')}
+                            <p className="prose-sm mt-2">
+                                {t('work.liveLabel')}
                             </p>
                         </div>
 
-                        {/* ----------- in-game and voice: not links ----------- */}
-                        <p className="label reveal mt-12 block" data-delay="80">
-                            {t('work.platformsLabel')}
-                        </p>
+                        <div className="field-body">
+                            <h3
+                                className="display display-lg force-pixel"
+                                dir="ltr"
+                            >
+                                {t('work.genesis.name')}
+                            </h3>
+                            <p className="label label-ink mt-3">
+                                {t('work.genesis.role')}
+                            </p>
+                            <p className="lede mt-4">
+                                {t('work.genesis.description')}
+                            </p>
+                            <ul
+                                className="ltr-run m-0 mt-5 flex list-none flex-wrap gap-2 p-0"
+                                dir="ltr"
+                            >
+                                {STACK.map((item) => (
+                                    <li key={item} className="tag">
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
 
-                        <ul
-                            className="reveal m-0 mt-4 list-none p-0"
-                            data-delay="100"
-                        >
-                            {PLATFORMS.map((platform) => (
-                                <li
-                                    key={platform.key}
-                                    className="row grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[1fr_1fr_1.2fr] sm:items-baseline"
-                                >
-                                    <span className="text-[0.9375rem] font-medium">
-                                        {t(
-                                            `work.genesis.platforms.${platform.key}.label`
-                                        )}
-                                    </span>
-                                    <span
-                                        className="force-mono text-muted ltr-run text-xs"
-                                        dir="ltr"
-                                    >
-                                        {platform.name}
-                                    </span>
-                                    <span
-                                        className="text-muted bidi-auto text-sm"
-                                        dir="auto"
-                                    >
-                                        {t(
-                                            `work.genesis.platforms.${platform.key}.description`
-                                        )}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                        <hr className="rule" />
+                            {/* ----------- in-game and voice: not links ----------- */}
+                            <h4 className="label label-ink mt-12 block">
+                                {t('work.platformsLabel')}
+                            </h4>
 
-                        {/* --------------------- endpoints -------------------- */}
-                        <p className="label reveal mt-12 block" data-delay="80">
-                            {t('work.endpoints')}
-                        </p>
-
-                        <ul
-                            className="reveal m-0 mt-4 list-none p-0"
-                            data-delay="100"
-                        >
-                            {SITES.map((site) => (
-                                <li key={site.key}>
-                                    <a
-                                        href={`https://${site.host}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="row row-link group grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[1fr_1fr_1.2fr_auto] sm:items-baseline"
+                            <ul className="m-0 mt-3 list-none p-0">
+                                {PLATFORMS.map((platform) => (
+                                    <li
+                                        key={platform.key}
+                                        className="row grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[1fr_1fr_1.2fr] sm:items-baseline"
                                     >
-                                        <span className="text-[0.9375rem] font-medium transition-colors duration-200 group-hover:text-(--accent)">
+                                        <span className="font-bold">
                                             {t(
-                                                `work.genesis.sites.${site.key}.label`
+                                                `work.genesis.platforms.${platform.key}.label`
                                             )}
                                         </span>
                                         <span
-                                            className="force-mono text-muted ltr-run truncate text-xs"
+                                            className="force-mono text-muted ltr-run text-xs"
                                             dir="ltr"
                                         >
-                                            {site.host}
+                                            {platform.name}
                                         </span>
                                         <span
                                             className="text-muted bidi-auto text-sm"
                                             dir="auto"
                                         >
                                             {t(
-                                                `work.genesis.sites.${site.key}.description`
+                                                `work.genesis.platforms.${platform.key}.description`
                                             )}
                                         </span>
-                                        <IconArrowUpRight
-                                            size={16}
-                                            className="text-muted shrink-0 transition-colors duration-200 group-hover:text-(--accent) rtl:-scale-x-100"
-                                        />
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                        <hr className="rule" />
-                    </div>
-                </div>
+                                    </li>
+                                ))}
+                            </ul>
+                            <hr className="rule" />
 
-                {/* ========================== ARCHIVED ========================== */}
-                <div className="field mt-20 lg:mt-28">
-                    <div className="field-aside reveal">
-                        <span className="label">
-                            {t('work.archived.label')}
-                        </span>
-                        <p className="prose-sm mt-3">
-                            {t('work.archived.note')}
-                        </p>
-                    </div>
+                            {/* --------------------- endpoints -------------------- */}
+                            <h4 className="label label-ink mt-12 block">
+                                {t('work.endpoints')}
+                            </h4>
 
-                    <div className="field-body">
-                        <ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
-                            {ARCHIVED.map((project, i) => (
-                                <li
-                                    key={project.key}
-                                    className="reveal-pop flex"
-                                    data-delay={(i % 3) * 50}
-                                >
-                                    <article className="card w-full">
-                                        <div className="flex items-start justify-between gap-3">
-                                            <h4
-                                                className="force-mono text-[0.9375rem] font-bold tracking-tight"
-                                                dir="ltr"
-                                            >
-                                                {project.name}
-                                            </h4>
-                                            <span
-                                                className="text-muted force-mono shrink-0 text-[0.6875rem]"
-                                                dir="ltr"
-                                            >
-                                                {project.platform}
-                                            </span>
-                                        </div>
-
-                                        <p className="label label-accent mt-2">
-                                            {t(
-                                                `work.archived.kinds.${project.kind}`
-                                            )}
-                                        </p>
-
-                                        <p
-                                            className="prose-sm bidi-auto mt-2.5"
-                                            dir="auto"
+                            <ul className="m-0 mt-3 list-none p-0">
+                                {SITES.map((site) => (
+                                    <li key={site.key}>
+                                        <a
+                                            href={`https://${site.host}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="row row-link invert-on-hover grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[1fr_1fr_1.2fr_auto] sm:items-baseline"
                                         >
-                                            {t(
-                                                `work.archived.items.${project.key}.description`
-                                            )}
-                                        </p>
-
-                                        {project.framework && (
-                                            <div
-                                                className="card-foot"
+                                            <span className="font-bold">
+                                                {t(
+                                                    `work.genesis.sites.${site.key}.label`
+                                                )}
+                                            </span>
+                                            <span
+                                                className="force-mono text-muted ltr-run truncate text-xs"
                                                 dir="ltr"
                                             >
-                                                <span className="truncate">
-                                                    {project.framework}
+                                                {site.host}
+                                            </span>
+                                            <span
+                                                className="text-muted bidi-auto text-sm"
+                                                dir="auto"
+                                            >
+                                                {t(
+                                                    `work.genesis.sites.${site.key}.description`
+                                                )}
+                                            </span>
+                                            <IconArrowUpRight
+                                                size={16}
+                                                className="hidden shrink-0 sm:block rtl:-scale-x-100"
+                                            />
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                            <hr className="rule" />
+                        </div>
+                    </div>
+
+                    {/* ========================== ARCHIVED ========================== */}
+                    <div className="field mt-16 lg:mt-24">
+                        <div className="field-aside">
+                            <h3 className="label label-ink">
+                                {t('work.archived.label')}
+                            </h3>
+                            <p className="prose-sm mt-2">
+                                {t('work.archived.note')}
+                            </p>
+                        </div>
+
+                        <div className="field-body">
+                            <ul className="m-0 grid list-none gap-5 p-0 sm:grid-cols-2">
+                                {ARCHIVED.map((project) => (
+                                    <li key={project.key} className="flex">
+                                        <article className="card w-full">
+                                            <div className="flex items-start justify-between gap-3">
+                                                <h4
+                                                    className="display force-pixel text-xl"
+                                                    dir="ltr"
+                                                >
+                                                    {project.name}
+                                                </h4>
+                                                <span
+                                                    className="tag shrink-0"
+                                                    dir="ltr"
+                                                >
+                                                    {project.platform}
                                                 </span>
                                             </div>
-                                        )}
-                                    </article>
-                                </li>
-                            ))}
-                        </ul>
+
+                                            <p className="label label-ink mt-1.5">
+                                                {t(
+                                                    `work.archived.kinds.${project.kind}`
+                                                )}
+                                            </p>
+
+                                            <p
+                                                className="prose-sm bidi-auto mt-2"
+                                                dir="auto"
+                                            >
+                                                {t(
+                                                    `work.archived.items.${project.key}.description`
+                                                )}
+                                            </p>
+
+                                            {project.framework && (
+                                                <div
+                                                    className="card-foot"
+                                                    dir="ltr"
+                                                >
+                                                    <span className="truncate">
+                                                        {project.framework}
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </article>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                </Window>
             </div>
         </section>
     );

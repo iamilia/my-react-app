@@ -56,7 +56,7 @@ export const Game2048 = () => {
     }, [t]);
 
     return (
-        <SubPageShell>
+        <SubPageShell title="2048">
             <div className="mx-auto max-w-3xl">
                 <Link
                     to="/game"
@@ -71,7 +71,7 @@ export const Game2048 = () => {
                 <div className="mt-6 flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                         <span className="label">{t('navigation.games')}</span>
-                        <h1 className="display force-mono mt-2 text-[clamp(2.5rem,9vw,4.5rem)]">
+                        <h1 className="display force-pixel mt-2 text-[clamp(2.5rem,9vw,4.5rem)]">
                             2048
                         </h1>
                         <p className="prose-sm mt-3 max-w-md">

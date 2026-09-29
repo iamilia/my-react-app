@@ -292,6 +292,15 @@
             "eta": "in {{min}} min",
             "none": "No more trains for this ride today, according to the timetable.",
             "note": "Worked out from the published departure times — where each train should be, not a live position."
+        },
+        "board": {
+            "label": "Next trains at the From station",
+            "title": "Next trains at {{station}}",
+            "towards": "towards {{station}}",
+            "yours": "Your ride",
+            "endsAt": "ends at {{station}}",
+            "none": "No more trains from here today, according to the timetable.",
+            "note": "Arrival times at this station, worked out from the published departure times and the chosen time."
         }
     },
     "game2048": {

@@ -2,11 +2,13 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Iam Ilia - A portfolio showcasing my projects, skills, and experience as a software developer and tech enthusiast." />
-        <meta name="keywords" content="Ilia, Software Developer, Portfolio, React, TypeScript, GitHub, Projects, Web Development, Fivem Development, Lua, Fivem Developer, Ilia Lotfi, ایلیا لطفی,"  />
-        <meta name="author" content="Ilia" />
-        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <title>Ilia Lotfi — Software &amp; Game Developer</title>
+        <meta name="description" content="Ilia Lotfi (iamilia) — software and game developer from Iran building web apps with React and TypeScript, and FiveM / RedM game servers. Projects, skills and contact." />
+        <meta name="keywords" content="Ilia Lotfi, iamilia, ایلیا لطفی, Software Developer, Game Developer, React, TypeScript, FiveM Developer, Lua, Portfolio" />
+        <meta name="author" content="Ilia Lotfi" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
+        <link rel="canonical" href="https://iamilia.ir/" />
 
         <!--
           NOTE: every og:* / twitter:* / <title> / description tag below is
@@ -18,35 +20,42 @@
         -->
 
         <!-- Open Graph / Facebook -->
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Iam Ilia - Software Developer Portfolio" />
-        <meta property="og:description" content="Explore my projects, skills, and experience as a software developer and tech enthusiast." />
+        <meta property="og:type" content="profile" />
+        <meta property="og:title" content="Ilia Lotfi — Software & Game Developer" />
+        <meta property="og:description" content="Web apps in React and TypeScript, FiveM and RedM game servers, and a few small browser games." />
         <meta property="og:image" content="https://iamilia.ir/og-home.png" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:url" content="https://iamilia.ir" />
+        <meta property="og:image:alt" content="Ilia Lotfi — Software & Game Developer" />
+        <meta property="og:url" content="https://iamilia.ir/" />
         <meta property="og:site_name" content="Iam Ilia" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:locale:alternate" content="fa_IR" />
+        <meta property="profile:first_name" content="Ilia" />
+        <meta property="profile:last_name" content="Lotfi" />
+        <meta property="profile:username" content="iamilia" />
 
-        <!-- Discord Embed / browser chrome -->
-        <meta property="theme-color" content="#6d5bd0" />
+        <!-- Discord embed accent / browser chrome -->
+        <meta property="theme-color" content="#000000" />
         <!-- rewritten before first paint by the inline script below -->
-        <meta name="theme-color" content="#faf7f2" />
+        <meta name="theme-color" content="#ffffff" />
         <meta name="color-scheme" content="light dark" />
 
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Iam Ilia - Software Developer Portfolio" />
-        <meta name="twitter:description" content="Explore my projects, skills, and experience as a software developer and tech enthusiast." />
+        <meta name="twitter:title" content="Ilia Lotfi — Software & Game Developer" />
+        <meta name="twitter:description" content="Web apps in React and TypeScript, FiveM and RedM game servers, and a few small browser games." />
         <meta name="twitter:image" content="https://iamilia.ir/og-home.png" />
         <meta name="twitter:site" content="@org_ilia" />
         <meta name="twitter:creator" content="@org_ilia" />
-        <meta name="twitter:url" content="https://iamilia.ir" />
+        <meta name="twitter:url" content="https://iamilia.ir/" />
 
         <!-- Telegram Preview -->
         <meta name="telegram:channel" content="@im_1lia" />
 
         <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
         <!--
           The GitHub API is proxied through this same origin (see /_gh), so
           there is nothing to preconnect there. The avatar is still loaded
@@ -55,23 +64,60 @@
         <link rel="preconnect" href="https://avatars.githubusercontent.com" />
 
         <!--
+          Who this site is about, for search engines. `sameAs` ties the page
+          to the same person's profiles elsewhere, which is what lets a
+          search for the name resolve to one entity rather than several.
+        -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "Person",
+                        "@id": "https://iamilia.ir/#person",
+                        "name": "Ilia Lotfi",
+                        "alternateName": ["iamilia", "ایلیا لطفی"],
+                        "url": "https://iamilia.ir/",
+                        "image": "https://avatars.githubusercontent.com/iamilia",
+                        "jobTitle": "Software Developer",
+                        "email": "mailto:ilialotfi@outlook.com",
+                        "knowsAbout": ["React", "TypeScript", "Node.js", "Lua", "FiveM", "Game development"],
+                        "sameAs": [
+                            "https://github.com/iamilia",
+                            "https://t.me/org_ilia",
+                            "https://twitter.com/org_ilia"
+                        ]
+                    },
+                    {
+                        "@type": "WebSite",
+                        "@id": "https://iamilia.ir/#website",
+                        "url": "https://iamilia.ir/",
+                        "name": "Iam Ilia",
+                        "inLanguage": ["en", "fa"],
+                        "publisher": { "@id": "https://iamilia.ir/#person" }
+                    }
+                ]
+            }
+        </script>
+
+        <!--
           Typefaces are self-hosted via Fontsource and bundled by Vite (see
           src/style.css) rather than pulled from a font CDN — no third-party
           request on first paint, and nothing to fail on a slow network.
         -->
         <link href="/src/style.css" rel="stylesheet">
-        <title>Iam Ilia - Software Developer Portfolio</title>
 
         <!--
           Resolve the theme before first paint so there is no flash. The
           default is the operating system's own preference; `theme` in
           localStorage only exists once the visitor has overridden it by
-          hand. Keep these two hex values in step with --bg in src/style.css.
+          hand. Keep these two hex values in step with --paper / --ink in
+          src/style.css and with src/store/themeStore.ts.
         -->
         <script>
             (() => {
-                const LIGHT = '#faf7f2';
-                const DARK = '#0b0f1a';
+                const LIGHT = '#ffffff';
+                const DARK = '#000000';
                 const prefersDark = () =>
                     window.matchMedia?.('(prefers-color-scheme: dark)')
                         .matches ?? false;
@@ -98,6 +144,22 @@
     </head>
     <body>
         <div id="root"></div>
+        <!--
+          For anything that reads the page without running JavaScript — some
+          crawlers, link unfurlers, reader modes — the essentials in plain
+          HTML. React never renders over this; it only shows with JS off.
+        -->
+        <noscript>
+            <main style="max-width: 40rem; margin: 4rem auto; padding: 0 1rem; font-family: system-ui, sans-serif; line-height: 1.6">
+                <h1>Ilia Lotfi</h1>
+                <p>Software developer, game developer and tech enthusiast. I build web apps with React, TypeScript and Node.js, and run FiveM / RedM game servers.</p>
+                <ul>
+                    <li><a href="https://github.com/iamilia">GitHub — github.com/iamilia</a></li>
+                    <li><a href="https://t.me/org_ilia">Telegram — @org_ilia</a></li>
+                    <li><a href="mailto:ilialotfi@outlook.com">Email — ilialotfi@outlook.com</a></li>
+                </ul>
+            </main>
+        </noscript>
         <script type="module" src="/src/main.tsx"></script>
     </body>
 </html>

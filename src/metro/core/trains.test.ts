@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { NETWORK } from '../data/lines';
-import { approachingTrains, patternDepartures, trainsAt } from './trains';
+import {
+    approachingTrains,
+    patternDepartures,
+    stationBoard,
+    trainsAt,
+} from './trains';
 
 const at = (hh: number, mm: number) => hh * 3600 + mm * 60;
 const line = (id: string) => {
@@ -146,5 +151,61 @@ describe('approachingTrains', () => {
                 'kahrizak'
             );
         }
+    });
+});
+
+describe('stationBoard', () => {
+    it('gives the first Line 4 train at Enghelab at 05:54', () => {
+        // Sheet: dep. Kolahdooz 05:30, at Enghelab 05:54.
+        const board = stationBoard(
+            NETWORK,
+            'meydan-e-enghelab',
+            'weekday',
+            at(5, 0)
+        );
+        const platform = board.find(
+            (p) => p.lineId === '4' && p.direction === 'forward'
+        );
+        expect(platform?.trains[0].arrivesAt).toBe(at(5, 54));
+        expect(platform?.trains[0].etaSeconds).toBe(54 * 60);
+    });
+
+    it('has a platform each way on every line through an interchange', () => {
+        const board = stationBoard(
+            NETWORK,
+            'darvazeh-dowlat',
+            'weekday',
+            at(12, 0)
+        );
+        expect(board.map((p) => `${p.lineId}:${p.direction}`).sort()).toEqual([
+            '1:backward',
+            '1:forward',
+            '4:backward',
+            '4:forward',
+        ]);
+        for (const p of board) expect(p.trains).toHaveLength(3);
+    });
+
+    it('has no platform towards a terminus from the terminus itself', () => {
+        const board = stationBoard(
+            NETWORK,
+            'shahid-kolahdooz',
+            'weekday',
+            at(12, 0)
+        );
+        expect(board).toHaveLength(1);
+        expect(board[0].towards).not.toBe('shahid-kolahdooz');
+    });
+
+    it('is empty after the last train', () => {
+        const board = stationBoard(NETWORK, 'towhid', 'weekday', at(23, 59));
+        for (const p of board) expect(p.trains).toEqual([]);
+    });
+
+    it('lists Line 1 short trips too, with where they end', () => {
+        const board = stationBoard(NETWORK, 'tajrish', 'weekday', at(8, 0), 6);
+        const ends = new Set(board[0].trains.map((t) => t.terminusId));
+        expect(ends.has('kahrizak')).toBe(true);
+        expect(ends.size).toBeGreaterThan(1);
     });
 });

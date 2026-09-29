@@ -133,9 +133,13 @@ export interface ApproachingTrain {
     direction: Direction;
     /** Seconds of day it leaves (or left) its first station. */
     departedAt: number;
+    /** Last station of this trip (a short trip can end before the terminus). */
+    terminusId: string;
     where: TrainWhere;
     /** Stations between it and the platform, not counting either end. */
     stopsAway: number;
+    /** Seconds of day it is at the platform. */
+    arrivesAt: number;
     /** Seconds until it is at the platform (0 = there now). */
     etaSeconds: number;
     /** Present once the train has left its first station. */
@@ -143,28 +147,20 @@ export interface ApproachingTrain {
 }
 
 /**
- * The next trains that will call at `fromId` and then go on to `toId`, as
- * the timetable has them at `secondsOfDay`: where each one is now and how
- * long until it reaches the platform. Includes trains that haven't left
- * their first station yet, so the answer is right near the terminals too.
+ * The next `limit` trips in one direction that call at `stationId` and
+ * don't end there — and, given `toId`, go on to `toId` too. Includes trains
+ * that haven't left their first station yet, so the answer is right near
+ * the terminals too.
  */
-export const approachingTrains = (
-    network: NetworkData,
-    lineId: string,
-    fromId: string,
-    toId: string,
+const upcomingAt = (
+    line: LineData,
+    direction: Direction,
+    stationId: string,
+    toId: string | null,
     dayType: DayType,
     secondsOfDay: number,
-    limit = 3
+    limit: number
 ): ApproachingTrain[] => {
-    const line = network.lines.find((l) => l.id === lineId);
-    if (!line) return [];
-    const indexOf = (id: string) => line.stations.findIndex((s) => s.id === id);
-    const from = indexOf(fromId);
-    const to = indexOf(toId);
-    if (from < 0 || to < 0 || from === to) return [];
-    const direction: Direction = to > from ? 'forward' : 'backward';
-
     const found: ApproachingTrain[] = [];
     for (const pattern of line.directions[direction].service[dayType] ?? []) {
         let fromThisPattern = 0;
@@ -172,10 +168,10 @@ export const approachingTrains = (
             if (secondsOfDay - departure > MAX_TRIP_SECONDS) continue;
             const plan = tripPlan(line, pattern, dayType, departure);
             if (!plan) continue;
-            // Only trips that call at the platform and then the destination.
-            const k = plan.stationIds.indexOf(fromId);
-            if (k < 0 || !plan.stationIds.includes(toId)) continue;
-            if (plan.stationIds.indexOf(toId) < k) continue;
+            // Only trips that call at the platform and then go on (to `toId`).
+            const k = plan.stationIds.indexOf(stationId);
+            if (k < 0 || k === plan.stationIds.length - 1) continue;
+            if (toId !== null && plan.stationIds.indexOf(toId) <= k) continue;
 
             const arrival = departure + plan.cumulativeSeconds[k];
             if (arrival < secondsOfDay) continue; // already gone by
@@ -228,12 +224,94 @@ export const approachingTrains = (
                 lineId: line.id,
                 direction,
                 departedAt: departure,
+                terminusId: plan.stationIds[plan.stationIds.length - 1],
                 where,
                 stopsAway,
+                arrivesAt: arrival,
                 etaSeconds: arrival - secondsOfDay,
                 train,
             });
         }
     }
     return found.sort((a, b) => a.etaSeconds - b.etaSeconds).slice(0, limit);
+};
+
+/**
+ * The next trains that will call at `fromId` and then go on to `toId`, as
+ * the timetable has them at `secondsOfDay`: where each one is now and how
+ * long until it reaches the platform.
+ */
+export const approachingTrains = (
+    network: NetworkData,
+    lineId: string,
+    fromId: string,
+    toId: string,
+    dayType: DayType,
+    secondsOfDay: number,
+    limit = 3
+): ApproachingTrain[] => {
+    const line = network.lines.find((l) => l.id === lineId);
+    if (!line) return [];
+    const indexOf = (id: string) => line.stations.findIndex((s) => s.id === id);
+    const from = indexOf(fromId);
+    const to = indexOf(toId);
+    if (from < 0 || to < 0 || from === to) return [];
+    const direction: Direction = to > from ? 'forward' : 'backward';
+    return upcomingAt(
+        line,
+        direction,
+        fromId,
+        toId,
+        dayType,
+        secondsOfDay,
+        limit
+    );
+};
+
+/** One platform of a station: a line and the way its trains leave it. */
+export interface StationPlatform {
+    lineId: string;
+    direction: Direction;
+    /** Terminus of the line in this direction. */
+    towards: string;
+    /** Next trains to call here, soonest first; empty after the last one. */
+    trains: ApproachingTrain[];
+}
+
+/**
+ * A departure board for one station: for every line that serves it and
+ * every direction a train can leave it in, the next trains to call there.
+ * A terminus has no platform towards itself.
+ */
+export const stationBoard = (
+    network: NetworkData,
+    stationId: string,
+    dayType: DayType,
+    secondsOfDay: number,
+    limit = 3
+): StationPlatform[] => {
+    const board: StationPlatform[] = [];
+    for (const line of network.lines) {
+        const index = line.stations.findIndex((s) => s.id === stationId);
+        if (index < 0) continue;
+        for (const direction of ['forward', 'backward'] as Direction[]) {
+            const end = direction === 'forward' ? line.stations.length - 1 : 0;
+            if (index === end) continue;
+            board.push({
+                lineId: line.id,
+                direction,
+                towards: line.directions[direction].towards,
+                trains: upcomingAt(
+                    line,
+                    direction,
+                    stationId,
+                    null,
+                    dayType,
+                    secondsOfDay,
+                    limit
+                ),
+            });
+        }
+    }
+    return board;
 };

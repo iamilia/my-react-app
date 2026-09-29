@@ -8,18 +8,17 @@
    nothing is fetched from a third-party CDN at runtime, which matters for
    visitors on networks where Google Fonts is slow or unreachable.
 
-   Fraunces carries the display type, Plus Jakarta Sans the prose, JetBrains
-   Mono the data and labels, and Vazirmatn the Persian. None of the three
-   Latin faces has Arabic coverage, so Persian glyphs fall through to
-   Vazirmatn per-glyph — no dir-dependent font switching needed.
-
-   Fraunces ships as `full` rather than `wght` on purpose: that build carries
-   the SOFT and WONK axes, and those two axes are the entire reason this face
-   is here. Without them it is just another serif.
+   Pixelify Sans is the system face: names, headings, window titles, menus
+   and buttons — everywhere the original Mac would have used Chicago.
+   Atkinson Hyperlegible Next carries the prose, in the role Geneva played:
+   a plain humanist sans that stays readable at body size, which no pixel
+   face does. JetBrains Mono is kept for things that genuinely are code —
+   repo names, hostnames, framework ids — and Vazirmatn covers Persian,
+   which none of the three Latin faces can set.
    ========================================================================== */
 
-@import '@fontsource-variable/fraunces/full.css';
-@import '@fontsource-variable/plus-jakarta-sans/wght.css';
+@import '@fontsource-variable/pixelify-sans/wght.css';
+@import '@fontsource-variable/atkinson-hyperlegible-next/wght.css';
 @import '@fontsource-variable/jetbrains-mono/wght.css';
 @import '@fontsource-variable/vazirmatn/wght.css';
 
@@ -29,21 +28,19 @@
 
 @theme {
     --font-sans:
-        'Plus Jakarta Sans Variable', 'Vazirmatn Variable', ui-sans-serif,
-        system-ui, -apple-system, 'Segoe UI', sans-serif;
+        'Atkinson Hyperlegible Next Variable', 'Vazirmatn Variable',
+        ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
     /* Vazirmatn sits in the mono stack too: JetBrains Mono has no Arabic, and
-       plenty of mono-set chrome (kickers, labels, stat captions) carries
-       Persian. Without it those strings would render as tofu. */
+       a mono-set run can still carry Persian. Without it that would be tofu. */
     --font-mono:
         'JetBrains Mono Variable', 'Vazirmatn Variable', ui-monospace,
         'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
         monospace;
 
-    /* Headings run on Fraunces. Vazirmatn backs it for the same reason as
-       above, though RTL headings are re-pinned wholesale further down. */
     --font-display:
-        'Fraunces Variable', 'Vazirmatn Variable', ui-serif, Georgia, serif;
+        'Pixelify Sans Variable', 'Vazirmatn Variable', ui-monospace,
+        monospace;
 
     --default-font-family: var(--font-sans);
 
@@ -52,139 +49,109 @@
 }
 
 /* ==========================================================================
-   PALETTE — "dusk aurora"
+   PALETTE — "1-bit"
    --------------------------------------------------------------------------
-   Light is warm sand at golden hour; dark is the blue hour just after it.
-   Both carry two paper tones so sections can alternate — that banding is
-   what gives the page rhythm, in place of borders and shadows.
+   Two inks, like the first Macintosh screen: black and white, and nothing
+   tinted standing in for either. Dark mode is not a second palette, it is
+   the same screen inverted — which is exactly what the old machines did.
 
-   Two accents, not one. Iris is the interactive colour and does all the work
-   a single accent used to; teal appears only in the aurora wash and in the
-   handful of places that need a second voice (live markers, the top end of
-   the 2048 ramp). Keeping teal out of link and button states is what stops
-   the page reading as two competing themes.
+   One grey is allowed, for secondary text only. A true 1-bit screen would
+   dither it; on a modern display a flat mid-grey is the honest equivalent,
+   and it is chosen to clear 7:1 against its ground.
+
+   The `-inv` set is what makes hover work. Selection on the old Mac was an
+   inversion — a menu item or a list row flipped to white-on-black — so
+   instead of a hover colour, an interactive element swaps these tokens in
+   its own scope (see `.invert-on-hover` below) and everything inside it,
+   muted text and rules included, flips along with it.
+
+   The `--accent` family survives only as aliases of the ink, so the pages
+   that still reference it (games, metro, stats) render correctly in
+   monochrome without each of them being rewritten.
    ========================================================================== */
 
 :root {
     color-scheme: light;
 
-    --bg: #faf7f2;
-    --bg-alt: #f3eee6;
-    --fg: #1b1a2e;
-    /* Dark enough that muted text still clears 4.5:1 at the densest point of
-       the aurora, not just against clean paper — the wash tints the ground
-       under everything, so the contrast budget has to be spent assuming it. */
-    --fg-muted: #575473;
+    --ink: #000000;
+    --paper: #ffffff;
+    --ink-muted: #505050;
+    --paper-muted: #b4b4b4;
 
-    --line: rgba(27, 26, 46, 0.12);
-    --line-strong: rgba(27, 26, 46, 0.28);
-    --tint: rgba(27, 26, 46, 0.035);
+    --bg: var(--paper);
+    --fg: var(--ink);
+    --fg-muted: var(--ink-muted);
 
-    /* Cards are a translucent wash rather than a fixed colour, so the same
-       card reads correctly on both paper tones — and so the aurora behind
-       the page shows faintly through them. */
-    --surface: rgba(255, 255, 255, 0.55);
-    --surface-hover: rgba(255, 255, 255, 0.85);
+    --bg-inv: var(--ink);
+    --fg-inv: var(--paper);
+    --fg-muted-inv: var(--paper-muted);
 
-    --accent: #6d5bd0;
-    --accent-soft: rgba(109, 91, 208, 0.1);
-    --accent-2: #2f9e8f;
-    --accent-2-soft: rgba(47, 158, 143, 0.12);
-
-    /* 62% is where the folio clears 3:1 on both paper tones — quiet enough
-       to stay a background mark, solid enough to still be a legible numeral. */
-    --folio: rgba(109, 91, 208, 0.62);
-
-    --on-accent: #fbfaff;
-
-    /* Aurora — the drifting wash behind the hero and the footer. Opacities
-       are deliberately low: this is weather, not decoration you look at. */
-    --aurora-1: rgba(109, 91, 208, 0.2);
-    --aurora-2: rgba(47, 158, 143, 0.15);
-    --aurora-3: rgba(226, 148, 96, 0.13);
-
-    --shadow-soft: 0 1px 2px rgba(27, 26, 46, 0.04),
-        0 12px 32px -12px rgba(27, 26, 46, 0.12);
-    --shadow-lift: 0 2px 4px rgba(27, 26, 46, 0.05),
-        0 24px 48px -16px rgba(27, 26, 46, 0.18);
-
-    --scrollbar-thumb: rgba(27, 26, 46, 0.18);
-    --scrollbar-thumb-hover: rgba(27, 26, 46, 0.36);
+    /* The desktop behind the windows: a sparse dot dither, one inked pixel
+       in eight. The classic 50% grey is too loud to sit behind a whole page;
+       this keeps the texture and loses the noise. */
+    --desk: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000' fill-opacity='.35'/%3E%3C/svg%3E");
 }
 
 .dark {
     color-scheme: dark;
 
-    --bg: #0b0f1a;
-    --bg-alt: #121828;
-    --fg: #eef1f8;
-    --fg-muted: #9aa3bd;
+    --bg: var(--ink);
+    --fg: var(--paper);
+    --fg-muted: var(--paper-muted);
 
-    --line: rgba(154, 163, 189, 0.16);
-    --line-strong: rgba(154, 163, 189, 0.36);
-    --tint: rgba(154, 163, 189, 0.06);
+    --bg-inv: var(--paper);
+    --fg-inv: var(--ink);
+    --fg-muted-inv: var(--ink-muted);
 
-    --surface: rgba(154, 163, 189, 0.07);
-    --surface-hover: rgba(154, 163, 189, 0.13);
+    --desk: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect width='1' height='1' fill='%23fff' fill-opacity='.55'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23fff' fill-opacity='.22'/%3E%3C/svg%3E");
+}
 
-    --accent: #a89bff;
-    --accent-soft: rgba(168, 155, 255, 0.14);
-    --accent-2: #5fd3c0;
-    --accent-2-soft: rgba(95, 211, 192, 0.14);
+/* Everything derived from the two inks is declared on one selector list so
+   that `.invert-on-hover`, which redefines --fg and --bg locally, can
+   recompute the lot by listing itself here too. Custom properties resolve
+   where they are declared, so anything built from --fg on :root alone would
+   stay frozen at the page's colours inside an inverted element. */
+:root,
+.dark,
+.invert-on-hover:where(:hover, :focus-visible, .is-active) {
+    --line: color-mix(in srgb, var(--fg) 22%, transparent);
+    --line-strong: var(--fg);
+    --tint: color-mix(in srgb, var(--fg) 6%, transparent);
 
-    --folio: rgba(168, 155, 255, 0.62);
+    --surface: var(--bg);
+    --surface-hover: var(--bg);
 
-    --on-accent: #100f24;
+    --accent: var(--fg);
+    --accent-soft: color-mix(in srgb, var(--fg) 9%, transparent);
+    --accent-2: var(--fg);
+    --accent-2-soft: color-mix(in srgb, var(--fg) 9%, transparent);
+    --on-accent: var(--bg);
+    --folio: var(--fg);
 
-    /* The wash runs a touch stronger in the dark: on a near-black ground the
-       same opacity that reads as a glow on sand barely registers. */
-    --aurora-1: rgba(139, 122, 255, 0.22);
-    --aurora-2: rgba(66, 196, 176, 0.16);
-    --aurora-3: rgba(196, 108, 168, 0.14);
-
-    /* Shadows do almost nothing on a dark ground, so the lift is carried by
-       the border and the surface wash instead. Kept non-zero so the geometry
-       of the transition stays identical across themes. */
-    --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3),
-        0 12px 32px -12px rgba(0, 0, 0, 0.5);
-    --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35),
-        0 24px 48px -16px rgba(0, 0, 0, 0.6);
-
-    --scrollbar-thumb: rgba(154, 163, 189, 0.22);
-    --scrollbar-thumb-hover: rgba(154, 163, 189, 0.42);
+    --scrollbar-thumb: var(--fg);
+    --scrollbar-thumb-hover: var(--fg);
 }
 
 /* --------------------------------------------------------------------------
-   Shape and easing
+   Shape and timing
    --------------------------------------------------------------------------
-   The old design had square corners everywhere and one easing curve. Chill
-   is mostly a radius and a curve: nothing snaps, nothing is sharp.
+   Corners are square. The only radius left is on buttons, because the Mac's
+   push buttons were rounded rectangles and that is how you told a button
+   from a box.
 
-   `--ease-calm` is a long, gentle settle used by everything that moves more
-   than a colour. `--ease-out` is the shorter version for hovers, where a
-   700ms settle would feel like lag rather than calm.
+   Nothing eases. Motion on a 1984 screen happened in whole frames, so every
+   animation here runs on `steps()`, and hover is an instant flip rather than
+   a transition.
    -------------------------------------------------------------------------- */
 
 :root,
 .dark {
-    --r-xs: 8px;
-    --r-sm: 12px;
-    --r-md: 18px;
-    --r-lg: 28px;
-    --r-pill: 999px;
+    --r-btn: 7px;
+    --edge: 2px;
+    --drop: 4px;
 
-    --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
-    --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
-    --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
-
-    /* The mobile nav panel opens with the calm settle and closes on the
-       quick curve, faster than it opened — clearing the way should read as
-       one quick motion, not as the entrance played backwards. The stagger
-       is deliberately tighter than a page reveal's: nobody should have to
-       wait out six list items' worth of delay to tap the last link. */
-    --menu-open-duration: 260ms;
-    --menu-close-duration: 150ms;
-    --menu-stagger: 40ms;
+    --menu-open-duration: 120ms;
+    --menu-close-duration: 0ms;
 }
 
 /* ==========================================================================
@@ -196,22 +163,16 @@
         box-sizing: border-box;
     }
 
-    /* The page ground lives on the root element, not on <body>.
-
-       This matters for the aurora. That layer sits at `z-index: -1` inside
-       body, and a negative-z child paints behind its parent's background box
-       — so with a background on <body> the whole wash would be invisible.
-       The root element's background is different: it is propagated to the
-       canvas and painted underneath everything, negative z-index included.
-
-       It is also where the no-flash script in index.html writes its inline
-       background-color, so the two now agree on which element owns the
-       ground instead of both painting one. */
+    /* The desktop lives on the root element: its background propagates to
+       the canvas, so the dither fills the whole viewport however short the
+       page is. The no-flash script in index.html writes the solid colour
+       here inline before first paint; the pattern layers over it. */
     html {
         scroll-behavior: smooth;
         -webkit-text-size-adjust: 100%;
         background-color: var(--bg);
-        transition: background-color 0.5s var(--ease-out);
+        background-image: var(--desk);
+        background-size: 4px 4px;
     }
 
     body {
@@ -220,39 +181,41 @@
         background-color: transparent;
         color: var(--fg);
         font-family: var(--font-sans);
-        font-size: 1rem;
-        line-height: 1.7;
-        letter-spacing: -0.005em;
+        font-size: 1.0625rem;
+        line-height: 1.65;
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
         overflow-x: hidden;
-        transition: color 0.5s var(--ease-out);
     }
 
     ::selection {
-        background: var(--accent);
-        color: var(--on-accent);
+        background: var(--fg);
+        color: var(--bg);
     }
 
+    /* A square thumb in a bordered track, like the old scroll bars. */
     ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
+        width: 14px;
+        height: 14px;
     }
     ::-webkit-scrollbar-track {
-        background-color: transparent;
+        background-color: var(--bg);
+        border-inline-start: var(--edge) solid var(--fg);
     }
     ::-webkit-scrollbar-thumb {
-        background-color: var(--scrollbar-thumb);
-        border-radius: var(--r-pill);
+        background-color: var(--bg);
+        border: var(--edge) solid var(--fg);
     }
     ::-webkit-scrollbar-thumb:hover {
-        background-color: var(--scrollbar-thumb-hover);
+        background-color: var(--fg);
     }
 
+    /* A dotted marquee — the Mac's own selection rectangle — rather than a
+       coloured ring. Offset outward so it never lands on the element's own
+       border and disappears into it. */
     :focus-visible {
-        outline: 2px solid var(--accent);
+        outline: var(--edge) dashed var(--fg);
         outline-offset: 3px;
-        border-radius: var(--r-xs);
     }
 }
 
@@ -261,221 +224,283 @@
    --------------------------------------------------------------------------
    Everything below sits in the `components` layer on purpose: Tailwind's
    utilities layer is ordered after it, so a `grid` or `flex` class in the
-   markup still overrides the display these classes set. Unlayered CSS would
-   silently win against every utility and quietly break the layouts.
+   markup still overrides the display these classes set.
 
    Every size below is written mobile-first: the bare rule is the phone, and
    min-width queries add back the room a larger screen has.
    ========================================================================== */
 
 @layer components {
-    /* Pins a run of text to Vazirmatn. Needed only where a Persian word sits
-       inside otherwise-Latin chrome — the language toggle — since everywhere
-       else the font stack already falls through to it per glyph. */
+    /* Pins a run of text to Vazirmatn — for a Persian word inside otherwise
+       Latin chrome, like the language toggle. */
     .font-vazir {
         font-family: 'Vazirmatn Variable', sans-serif;
     }
 
     /* ---------------------------------------------------------------- layout */
 
+    /* 16px of desktop either side on a phone — enough for the window's drop
+       shadow to land without touching the edge of the glass. */
     .wrap {
         margin-inline: auto;
         width: 100%;
         max-width: var(--wrap);
-        padding-inline: 1.25rem;
+        padding-inline: 1rem;
     }
 
     @media (min-width: 640px) {
         .wrap {
-            padding-inline: 2rem;
+            padding-inline: 1.75rem;
         }
     }
 
     @media (min-width: 1024px) {
         .wrap {
-            padding-inline: 3rem;
+            padding-inline: 2.5rem;
         }
     }
 
+    /* A section is now just the strip of desktop a window sits on. The
+       padding is the gap between windows, and it is where the dither shows. */
     .section {
         position: relative;
-        padding-block: 4.5rem;
+        padding-block: 0.875rem;
     }
 
     @media (min-width: 640px) {
         .section {
-            padding-block: 6rem;
+            padding-block: 1.25rem;
         }
     }
 
     @media (min-width: 1024px) {
         .section {
-            padding-block: 8.5rem;
+            padding-block: 1.75rem;
         }
     }
 
-    /* The second paper tone — sections alternate between the two. The soft
-       radius and negative side margin turn the band into a floating slab
-       rather than a full-bleed stripe, which is most of what separates this
-       from the old flat banding. */
+    /* Kept as an opaque band for anything that should not show the desktop
+       through it (the footer). */
     .section-alt {
-        background-color: var(--bg-alt);
-        transition: background-color 0.5s var(--ease-out);
+        background-color: var(--bg);
     }
 
-    @media (min-width: 1024px) {
-        .section-alt {
-            border-radius: var(--r-lg);
-        }
-    }
-
-    /* One column on a phone. The margin/field split only appears once there
-       is genuinely room for a margin. */
+    /* One column on a phone. The margin/field split appears once there is
+       genuinely room for a margin inside a window. */
     .field {
         display: grid;
-        gap: 1.75rem;
+        gap: 1.5rem;
     }
 
     @media (min-width: 1024px) {
         .field {
             grid-template-columns: repeat(12, minmax(0, 1fr));
-            gap: 2.5rem 3rem;
+            gap: 2rem 2.5rem;
         }
         .field-aside {
-            grid-column: 1 / span 3;
+            grid-column: 1 / span 4;
         }
         .field-body {
             grid-column: 5 / span 8;
         }
     }
 
+    /* ---------------------------------------------------------------- window
+       The page's one structural idea: every section is a document window on
+       a desktop. A hard 2px frame and a solid drop shadow — no blur, since a
+       1-bit screen had no half-tones to blur with — and a title bar made of
+       horizontal pinstripes with the title knocked out of them.
+
+       The close box sits at the reading edge and the zoom box at the far
+       one, so in RTL they swap sides like the rest of the layout. */
+
+    .window {
+        position: relative;
+        background: var(--bg);
+        color: var(--fg);
+        border: var(--edge) solid var(--fg);
+        box-shadow: var(--drop) var(--drop) 0 var(--fg);
+    }
+
+    [dir='rtl'] .window {
+        box-shadow: calc(var(--drop) * -1) var(--drop) 0 var(--fg);
+    }
+
+    @media (min-width: 640px) {
+        :root,
+        .dark {
+            --drop: 6px;
+        }
+    }
+
+    .window-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        height: 1.875rem;
+        padding: 0 0.5rem;
+        border-bottom: var(--edge) solid var(--fg);
+        background-color: var(--bg);
+        /* Six stripes, drawn with 2px spacing and inset from the top and
+           bottom edge the way the original title bars were. */
+        background-image: repeating-linear-gradient(
+            to bottom,
+            var(--fg) 0 1px,
+            transparent 1px 3px
+        );
+        background-size: 100% 16px;
+        background-position: 0 center;
+        background-repeat: repeat-x;
+        user-select: none;
+    }
+
+    .window-title {
+        flex: 0 1 auto;
+        min-width: 0;
+        margin-inline: auto;
+        padding-inline: 0.625rem;
+        background: var(--bg);
+        font-family: var(--font-display);
+        font-size: 0.9375rem;
+        font-weight: 500;
+        line-height: 1.875rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .window-box {
+        flex: none;
+        width: 0.9375rem;
+        height: 0.9375rem;
+        border: var(--edge) solid var(--fg);
+        background: var(--bg);
+        /* the paper ring around the box, so the stripes stop short of it */
+        box-shadow: 0 0 0 3px var(--bg);
+    }
+
+    /* The zoom box: a small square nested in the corner of a larger one. */
+    .window-box-zoom {
+        background:
+            linear-gradient(var(--fg), var(--fg)) 0 0 / 55% var(--edge)
+                no-repeat,
+            linear-gradient(var(--fg), var(--fg)) 55% 0 / var(--edge) 55%
+                no-repeat,
+            var(--bg);
+    }
+
+    .window-body {
+        padding: 1.5rem 1.125rem 1.75rem;
+    }
+
+    @media (min-width: 640px) {
+        .window-body {
+            padding: 2.25rem 2rem 2.5rem;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .window-body {
+            padding: 3rem 3rem 3.5rem;
+        }
+    }
+
+    /* ------------------------------------------------------------- zoom open
+       The one piece of unprompted motion on the site. On the old Finder a
+       window didn't fade in; a run of outline rectangles grew out from the
+       icon you double-clicked, and the window was simply there at the end.
+       That is what the hero does on load.
+
+       The rectangles animate `inset` on a stepped timing function rather
+       than a scale transform: scaling would thin the border as the box
+       shrank, and the original's outlines stayed one pixel wide at every
+       size. Four boxes, each a frame behind the last. */
+
+    .zoom-stage {
+        position: relative;
+    }
+
+    .zoom-rect {
+        position: absolute;
+        z-index: 3;
+        inset: 0;
+        border: var(--edge) solid var(--fg);
+        pointer-events: none;
+        opacity: 0;
+        animation: zoom-rect 360ms steps(6, end) both;
+        animation-delay: calc(var(--i, 0) * 55ms);
+    }
+
+    .zoom-stage > .window {
+        animation: window-appear 1ms steps(1, end) 400ms both;
+    }
+
     /* ------------------------------------------------------------------ type */
 
-    /* Fraunces, dialled soft and slightly wonky.
-
-       SOFT rounds the terminals and blunts the serifs; WONK swaps in the
-       alternate cursive-flavoured forms for a, g, y and friends. Both are
-       what make this face read as relaxed rather than institutional, and
-       both are the reason the `full` Fontsource build is imported above.
-
-       `opsz` is pinned high because these are display sizes — left to its
-       own devices the browser picks an optical size from the computed
-       font-size, which is right for prose and too timid for a masthead. */
     .display {
         font-family: var(--font-display);
         font-weight: 600;
-        font-variation-settings:
-            'SOFT' 100,
-            'WONK' 1,
-            'opsz' 144;
-        letter-spacing: -0.02em;
-        line-height: 1.1;
+        letter-spacing: 0;
+        line-height: 1.05;
         text-wrap: balance;
     }
 
     .display-xl {
-        font-size: clamp(3rem, 13vw, 8rem);
-        font-weight: 500;
-        line-height: 0.92;
-        letter-spacing: -0.035em;
+        font-size: clamp(3.25rem, 16vw, 8.5rem);
+        font-weight: 700;
+        line-height: 0.9;
     }
 
     .display-lg {
-        font-size: clamp(1.875rem, 6.5vw, 3.5rem);
-        line-height: 1.06;
-        letter-spacing: -0.028em;
+        font-size: clamp(2rem, 7.5vw, 3.75rem);
+        line-height: 1;
     }
 
     .display-md {
-        font-size: clamp(1.3125rem, 4vw, 1.75rem);
-        line-height: 1.28;
-        letter-spacing: -0.018em;
-    }
-
-    /* An italic Fraunces at display size, for the one or two phrases that
-       should feel handwritten rather than set. The face's italic is where
-       most of its character lives, so it is worth spending somewhere. */
-    .display-italic {
-        font-style: italic;
-        font-variation-settings:
-            'SOFT' 100,
-            'WONK' 1,
-            'opsz' 144;
-    }
-
-    /* A phrase that picks up the two accents as a gradient. Reserved for the
-       role line under the name — used more than once it stops being an
-       accent and starts being a texture. */
-    .display-gradient {
-        background-image: linear-gradient(
-            100deg,
-            var(--accent) 0%,
-            var(--accent-2) 55%,
-            var(--accent) 100%
-        );
-        background-size: 220% 100%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        animation: gradient-drift 14s ease-in-out infinite;
-    }
-
-    /* Section kicker, set like a source comment. The `//` is generated rather
-       than typed into every call site, and it flows to whichever edge the
-       text direction starts from. */
-    .kicker {
-        font-family: var(--font-mono);
-        font-size: 0.875rem;
+        font-size: clamp(1.25rem, 4vw, 1.625rem);
         font-weight: 500;
-        line-height: 1.4;
-        letter-spacing: -0.01em;
+        line-height: 1.2;
+    }
+
+    /* A short lead-in above a heading — "Hi, I'm" over the name. */
+    .kicker {
+        font-family: var(--font-display);
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 1.3;
         color: var(--fg-muted);
     }
 
-    .kicker::before {
-        content: '//';
-        color: var(--accent);
-        margin-inline-end: 0.5em;
-    }
-
-    /* the folio numeral that sits in the margin — kept monospaced, because a
-       tabular numeral is the one place Fraunces would be the wrong tool */
+    /* A large numeral — the 2048 page still wears one. */
     .folio {
-        font-family: var(--font-mono);
+        font-family: var(--font-display);
         font-weight: 700;
         font-size: clamp(1.75rem, 6vw, 2.5rem);
         line-height: 1;
-        letter-spacing: -0.05em;
-        color: var(--folio);
+        color: var(--fg);
         font-variant-numeric: tabular-nums;
-        transition: color 0.5s var(--ease-out);
     }
 
-    /* Small all-caps label for column headers and meta. Everything below the
-       section level uses this rather than another `//` kicker — the comment
-       marker only earns its place if it means "new section". */
+    /* Small label for column heads and meta. Set in the system face at a
+       normal case — the old menus and dialogs never shouted. */
     .label {
         display: inline-block;
-        font-family: var(--font-mono);
-        font-size: 0.6875rem;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        font-family: var(--font-display);
+        font-size: 0.9375rem;
+        font-weight: 500;
+        line-height: 1.35;
         color: var(--fg-muted);
     }
 
-    .label-ink {
+    .label-ink,
+    .label-accent {
         color: var(--fg);
     }
 
-    .label-accent {
-        color: var(--accent);
-    }
-
     .lede {
-        max-width: 46ch;
+        max-width: 52ch;
         font-size: 1.0625rem;
-        line-height: 1.75;
+        line-height: 1.65;
         color: var(--fg-muted);
         text-wrap: pretty;
     }
@@ -487,8 +512,8 @@
     }
 
     .prose-sm {
-        font-size: 0.9375rem;
-        line-height: 1.8;
+        font-size: 0.96875rem;
+        line-height: 1.7;
         color: var(--fg-muted);
         text-wrap: pretty;
     }
@@ -497,92 +522,94 @@
         color: var(--fg-muted);
     }
 
-    .text-accent {
-        color: var(--accent);
-    }
-
+    .text-accent,
     .text-accent-2 {
-        color: var(--accent-2);
+        color: var(--fg);
     }
 
     .nums {
         font-variant-numeric: tabular-nums;
     }
 
-    /* ----------------------------------------------------------------- rules */
+    /* ----------------------------------------------------------------- rules
+       The ordinary divider is a dotted line — the dithered grey separator
+       from the old menus. Solid ink is kept for rules that open something. */
 
     .rule {
         border: 0;
-        border-top: 1px solid var(--line);
+        height: 1px;
+        background-image: repeating-linear-gradient(
+            to right,
+            var(--fg) 0 1px,
+            transparent 1px 3px
+        );
     }
 
     .rule-ink {
         border: 0;
-        border-top: 1px solid var(--line-strong);
+        border-top: 1px solid var(--fg);
     }
 
-    /* The heavy rule under a section masthead draws itself in from the
-       reading edge the first time it scrolls into view, instead of simply
-       being there. It is the quietest possible entrance for a horizontal
-       line, which is exactly what a section opener wants. */
     .rule-heavy {
         border: 0;
-        border-top: 1px solid var(--fg);
-        transform-origin: left center;
+        border-top: var(--edge) solid var(--fg);
     }
 
-    [dir='rtl'] .rule-heavy {
-        transform-origin: right center;
+    /* ----------------------------------------------------------- inversion
+       Hover, focus and "current" all look the same: the element flips to
+       white on black. Swapping the tokens (rather than setting a colour)
+       means every descendant — muted text, rules, icons, tags — follows
+       without needing a `group-hover` of its own.
+
+       Hover only on devices that really hover, so a tap on a phone doesn't
+       leave a card stuck inverted; `:active` covers touch instead. */
+
+    .invert-on-hover.is-active,
+    .invert-on-hover:focus-visible,
+    .invert-on-hover:active {
+        --bg: var(--bg-inv);
+        --fg: var(--fg-inv);
+        --fg-muted: var(--fg-muted-inv);
+        background-color: var(--bg);
+        color: var(--fg);
     }
 
-    .rule-heavy.reveal {
-        opacity: 1;
-        transform: scaleX(0);
-        transition: transform 1s var(--ease-calm);
-    }
-
-    .rule-heavy.reveal.is-visible {
-        transform: scaleX(1);
+    @media (hover: hover) {
+        .invert-on-hover:hover {
+            --bg: var(--bg-inv);
+            --fg: var(--fg-inv);
+            --fg-muted: var(--fg-muted-inv);
+            background-color: var(--bg);
+            color: var(--fg);
+        }
     }
 
     /* ----------------------------------------------------------------- card
        For collections of like objects — repositories, archived servers,
-       games. A bordered box keeps a title and its description visibly bound
-       together, which is exactly what a full-width row failed to do once the
-       page was set right-to-left.
-
-       The blur is what makes cards sit *on* the aurora rather than punch a
-       hole through it. */
+       games. A framed box with the same hard shadow as a window, one size
+       down, so it reads as something sitting on the window's paper. */
 
     .card {
         display: flex;
         flex-direction: column;
-        border: 1px solid var(--line);
-        border-radius: var(--r-md);
-        background: var(--surface);
-        -webkit-backdrop-filter: blur(12px);
-        backdrop-filter: blur(12px);
-        padding: 1.25rem;
-        transition:
-            border-color 0.35s var(--ease-out),
-            background-color 0.35s var(--ease-out),
-            box-shadow 0.35s var(--ease-out),
-            transform 0.35s var(--ease-out);
+        border: var(--edge) solid var(--fg);
+        background: var(--bg);
+        color: var(--fg);
+        padding: 1.125rem;
+        box-shadow: 3px 3px 0 var(--fg);
     }
 
     @media (min-width: 640px) {
         .card {
-            padding: 1.5rem;
+            padding: 1.375rem;
         }
     }
 
-    /* The lift is 3px. Anything more and a grid of six cards turns into a
-       trampoline on a mouse sweep. */
-    .card-link:hover {
-        border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-        background: var(--surface-hover);
-        box-shadow: var(--shadow-lift);
-        transform: translateY(-3px);
+    /* The card presses in when you hit it: the shadow collapses and the box
+       moves into the space it left, one frame, no easing. */
+    .card-link:active {
+        box-shadow: none;
+        transform: translate(3px, 3px);
     }
 
     /* pushes the meta strip to the bottom so cards in a row line up */
@@ -598,57 +625,25 @@
     }
 
     /* ------------------------------------------------------------------ rows
-       A row is defined by the line above it, not by a box with a radius and a
-       shadow. On a phone rows stack; the columns arrive at `sm`. */
+       A row is defined by the dotted line above it. When it is a link, the
+       highlight is the Finder's list selection: a solid bar that runs a
+       little past the text on both sides. The bar is drawn on a
+       pseudo-element so the row itself stays flush with its neighbours'
+       rules; `isolation` keeps that bar inside the window's paper instead of
+       sliding underneath it. */
 
     .row {
         position: relative;
-        border-top: 1px solid var(--line);
-        transition: background-color 0.35s var(--ease-out);
+        isolation: isolate;
+        border-top: 1px dotted var(--fg);
     }
 
-    /* The tint is inset and rounded so a hovered row reads as a soft slab
-       lighting up, not as a full-bleed band. Drawn on a pseudo-element
-       because the row itself has to stay flush with its neighbours' rules. */
     .row-link::before {
         content: '';
         position: absolute;
-        inset: 0 -0.75rem;
+        inset: 0 -0.625rem;
         z-index: -1;
-        border-radius: var(--r-sm);
-        background: var(--tint);
-        opacity: 0;
-        transition: opacity 0.35s var(--ease-out);
-    }
-
-    .row-link:hover::before,
-    .row-link:focus-visible::before {
-        opacity: 1;
-    }
-
-    /* a rule that draws itself from the leading edge */
-    .row-link::after {
-        content: '';
-        position: absolute;
-        inset-block-start: -1px;
-        inset-inline-start: 0;
-        height: 1px;
-        width: 0;
-        background: linear-gradient(
-            to right,
-            var(--accent),
-            var(--accent-2)
-        );
-        transition: width 0.6s var(--ease-calm);
-    }
-
-    [dir='rtl'] .row-link::after {
-        background: linear-gradient(to left, var(--accent), var(--accent-2));
-    }
-
-    .row-link:hover::after,
-    .row-link:focus-visible::after {
-        width: 100%;
+        background: var(--bg);
     }
 
     /* -------------------------------------------------------- links, buttons
@@ -656,280 +651,211 @@
 
     .link {
         color: var(--fg);
-        text-decoration: none;
-        background-image: linear-gradient(var(--accent), var(--accent));
-        background-repeat: no-repeat;
-        background-position: 0 100%;
-        background-size: 0% 1px;
-        transition:
-            background-size 0.45s var(--ease-calm),
-            color 0.3s var(--ease-out);
-    }
-
-    [dir='rtl'] .link {
-        background-position: 100% 100%;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.2em;
     }
 
     .link:hover {
-        color: var(--accent);
-        background-size: 100% 1px;
+        text-decoration-thickness: var(--edge);
     }
 
-    /* Both buttons are pills, and both wear a sheen that sweeps across on
-       hover. `isolation` keeps that sweep clipped to the pill without a
-       second stacking context fight with the magnetic transform. */
+    /* The two push buttons of the System 1 dialog. The default one — the
+       thing Return would press — wears the thick outer ring; the other is
+       a plain rounded box. Both invert while held or hovered. */
     .btn,
     .btn-outline {
-        position: relative;
-        isolation: isolate;
-        overflow: hidden;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 0.55rem;
         min-height: 2.875rem;
-        padding: 0.7rem 1.6rem;
-        border-radius: var(--r-pill);
-        font-size: 0.9375rem;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-        transition:
-            background-color 0.35s var(--ease-out),
-            border-color 0.35s var(--ease-out),
-            color 0.35s var(--ease-out),
-            box-shadow 0.35s var(--ease-out);
-    }
-
-    .btn::before,
-    .btn-outline::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        transform: translateX(-101%);
-        background: linear-gradient(
-            110deg,
-            transparent 0%,
-            color-mix(in srgb, var(--on-accent) 26%, transparent) 50%,
-            transparent 100%
-        );
-        transition: transform 0.75s var(--ease-calm);
-    }
-
-    .btn:hover::before,
-    .btn-outline:hover::before {
-        transform: translateX(101%);
-    }
-
-    .btn {
-        border: 1px solid transparent;
-        background: linear-gradient(
-            120deg,
-            var(--accent) 0%,
-            color-mix(in srgb, var(--accent) 62%, var(--accent-2)) 100%
-        );
-        color: var(--on-accent);
-        box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--accent) 70%, transparent);
-    }
-
-    .btn:hover {
-        box-shadow: 0 14px 32px -10px color-mix(in srgb, var(--accent) 80%, transparent);
-    }
-
-    .btn-outline {
-        border: 1px solid var(--line-strong);
-        background: transparent;
+        padding: 0.55rem 1.4rem;
+        border: var(--edge) solid var(--fg);
+        border-radius: var(--r-btn);
+        background: var(--bg);
         color: var(--fg);
+        font-family: var(--font-display);
+        font-size: 1.0625rem;
+        font-weight: 500;
+        line-height: 1.2;
+        cursor: pointer;
+        user-select: none;
     }
 
-    .btn-outline::before {
-        background: linear-gradient(
-            110deg,
-            transparent 0%,
-            var(--accent-soft) 50%,
-            transparent 100%
-        );
+    /* The ring is a shadow, so it takes no layout space — the gap between a
+       default button and its neighbour has to stay above 5px. */
+    .btn {
+        box-shadow:
+            0 0 0 3px var(--bg),
+            0 0 0 5px var(--fg);
     }
 
-    .btn-outline:hover {
-        border-color: color-mix(in srgb, var(--accent) 60%, transparent);
-        color: var(--accent);
+    .btn:active,
+    .btn-outline:active {
+        transform: translateY(1px);
     }
 
-    /* a soft text tag — pill, no fill */
+    .btn:disabled,
+    .btn-outline:disabled {
+        cursor: not-allowed;
+        opacity: 0.45;
+    }
+
+    .btn:where(:active, :focus-visible),
+    .btn-outline:where(:active, :focus-visible) {
+        background: var(--fg);
+        color: var(--bg);
+    }
+
+    @media (hover: hover) {
+        .btn:hover:not(:disabled),
+        .btn-outline:hover:not(:disabled) {
+            background: var(--fg);
+            color: var(--bg);
+        }
+    }
+
+    /* a small framed token — a technology name, a game's genre */
     .tag {
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
-        border: 1px solid var(--line);
-        border-radius: var(--r-pill);
-        padding: 0.3rem 0.7rem;
+        border: 1px solid var(--fg);
+        padding: 0.15rem 0.55rem;
         font-family: var(--font-mono);
-        font-size: 0.6875rem;
+        font-size: 0.78125rem;
         line-height: 1.5;
-        color: var(--fg-muted);
-        transition:
-            border-color 0.3s var(--ease-out),
-            color 0.3s var(--ease-out),
-            background-color 0.3s var(--ease-out);
+        color: var(--fg);
+        background: var(--bg);
     }
 
-    a.tag:hover {
-        border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-        background: var(--accent-soft);
-        color: var(--accent);
+    @media (hover: hover) {
+        a.tag:hover {
+            background: var(--fg);
+            color: var(--bg);
+        }
     }
 
-    /* The status dot. Was a solid square; now it breathes, because the one
-       thing it says — "available" — is the one thing on the page worth a
-       heartbeat. The halo is a second ring that expands and fades out. */
+    /* The status mark: a square that blinks like a text cursor. It says
+       "available", which is the one thing on the page that is live. */
     .marker {
-        position: relative;
         display: inline-block;
-        width: 0.5rem;
-        height: 0.5rem;
-        border-radius: var(--r-pill);
-        background: var(--accent-2);
+        flex: none;
+        width: 0.5625rem;
+        height: 0.5625rem;
+        background: var(--fg);
+        animation: marker-blink 1.1s steps(1, end) infinite;
     }
 
-    .marker::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: var(--r-pill);
-        background: var(--accent-2);
-        animation: marker-halo 2.6s var(--ease-out) infinite;
-    }
-
-    /* --------------------------------------------------------------- glass
-       The header once it has left the top of the page. A blur plus a
-       translucent ground rather than a solid bar, so the aurora and the
-       content keep showing through as they pass underneath. */
-
+    /* A solid bar — the Metro page's sticky controls still ask for this. */
     .glass {
-        background: color-mix(in srgb, var(--bg) 72%, transparent);
-        -webkit-backdrop-filter: blur(16px) saturate(150%);
-        backdrop-filter: blur(16px) saturate(150%);
+        background: var(--bg);
     }
 
-    /* An underline that grows from the centre out. Used for the active nav
-       item and for hover on the inactive ones. */
-    .nav-underline {
-        position: absolute;
-        inset-inline: 0;
-        bottom: 0;
-        height: 2px;
-        border-radius: var(--r-pill);
-        background: linear-gradient(to right, var(--accent), var(--accent-2));
-        transform: scaleX(0);
-        transform-origin: center;
-        transition: transform 0.45s var(--ease-calm);
+    /* -------------------------------------------------------------- menubar
+       The strip across the top of the screen. Always solid, always there:
+       on the Mac it never scrolled away, and it is the one fixed thing on
+       the page. */
+
+    .menubar {
+        background: var(--bg);
+        border-bottom: var(--edge) solid var(--fg);
     }
 
-    .nav-link:hover .nav-underline,
-    .nav-underline-active {
-        transform: scaleX(1);
+    .menubar-item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        min-height: 2.75rem;
+        min-width: 2.75rem;
+        padding-inline: 0.625rem;
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1;
+        white-space: nowrap;
+        color: var(--fg);
+        cursor: pointer;
+    }
+
+    .menubar-brand {
+        font-weight: 700;
+        font-size: 1.0625rem;
     }
 
     /* ------------------------------------------------------- mobile menu
-       Used to animate `max-height`, a layout property whose eased curve
-       plays out against an arbitrary cap (32rem) rather than the panel's
-       real height — the visible motion sped through most of the range and
-       then idled, which is what actually read as rough. Opacity and
-       transform settle as one motion no matter how tall the list is.
+       A pulled-down menu: a framed panel hanging off the bar with the hard
+       shadow of a window, rows that invert as you move over them. It opens
+       in one short stepped frame and closes instantly, like the real thing.
 
-       `position: absolute` takes the panel out of flow entirely, closed
-       or open: it can't inflate the fixed header's own box and sit,
-       invisible but still full-height, over whatever renders beneath it
-       (the header's remaining in-flow content is just the bar, so `top:
-       100%` lands the panel right under it).
+       `position: absolute` keeps it out of flow entirely, so it can't
+       inflate the fixed header's own box and sit, invisible but still
+       full-height, over whatever renders beneath it. */
 
-       It carries its own backing rather than reusing `.glass`: the
-       header's tint is 72% opacity because blur alone hides a one-line
-       sliver of whatever scrolls under a slim bar. Stretched over a
-       panel this tall, sitting on top of a whole page's worth of text,
-       that same 72% read as see-through rather than frosted — the text
-       behind kept its edges instead of dissolving into the blur. A
-       panel that has to hide real content needs to be nearly solid;
-       the blur behind it is then just softening for the 6% that
-       isn't. */
     .mobile-menu {
         position: absolute;
-        inset-inline: 0;
-        top: 100%;
-        background: color-mix(in srgb, var(--bg) 96%, transparent);
-        -webkit-backdrop-filter: blur(20px) saturate(150%);
-        backdrop-filter: blur(20px) saturate(150%);
-        border-bottom: 1px solid var(--line);
+        inset-inline: 1rem;
+        top: calc(100% - var(--edge));
+        background: var(--bg);
+        border: var(--edge) solid var(--fg);
+        box-shadow: var(--drop) var(--drop) 0 var(--fg);
         pointer-events: none;
-        opacity: 0;
-        transform: translateY(-6px);
-        transition:
-            opacity var(--menu-close-duration) var(--ease-out),
-            transform var(--menu-close-duration) var(--ease-out);
+        visibility: hidden;
+        clip-path: inset(0 -1rem 100% -1rem);
     }
 
     .mobile-menu.is-open {
         pointer-events: auto;
-        opacity: 1;
-        transform: none;
-        transition:
-            opacity var(--menu-open-duration) var(--ease-calm),
-            transform var(--menu-open-duration) var(--ease-calm);
+        visibility: visible;
+        clip-path: inset(0 -1rem -1rem -1rem);
+        transition: clip-path var(--menu-open-duration) steps(4, end);
     }
 
-    /* Each row rises in behind the panel fade, staggered in document
-       order via `--menu-i` (set inline per button). Outside `.is-open` the
-       rule below doesn't apply, so closing drops the stagger entirely —
-       on the way out every row moves together. */
+    @media (min-width: 640px) {
+        .mobile-menu {
+            inset-inline-start: auto;
+            inset-inline-end: 1.75rem;
+            width: 20rem;
+        }
+    }
+
     .mobile-menu-item {
-        opacity: 0;
-        transform: translateY(10px);
-        transition:
-            opacity var(--menu-close-duration) var(--ease-out),
-            transform var(--menu-close-duration) var(--ease-out);
-    }
-
-    .mobile-menu.is-open .mobile-menu-item {
-        opacity: 1;
-        transform: none;
-        transition:
-            opacity var(--menu-open-duration) var(--ease-calm),
-            transform var(--menu-open-duration) var(--ease-calm);
-        transition-delay: calc(var(--menu-i, 0) * var(--menu-stagger));
+        font-family: var(--font-display);
     }
 
     /* --------------------------------------------------- RTL / Arabic script
        Persian glyphs join, so letter-spacing breaks the connections, and
-       there is no letter case, so uppercase is meaningless. Both go away in
-       RTL — including the negative tracking the display headings rely on,
-       which would otherwise pull Persian letters apart at the joins. */
+       there is no letter case. Both go away in RTL. */
 
     [dir='rtl'] .label,
     [dir='rtl'] .display,
-    [dir='rtl'] .display-xl,
-    [dir='rtl'] .display-lg,
-    [dir='rtl'] .display-md,
     [dir='rtl'] .kicker,
     [dir='rtl'] .folio,
     [dir='rtl'] .tag,
-    [dir='rtl'] .nav-link,
     [dir='rtl'] .stat2048-label {
         letter-spacing: normal;
         text-transform: none;
     }
 
-    /* Persian headings run on Vazirmatn end to end. A Latin serif next to a
-       proportional Arabic inside one heading reads as a mistake, and Arabic
-       ascenders and descenders need far more leading than the tight display
-       setting allows. `font-variation-settings` is cleared too: SOFT and
-       WONK do not exist on Vazirmatn, and leaving them set is a needless
-       instruction to a face that cannot honour it. */
-    [dir='rtl'] .display {
+    /* Persian headings run on Vazirmatn end to end. A Latin pixel face next
+       to a proportional Arabic inside one heading reads as a mistake, and
+       Arabic ascenders and descenders need far more leading than the tight
+       display setting allows. */
+    [dir='rtl'] .display,
+    [dir='rtl'] .kicker,
+    [dir='rtl'] .label,
+    [dir='rtl'] .window-title,
+    [dir='rtl'] .menubar-item,
+    [dir='rtl'] .mobile-menu-item,
+    [dir='rtl'] .btn,
+    [dir='rtl'] .btn-outline {
         font-family: 'Vazirmatn Variable', var(--font-sans);
-        font-variation-settings: normal;
-        font-style: normal;
-        font-weight: 700;
+    }
+
+    [dir='rtl'] .display {
+        font-weight: 800;
         line-height: 1.45;
     }
 
@@ -948,31 +874,32 @@
         line-height: 1.55;
     }
 
-    /* The folio is a Latin numeral either way — keep it monospaced. */
+    /* A numeral is a Latin numeral either way — keep the pixel face. */
     [dir='rtl'] .folio {
-        font-family: var(--font-mono);
+        font-family: var(--font-display);
     }
 
     /* Latin-only content — repo names, hosts, frameworks — is pinned to the
-       mono face in both directions so it never picks up Vazirmatn's Latin.
-       Applied unconditionally, not just in RTL. */
+       mono face in both directions so it never picks up Vazirmatn's Latin. */
     .force-mono {
         font-family: var(--font-mono);
         font-style: normal;
         letter-spacing: normal;
-        font-variation-settings: normal;
+    }
+
+    /* Latin-only display content — the name, "2048" — pinned to the pixel
+       face even on a Persian page, where `.display` would otherwise hand it
+       to Vazirmatn. */
+    .force-pixel,
+    [dir='rtl'] .force-pixel {
+        font-family: var(--font-display);
+        line-height: 0.95;
     }
 
     /* A run of Latin tokens — technology names, hostnames, versions — sitting
        inside a block that may be RTL. Pair with `dir="ltr"` on the same
-       element.
-
-       `dir` alone is not enough here. It fixes the *order* (an RTL flex row
-       reverses the list, so "TypeScript … Vite" comes out as "Vite" first and
-       wraps from the wrong end) but it also flushes the run to the left of
-       its column, stranding it away from the label it belongs to. Pushing the
-       flow back to the end in RTL keeps the tokens reading left-to-right
-       while the block as a whole still hugs the reading edge. */
+       element: `dir` fixes the order, and pushing the flow back to the end
+       in RTL keeps the run hugging the reading edge. */
     .ltr-run {
         direction: ltr;
     }
@@ -982,186 +909,26 @@
         text-align: right;
     }
 
-    /* --------------------------------------------------------------- bidi
-       Text that comes from GitHub is written by whoever wrote the repo, so
-       its direction cannot be assumed from the page's. Pair this with
-       `dir="auto"` in the markup: the browser resolves direction from the
-       first strong character, and `text-align: start` then follows *that*
-       rather than the surrounding page. */
+    /* Text that comes from GitHub is written by whoever wrote the repo, so
+       its direction cannot be assumed from the page's. Pair with
+       `dir="auto"` in the markup. */
     .bidi-auto {
         text-align: start;
         text-wrap: pretty;
     }
 
-    /* ---------------------------------------------------------------- motion */
-
-    /* The base reveal. The blur is the addition: fading and sliding alone
-       reads as a slide, while a blur that resolves reads as something coming
-       into focus, which is both softer and much harder to notice as an
-       effect. 18px is far enough to register without the jump being visible.
-
-       `will-change` is deliberately absent — with dozens of `.reveal`
-       elements on a page, promoting them all costs more than the filter. */
-    .reveal {
-        opacity: 0;
-        transform: translateY(18px);
-        filter: blur(6px);
-        transition:
-            opacity 0.9s var(--ease-calm),
-            transform 0.9s var(--ease-calm),
-            filter 0.9s var(--ease-calm);
-    }
-
-    .reveal.is-visible {
-        opacity: 1;
-        transform: none;
-        filter: none;
-    }
-
-    /* A reveal that scales up very slightly as well — for cards and other
-       blocks with a visible edge, where the extra dimension reads. */
-    .reveal-pop {
-        opacity: 0;
-        transform: translateY(22px) scale(0.97);
-        filter: blur(6px);
-        transition:
-            opacity 0.9s var(--ease-calm),
-            transform 0.9s var(--ease-spring),
-            filter 0.9s var(--ease-calm);
-    }
-
-    .reveal-pop.is-visible {
-        opacity: 1;
-        transform: none;
-        filter: none;
-    }
-
-    /* ------------------------------------------------------------ split text
-       The hero name, animated one word at a time. Each word sits in a
-       clipping box and rises into it from below, so the letters appear to be
-       pushed up into place rather than faded in.
-
-       The mask has to be `overflow: hidden` on an inline-block, and the
-       block needs a hair of vertical padding: Fraunces' descenders and its
-       italic overhang both sit outside the em box and would otherwise be
-       shaved off by the clip. */
-
-    /* The observed container. It has no motion of its own on purpose: the
-       whole effect is the words rising inside their clips, and fading the
-       parent at the same time would wash that out. `useReveal` picks this up
-       alongside `.reveal` and adds `.is-visible`, which releases the words. */
-    .reveal-words {
-        display: inline;
-    }
-
-    .split {
-        display: inline-block;
-        overflow: hidden;
-        vertical-align: bottom;
-        padding-block: 0.12em;
-        margin-block: -0.12em;
-    }
-
-    .split-word {
-        display: inline-block;
-        transform: translateY(110%);
-        opacity: 0;
-        transition:
-            transform 1.1s var(--ease-calm),
-            opacity 0.7s var(--ease-out);
-        transition-delay: var(--split-delay, 0ms);
-    }
-
-    .is-visible .split-word,
-    .split-word.is-visible {
-        transform: none;
-        opacity: 1;
-    }
-
-    /* ---------------------------------------------------------------- aurora
-       Three blurred blobs drifting on long, mismatched cycles behind the
-       page. Mismatched on purpose: equal periods would make the whole group
-       visibly repeat, and the point is that you never catch it looping.
-
-       The container is fixed and inert. `overflow: hidden` on it matters —
-       the blobs are far larger than the viewport and would otherwise extend
-       the scrollable area. */
-
-    .aurora {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        overflow: hidden;
-        pointer-events: none;
-        /* The wash sits behind text, so it never gets to be strong enough to
-           threaten contrast on its own — this ceiling is the guarantee. */
-        opacity: 0.85;
-    }
-
-    .aurora-blob {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(90px);
-        will-change: transform;
-    }
-
-    @media (min-width: 768px) {
-        .aurora-blob {
-            filter: blur(130px);
-        }
-    }
-
-    .aurora-1 {
-        top: -18vh;
-        inset-inline-start: -10vw;
-        width: 60vw;
-        height: 60vw;
-        min-width: 26rem;
-        min-height: 26rem;
-        background: var(--aurora-1);
-        animation: aurora-drift-1 34s ease-in-out infinite;
-    }
-
-    .aurora-2 {
-        top: 8vh;
-        inset-inline-end: -14vw;
-        width: 52vw;
-        height: 52vw;
-        min-width: 22rem;
-        min-height: 22rem;
-        background: var(--aurora-2);
-        animation: aurora-drift-2 43s ease-in-out infinite;
-    }
-
-    .aurora-3 {
-        top: 46vh;
-        inset-inline-start: 22vw;
-        width: 44vw;
-        height: 44vw;
-        min-width: 18rem;
-        min-height: 18rem;
-        background: var(--aurora-3);
-        animation: aurora-drift-3 51s ease-in-out infinite;
-    }
-
     /* ------------------------------------------------------- scroll progress
-       A hairline across the very top of the viewport, scaled from the
-       document scroll position. Sits above the header. */
+       A 3px ink bar across the very top of the viewport, over the menu bar. */
 
     .scroll-progress {
         position: fixed;
         inset-block-start: 0;
         inset-inline: 0;
         z-index: 60;
-        height: 2px;
+        height: 3px;
         transform-origin: left center;
         transform: scaleX(var(--progress, 0));
-        background: linear-gradient(
-            to right,
-            var(--accent),
-            var(--accent-2),
-            var(--accent)
-        );
+        background: var(--fg);
         pointer-events: none;
     }
 
@@ -1170,75 +937,41 @@
     }
 
     /* --------------------------------------------------------------- loading
-       A rule that sweeps, instead of a spinner inside a glow. */
+       The indeterminate progress bar: a framed trough with a barber-pole
+       fill that shuffles along a pixel stripe at a time. */
 
     .loader-track {
         position: relative;
-        height: 2px;
+        height: 1.125rem;
         overflow: hidden;
-        border-radius: var(--r-pill);
-        background: var(--line);
+        border: var(--edge) solid var(--fg);
+        background: var(--bg);
+        padding: 2px;
     }
 
     .loader-bar {
-        position: absolute;
-        inset-block: 0;
-        inset-inline-start: 0;
-        width: 40%;
-        border-radius: var(--r-pill);
-        background: linear-gradient(to right, var(--accent), var(--accent-2));
-        animation: loader-sweep 1.3s var(--ease-out) infinite;
+        display: block;
+        height: 100%;
+        background-image: repeating-linear-gradient(
+            -45deg,
+            var(--fg) 0 5px,
+            transparent 5px 10px
+        );
+        background-size: 14.14px 14.14px;
+        animation: loader-stripes 0.7s steps(5, end) infinite;
     }
 
-    /* A GitHub avatar is a square image, so it is shown as one — cropping it
-       to a 4:5 editorial portrait only lopped the sides off. No filter
-       either: desaturating someone's avatar is a magazine device, not a
-       profile one. The rounding is the only change: a hard square is the
-       single sharpest shape left on the page. */
+    /* The GitHub avatar, shown as a one-bit photo would have been: greyscale,
+       pushed hard toward black and white, in a plain frame. */
     .avatar {
         display: block;
         width: 100%;
         aspect-ratio: 1;
         object-fit: cover;
-        border: 1px solid var(--line);
-        border-radius: var(--r-sm);
+        border: var(--edge) solid var(--fg);
         background: var(--tint);
-    }
-
-    /* Wrapper that puts a slowly turning conic ring around the avatar — a
-       padded gradient background showing through as a 2px edge around an
-       inset image.
-
-       What turns is the gradient's start angle, not the element. Rotating
-       the box itself would need the image counter-rotated to stay upright,
-       and a rounded square spinning behind a static one visibly wobbles at
-       the corners no matter how well the two are matched. Animating the
-       angle keeps every edge still and only moves the colour.
-
-       `--ring-angle` is registered with @property below; without that
-       registration an angle is not an interpolatable type and the animation
-       would snap from 0 to 360 instead of sweeping. Browsers that don't
-       support @property simply render the gradient at its initial angle,
-       which is a perfectly good static ring. */
-    .avatar-ring {
-        position: relative;
-        border-radius: var(--r-md);
-        padding: 3px;
-        background: conic-gradient(
-            from var(--ring-angle, 0deg),
-            var(--accent),
-            var(--accent-2),
-            var(--accent-soft),
-            var(--accent)
-        );
-        animation: ring-turn 14s linear infinite;
-    }
-
-    /* The avatar's own 1px border exists to give it an edge when it stands
-       alone. Inside the ring that edge lands directly on top of the gradient
-       and greys it out, so it comes off — the ring is the edge here. */
-    .avatar-ring > .avatar {
-        border-color: transparent;
+        filter: grayscale(1) contrast(1.35);
+        image-rendering: auto;
     }
 }
 
@@ -1255,14 +988,14 @@
     .board2048-frame {
         position: relative;
         padding: 2.6%;
-        border: 1px solid var(--line-strong);
-        border-radius: var(--r-md);
+        border: var(--edge) solid var(--fg);
+        box-shadow: var(--drop) var(--drop) 0 var(--fg);
+        background: var(--bg);
         /* the board owns every gesture inside it — no scroll, no pull-to-refresh */
         touch-action: none;
         user-select: none;
         -webkit-user-select: none;
         -webkit-tap-highlight-color: transparent;
-        transition: opacity 0.4s var(--ease-out);
     }
 
     .board2048-frozen {
@@ -1289,9 +1022,11 @@
         gap: var(--gap);
     }
 
+    /* empty slots are dithered, so the grid reads without a single grey */
     .board2048-cell {
-        background: var(--tint);
-        border-radius: var(--r-xs);
+        background-image: var(--desk);
+        background-size: 4px 4px;
+        border: 1px solid var(--line);
     }
 
     .tile2048 {
@@ -1305,16 +1040,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: var(--r-xs);
-        font-weight: 600;
+        border: var(--edge) solid var(--fg);
+        font-family: var(--font-display);
+        font-weight: 700;
         font-size: 10cqw;
         line-height: 1;
-        letter-spacing: -0.03em;
         font-variant-numeric: tabular-nums;
 
         transition:
-            left 130ms var(--ease-calm),
-            top 130ms var(--ease-calm);
+            left 120ms steps(3, end),
+            top 120ms steps(3, end);
         will-change: left, top;
     }
 
@@ -1341,85 +1076,103 @@
     }
 
     /* --- value ramp ------------------------------------------------------
-       Low tiles are paper, the ramp climbs through ink, and the last few
-       reach for the accents — iris first, then teal at the very top, so the
-       endgame tiles are visibly a different colour and not just a darker
-       one. No gradients, no glow: the board reads as a printed value scale. */
+       Two inks and no greys, so the ramp is built from frames instead of
+       shades: paper tiles gain heavier borders, then the tiles flip to ink,
+       then the ink tiles gain paper rings inside them. Every step is still
+       one glance apart. */
 
     .tile2048-v2 {
-        background: color-mix(in srgb, var(--fg) 10%, var(--bg));
+        background: var(--bg);
         color: var(--fg);
     }
     .tile2048-v4 {
-        background: color-mix(in srgb, var(--fg) 20%, var(--bg));
+        background: var(--bg);
         color: var(--fg);
+        box-shadow: inset 0 0 0 2px var(--fg);
     }
     .tile2048-v8 {
-        background: color-mix(in srgb, var(--fg) 34%, var(--bg));
-        color: var(--bg);
+        background: var(--bg);
+        color: var(--fg);
+        box-shadow:
+            inset 0 0 0 3px var(--bg),
+            inset 0 0 0 5px var(--fg);
     }
     .tile2048-v16 {
-        background: color-mix(in srgb, var(--fg) 50%, var(--bg));
-        color: var(--bg);
+        background-color: var(--bg);
+        background-image: var(--desk);
+        background-size: 4px 4px;
+        color: var(--fg);
+        text-shadow:
+            0 0 4px var(--bg),
+            0 0 2px var(--bg);
     }
     .tile2048-v32 {
-        background: color-mix(in srgb, var(--fg) 68%, var(--bg));
+        background: var(--fg);
         color: var(--bg);
     }
     .tile2048-v64 {
-        background: color-mix(in srgb, var(--fg) 86%, var(--bg));
+        background: var(--fg);
         color: var(--bg);
+        box-shadow: inset 0 0 0 3px var(--fg), inset 0 0 0 4px var(--bg);
     }
     .tile2048-v128 {
         background: var(--fg);
         color: var(--bg);
+        box-shadow:
+            inset 0 0 0 3px var(--fg),
+            inset 0 0 0 5px var(--bg);
     }
     .tile2048-v256 {
-        background: color-mix(in srgb, var(--accent) 55%, var(--fg));
-        color: var(--on-accent);
+        background: var(--fg);
+        color: var(--bg);
+        box-shadow:
+            inset 0 0 0 3px var(--fg),
+            inset 0 0 0 4px var(--bg),
+            inset 0 0 0 6px var(--fg),
+            inset 0 0 0 7px var(--bg);
     }
     .tile2048-v512 {
-        background: color-mix(in srgb, var(--accent) 82%, var(--fg));
-        color: var(--on-accent);
+        background: repeating-linear-gradient(
+            to bottom,
+            var(--fg) 0 2px,
+            color-mix(in srgb, var(--fg) 70%, var(--bg)) 2px 4px
+        );
+        color: var(--bg);
     }
     .tile2048-v1024 {
-        background: var(--accent);
-        color: var(--on-accent);
+        background: repeating-linear-gradient(
+            45deg,
+            var(--fg) 0 3px,
+            color-mix(in srgb, var(--fg) 70%, var(--bg)) 3px 6px
+        );
+        color: var(--bg);
     }
     .tile2048-v2048 {
-        background: linear-gradient(
-            135deg,
-            var(--accent),
-            var(--accent-2)
-        );
-        color: var(--on-accent);
+        background: var(--fg);
+        color: var(--bg);
         box-shadow:
             inset 0 0 0 3px var(--bg),
-            inset 0 0 0 4px var(--accent);
+            inset 0 0 0 5px var(--fg),
+            inset 0 0 0 7px var(--bg);
     }
     .tile2048-max {
-        background: linear-gradient(
-            135deg,
-            var(--accent-2),
-            var(--accent)
-        );
-        color: var(--on-accent);
+        background: var(--bg);
+        color: var(--fg);
         box-shadow:
-            inset 0 0 0 3px var(--bg),
-            inset 0 0 0 4px var(--accent-2),
-            inset 0 0 0 7px var(--bg),
-            inset 0 0 0 8px var(--accent-2);
+            inset 0 0 0 3px var(--fg),
+            inset 0 0 0 5px var(--bg),
+            inset 0 0 0 7px var(--fg);
     }
 
     /* --- entrances ------------------------------------------------------- */
 
-    /* Both wait out the slide (110ms) so the movement is visible first. */
+    /* Both wait out the slide so the movement is visible first. */
     .tile2048-new {
-        animation: tile2048-appear 160ms var(--ease-calm) 110ms both;
+        animation: tile2048-appear 120ms steps(3, end) 110ms both;
     }
 
     .tile2048-merged {
-        animation: tile2048-pop 200ms var(--ease-calm) 110ms both;
+        animation: tile2048-pop 150ms steps(3, end) 110ms both;
     }
 
     /* --- HUD ------------------------------------------------------------- */
@@ -1431,25 +1184,20 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 0.1rem;
-        border-top: 1px solid var(--fg);
-        padding: 0.5rem 0 0;
+        border: var(--edge) solid var(--fg);
+        padding: 0.4rem 0.75rem 0.5rem;
     }
 
     .stat2048-label {
-        font-size: 0.625rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
+        font-family: var(--font-display);
+        font-size: 0.8125rem;
         color: var(--fg-muted);
     }
 
     .stat2048-value {
         font-family: var(--font-display);
-        font-variation-settings:
-            'SOFT' 100,
-            'WONK' 1,
-            'opsz' 60;
         font-size: 1.75rem;
+        font-weight: 700;
         line-height: 1.1;
         font-variant-numeric: tabular-nums;
     }
@@ -1457,14 +1205,15 @@
     /* the floating "+8" that rises off the score when tiles merge */
     .stat2048-gain {
         position: absolute;
-        inset-inline-end: 0;
+        inset-inline-end: 0.5rem;
         top: 0.5rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--accent);
+        font-family: var(--font-display);
+        font-size: 0.9375rem;
+        font-weight: 700;
+        color: var(--fg);
         font-variant-numeric: tabular-nums;
         pointer-events: none;
-        animation: stat2048-gain 700ms var(--ease-calm) forwards;
+        animation: stat2048-gain 600ms steps(6, end) forwards;
     }
 
     .overlay2048 {
@@ -1477,12 +1226,11 @@
         justify-content: center;
         gap: 1rem;
         padding: 1.5rem;
-        border-radius: var(--r-md);
         text-align: center;
-        background: color-mix(in srgb, var(--bg) 88%, transparent);
-        -webkit-backdrop-filter: blur(6px);
-        backdrop-filter: blur(6px);
-        animation: tile2048-appear 260ms var(--ease-calm) both;
+        background-color: var(--bg);
+        background-image: var(--desk);
+        background-size: 4px 4px;
+        animation: tile2048-appear 160ms steps(3, end) both;
     }
 }
 
@@ -1490,91 +1238,44 @@
    KEYFRAMES
    ========================================================================== */
 
-/* Registering the custom property is what makes it animatable: an unregistered
-   custom property is just a string to the animation engine, so it would flip
-   from 0deg to 360deg at the halfway mark rather than sweeping. */
-@property --ring-angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-}
-
-@keyframes ring-turn {
-    to {
-        --ring-angle: 360deg;
-    }
-}
-
-/* The blobs travel a long way — tens of vw — because at 130px of blur a
-   small movement is invisible. Scale varies alongside translation so the
-   wash also breathes rather than only sliding. */
-@keyframes aurora-drift-1 {
-    0%,
-    100% {
-        transform: translate3d(0, 0, 0) scale(1);
-    }
-    33% {
-        transform: translate3d(14vw, 8vh, 0) scale(1.16);
-    }
-    66% {
-        transform: translate3d(-6vw, 16vh, 0) scale(0.92);
-    }
-}
-
-@keyframes aurora-drift-2 {
-    0%,
-    100% {
-        transform: translate3d(0, 0, 0) scale(1);
-    }
-    40% {
-        transform: translate3d(-16vw, 14vh, 0) scale(0.88);
-    }
-    75% {
-        transform: translate3d(-4vw, -8vh, 0) scale(1.2);
-    }
-}
-
-@keyframes aurora-drift-3 {
-    0%,
-    100% {
-        transform: translate3d(0, 0, 0) scale(1);
-    }
-    30% {
-        transform: translate3d(10vw, -14vh, 0) scale(1.14);
-    }
-    70% {
-        transform: translate3d(-14vw, 6vh, 0) scale(0.9);
-    }
-}
-
-@keyframes gradient-drift {
-    0%,
-    100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-}
-
-@keyframes marker-halo {
+@keyframes zoom-rect {
     0% {
-        transform: scale(1);
-        opacity: 0.7;
+        opacity: 1;
+        inset: 46% 46%;
     }
-    70%,
+    99% {
+        opacity: 1;
+        inset: 0;
+    }
     100% {
-        transform: scale(2.6);
+        opacity: 0;
+        inset: 0;
+    }
+}
+
+@keyframes window-appear {
+    from {
+        visibility: hidden;
+    }
+    to {
+        visibility: visible;
+    }
+}
+
+@keyframes marker-blink {
+    0%,
+    60% {
+        opacity: 1;
+    }
+    60.01%,
+    100% {
         opacity: 0;
     }
 }
 
-@keyframes loader-sweep {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(250%);
+@keyframes loader-stripes {
+    to {
+        background-position: 14.14px 0;
     }
 }
 
@@ -1591,10 +1292,10 @@
 
 @keyframes tile2048-pop {
     0% {
-        transform: scale(0);
+        transform: scale(0.6);
     }
     60% {
-        transform: scale(1.14);
+        transform: scale(1.1);
     }
     100% {
         transform: scale(1);
@@ -1615,11 +1316,10 @@
 /* ==========================================================================
    REDUCED MOTION
    --------------------------------------------------------------------------
-   The blanket rule below collapses every duration, which is enough for
-   transitions but leaves the two systems that animate *from* an invisible
-   state — reveals and split words — stuck at opacity 0 or clipped out of
-   frame. Both are restored explicitly. The aurora keeps its colour and
-   loses its drift: it is a background wash, not motion anyone tracks.
+   The blanket rule collapses every duration. The zoom-open is removed
+   outright rather than sped up — at 0.01ms the window's delayed `visibility`
+   would still hold it hidden for its full delay, so the window is shown
+   directly instead. The status mark stops blinking and stays lit.
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1632,39 +1332,15 @@
         scroll-behavior: auto !important;
     }
 
-    .reveal,
-    .reveal-pop {
-        opacity: 1;
-        transform: none;
-        filter: none;
+    .zoom-rect {
+        display: none;
     }
 
-    .rule-heavy.reveal {
-        transform: scaleX(1);
-    }
-
-    .split-word {
-        opacity: 1;
-        transform: none;
-    }
-
-    /* The blanket rule above zeroes every transition's *duration*, not its
-       *delay* — left alone, the mobile menu's per-item stagger would still
-       hold each row invisible for its full delay and then snap it in. */
-    .mobile-menu-item {
-        transition-delay: 0ms !important;
-    }
-
-    .aurora-blob {
+    .zoom-stage > .window {
         animation: none;
     }
 
-    .marker::after {
-        animation: none;
-        opacity: 0;
-    }
-
-    .avatar-ring {
+    .marker {
         animation: none;
     }
 }
