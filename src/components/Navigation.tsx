@@ -1,3 +1,4 @@
+import { IconMenu2, IconMoon, IconSun, IconX } from '@tabler/icons-react';
 import {
     useCallback,
     useEffect,
@@ -5,11 +6,10 @@ import {
     useRef,
     useState,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { IconMenu2, IconX, IconSun, IconMoon } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { PixelMark } from './PixelMark';
+import { useLocation, useNavigate } from 'react-router-dom';
 import type { Language } from '../types/lang';
+import { PixelMark } from './PixelMark';
 
 interface NavigationProps {
     userName: string;
@@ -29,6 +29,39 @@ const NAV_ITEMS = [
     { id: 'games', to: '/game' },
     { id: 'metro', to: '/metro' },
 ] as const;
+
+/**
+ * The menu-bar clock, set to Tehran — so a visitor can see what time it is
+ * where I am. The colon blinks with the seconds.
+ */
+const LocalClock = ({ language }: { language: Language }) => {
+    const { t } = useTranslation();
+    const [now, setNow] = useState(() => new Date());
+
+    useEffect(() => {
+        const id = setInterval(() => setNow(new Date()), 1000);
+        return () => clearInterval(id);
+    }, []);
+
+    const parts = new Intl.DateTimeFormat(
+        language === 'fa' ? 'fa-IR' : 'en-GB',
+        { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Tehran' }
+    ).formatToParts(now);
+    const part = (type: string) => parts.find((p) => p.type === type)?.value;
+
+    return (
+        <span className="menubar-item nums hidden cursor-default! gap-2 sm:inline-flex">
+            <span className="text-muted">{t('navigation.localTime')}</span>
+            <time dir="ltr" dateTime={now.toISOString()}>
+                {part('hour')}
+                <span className={now.getSeconds() % 2 ? 'opacity-0' : ''}>
+                    :
+                </span>
+                {part('minute')}
+            </time>
+        </span>
+    );
+};
 
 /** Space the burger button occupies once it appears (44px button + 8px gap). */
 const BURGER_W = 52;
@@ -237,6 +270,7 @@ export const Navigation = ({
                     {/* Controls */}
                     <div className="-me-2.5 flex shrink-0 items-center gap-2">
                         <div ref={controlsRef} className="flex items-center">
+                            <LocalClock language={language} />
                             <button
                                 type="button"
                                 onClick={toggleLanguage}

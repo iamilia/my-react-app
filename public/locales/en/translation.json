@@ -7,7 +7,8 @@
         "contact": "Contact",
         "userName": "Ilia",
         "games": "Games",
-        "metro": "Metro"
+        "metro": "Metro",
+        "localTime": "Tehran"
     },
     "hero": {
         "greeting": "Hi, I'm",
@@ -327,5 +328,10 @@
             "body": "The board is full and nothing else can merge. You finished on {{score}}.",
             "tryAgain": "Try again"
         }
+    },
+    "window": {
+        "collapse": "Roll up window",
+        "expand": "Roll down window",
+        "reset": "Put window back"
     }
 }

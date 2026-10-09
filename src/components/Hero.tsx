@@ -1,16 +1,17 @@
 import {
-    IconBrandGithub,
-    IconBrandTwitter,
-    IconMail,
-    IconBrandTelegram,
     IconArrowDown,
     IconArrowUpRight,
-    IconMapPin,
+    IconBrandGithub,
+    IconBrandTelegram,
+    IconBrandTwitter,
     IconCalendar,
+    IconMail,
+    IconMapPin,
 } from '@tabler/icons-react';
-import type { GitHubUser } from '../types/github';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMemo } from 'react';
+import type { GitHubUser } from '../types/github';
+import { PixelMark } from './PixelMark';
 import { Window } from './Window';
 
 interface HeroProps {
@@ -36,6 +37,46 @@ const socials = [
     },
 ];
 
+/**
+ * Types each role out, holds it, rubs it back out, moves to the next.
+ * Under reduced motion it just returns all of them at once.
+ */
+const useTypewriter = (words: string[]) => {
+    const [text, setText] = useState('');
+
+    useEffect(() => {
+        if (words.length === 0) return;
+        if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+            setText(words.join(' · '));
+            return;
+        }
+        let i = 0;
+        let len = 0;
+        let deleting = false;
+        let timer: ReturnType<typeof setTimeout>;
+
+        const tick = () => {
+            if (!deleting && len === words[i].length) {
+                deleting = true;
+                timer = setTimeout(tick, 1700);
+                return;
+            }
+            if (deleting && len === 0) {
+                deleting = false;
+                i = (i + 1) % words.length;
+            }
+            len += deleting ? -1 : 1;
+            setText(words[i].slice(0, len));
+            timer = setTimeout(tick, deleting ? 32 : 70 + Math.random() * 60);
+        };
+
+        tick();
+        return () => clearTimeout(timer);
+    }, [words]);
+
+    return text;
+};
+
 export const Hero = ({ user, scrollToSection }: HeroProps) => {
     const { t } = useTranslation();
 
@@ -43,6 +84,9 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
         const value = t('hero.roles', { returnObjects: true });
         return Array.isArray(value) ? (value as string[]) : [];
     }, [t]);
+
+    const typed = useTypewriter(roles);
+    const name = user?.name || 'Ilia';
 
     const links = user?.twitter_username
         ? [
@@ -65,37 +109,69 @@ export const Hero = ({ user, scrollToSection }: HeroProps) => {
                     the first, the way two open documents overlap. */}
                 <div className="grid gap-6 lg:grid-cols-12 lg:gap-0">
                     <Window
-                        zoom
                         title="iamilia.ir"
                         className="lg:col-span-8 lg:row-start-1"
                     >
-                        <p className="flex items-center gap-2.5">
-                            <span className="marker" />
-                            <span className="label label-ink">
-                                {t('hero.status')}
-                            </span>
-                        </p>
+                        <div className="flex items-start justify-between gap-4">
+                            <p className="flex items-center gap-2.5">
+                                <span className="marker" />
+                                <span className="label label-ink">
+                                    {t('hero.status')}
+                                </span>
+                            </p>
+                            {/* It watches the pointer and blinks — the page
+                                looking back at whoever opened it. */}
+                            <PixelMark
+                                className="hero-face lg:me-10"
+                                size={72}
+                            />
+                        </div>
 
-                        <p className="kicker mt-8 sm:mt-10">
+                        <p className="kicker mt-2 sm:mt-4">
                             {t('hero.greeting')}
                         </p>
 
                         {/* The name is Latin in both languages, so it keeps the
-                            pixel face even on the Persian page. */}
-                        <h1 className="display display-xl force-pixel mt-2">
-                            {user?.name || 'Ilia'}
+                            pixel face even on the Persian page. Each letter
+                            inverts under the pointer and flips back a beat
+                            later, so a sweep across it leaves a trail. */}
+                        <h1
+                            className="display display-xl force-pixel mt-2"
+                            aria-label={name}
+                        >
+                            {/* Latin, so its letters run left to right even
+                                on the Persian page; the heading still sits
+                                at the reading edge. */}
+                            <span dir="ltr">
+                                {name.split(' ').map((word) => (
+                                    <span
+                                        key={word}
+                                        className="trail"
+                                        aria-hidden="true"
+                                    >
+                                        {[...word].map((ch, i) => (
+                                            // biome-ignore lint/suspicious/noArrayIndexKey: letters repeat; position is their identity
+                                            <span key={i}>{ch}</span>
+                                        ))}
+                                    </span>
+                                ))}
+                            </span>
                         </h1>
 
-                        {/* Each role gets a square pixel bullet, so the three
-                            read as separate items when they share a line. */}
-                        <ul className="display-md display m-0 mt-5 flex list-none flex-wrap gap-x-6 gap-y-1 p-0 sm:mt-6">
+                        {/* The roles type themselves out after a prompt. The
+                            moving line is hidden from screen readers, which
+                            get the plain list instead. */}
+                        <p
+                            className="display display-md mt-5 flex min-h-[1.2em] items-center gap-2 sm:mt-6"
+                            aria-hidden="true"
+                        >
+                            <span>&gt;</span>
+                            <span className="min-w-0 truncate">{typed}</span>
+                            <span className="caret" />
+                        </p>
+                        <ul className="sr-only">
                             {roles.map((role) => (
-                                <li
-                                    key={role}
-                                    className="flex items-center gap-2.5 before:size-2 before:shrink-0 before:bg-current before:content-['']"
-                                >
-                                    {role}
-                                </li>
+                                <li key={role}>{role}</li>
                             ))}
                         </ul>
 
