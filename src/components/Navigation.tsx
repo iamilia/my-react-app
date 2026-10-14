@@ -9,7 +9,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { Language } from '../types/lang';
-import { PixelMark } from './PixelMark';
 
 interface NavigationProps {
     userName: string;
@@ -21,7 +20,7 @@ interface NavigationProps {
     scrollToSection?: (sectionId: string) => void;
 }
 
-const SECTIONS = ['about', 'skills', 'work', 'projects', 'contact'] as const;
+const SECTIONS = ['work', 'projects', 'about', 'skills', 'contact'] as const;
 
 /** Sections first, then the routed pages that live outside the one-pager. */
 const NAV_ITEMS = [
@@ -50,11 +49,11 @@ const LocalClock = ({ language }: { language: Language }) => {
     const part = (type: string) => parts.find((p) => p.type === type)?.value;
 
     return (
-        <span className="menubar-item nums hidden cursor-default! gap-2 sm:inline-flex">
+        <span className="menubar-item nums hidden cursor-default! gap-2 hover:text-(--fg-muted)! sm:inline-flex">
             <span className="text-muted">{t('navigation.localTime')}</span>
             <time dir="ltr" dateTime={now.toISOString()}>
                 {part('hour')}
-                <span className={now.getSeconds() % 2 ? 'opacity-0' : ''}>
+                <span className={now.getSeconds() % 2 ? 'opacity-40' : ''}>
                     :
                 </span>
                 {part('minute')}
@@ -238,7 +237,7 @@ export const Navigation = ({
             <div className="wrap">
                 <div
                     ref={barRef}
-                    className="relative flex items-center justify-between gap-3 py-0.5 sm:gap-4"
+                    className="relative flex min-h-12 items-center justify-between gap-3 sm:gap-4"
                 >
                     {/* Wordmark */}
                     <button
@@ -247,7 +246,6 @@ export const Navigation = ({
                         onClick={goHome}
                         className="menubar-item menubar-brand invert-on-hover -ms-2.5 shrink-0"
                     >
-                        <PixelMark />
                         {t('navigation.userName')}
                     </button>
 

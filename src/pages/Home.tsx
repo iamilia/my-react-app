@@ -15,7 +15,9 @@ import { Footer } from '../components/Footer';
 import { smoothScrollToSection } from '../utils/scroll';
 
 const USERNAME = 'iamilia';
-const REPO_COUNT = 6;
+// Ask for everything the server keeps (30): forks are filtered out on this
+// side, and the language split is computed from the whole list.
+const REPO_COUNT = 30;
 
 export const Home = () => {
     const user = useGitHubStore((s) => s.user);
@@ -65,9 +67,11 @@ export const Home = () => {
             />
 
             <main>
-                <Hero user={user} scrollToSection={smoothScrollToSection} />
-                <About user={user} />
-                <Skills />
+                <Hero
+                    user={user}
+                    repos={repos}
+                    scrollToSection={smoothScrollToSection}
+                />
                 <Work />
                 <Projects
                     repos={repos}
@@ -75,6 +79,8 @@ export const Home = () => {
                     error={error}
                     onRetry={() => void load(USERNAME, REPO_COUNT)}
                 />
+                <About user={user} />
+                <Skills />
                 <Contact user={user} />
             </main>
 

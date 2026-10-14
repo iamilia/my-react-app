@@ -18,10 +18,14 @@
         "available": "Open to projects",
         "scroll": "Scroll",
         "roles": ["Software Developer", "Game Developer", "Tech Enthusiast"],
-        "rolesLabel": "Working as"
+        "rolesLabel": "Working as",
+        "name": "Ilia Lotfi",
+        "headline": "I write FiveM resources in Lua, and the React and TypeScript tools that run alongside them.",
+        "joined": "On GitHub since {{year}}",
+        "languagesCaption": "Primary language of {{num}} of my own public repositories. Forks aren’t counted."
     },
     "about": {
-        "title": "About Me",
+        "title": "About",
         "subtitle": "Passionate about creating innovative solutions",
         "development": {
             "title": "Development",
@@ -37,11 +41,14 @@
         },
         "publicRepos": "Public Repositories",
         "githubFollowers": "GitHub Followers",
-        "following": "Following"
+        "following": "Following",
+        "since": "On GitHub since",
+        "body1": "My first public repositories were Discord bots and small TypeScript APIs. These days most of my work is FiveM: a ban system that ties players to hardware tokens to catch alt accounts, a status HUD that works across frameworks, and the GenesisRP server along with its website, upload service and logs.",
+        "body2": "I also use this site as a place to try things. It has a 2048 clone and a Tehran metro journey planner that draws the route in 3D."
     },
     "skills": {
-        "title": "Technologies & Skills",
-        "subtitle": "A look at the tools and technologies I use.",
+        "title": "Stack",
+        "subtitle": "Grouped by what I use each one for.",
         "groups": {
             "core": "Core",
             "web": "Web",
@@ -51,7 +58,7 @@
         }
     },
     "work": {
-        "title": "Selected Work",
+        "title": "Work",
         "subtitle": "Platforms and game servers I've built — what's running now, and what came before.",
         "liveLabel": "Currently live",
         "live": "Live in production",
@@ -132,23 +139,27 @@
         }
     },
     "projects": {
-        "title": "Recent Projects",
-        "subtitle": "Some of my latest work on GitHub",
-        "noDescription": "No description available",
-        "viewAllProjects": "View All Projects"
+        "title": "Repositories",
+        "subtitle": "My own public repositories on GitHub, most recently pushed first. Forks are left out.",
+        "noDescription": "No description.",
+        "viewAllProjects": "All repositories on GitHub",
+        "updated": "Updated {{date}}",
+        "stars": "Stars",
+        "forks": "Forks"
     },
     "contact": {
-        "title": "Get In Touch",
-        "subtitle": "Let's connect and build something amazing together",
+        "title": "Contact",
+        "subtitle": "Email and Telegram both reach me directly.",
         "email": "Email",
         "telegram": "Telegram",
         "discordServer": "Discord Server",
         "joinServer": "Join Server",
         "readyToCollaborate": "Ready to collaborate?",
-        "collaborationText": "I'm always interested in hearing about new projects and opportunities. Whether you want to work together or just say hi, feel free to reach out through any of the channels above!"
+        "collaborationText": "I'm always interested in hearing about new projects and opportunities. Whether you want to work together or just say hi, feel free to reach out through any of the channels above!",
+        "where": "I’m in {{place}}."
     },
     "footer": {
-        "tagline": "Software and game developer building fast, thoughtful interfaces for the web.",
+        "tagline": "Lua, TypeScript and React, from Tehran.",
         "navigate": "Navigate",
         "colophon": "Built with",
         "madeWith": "Made with",

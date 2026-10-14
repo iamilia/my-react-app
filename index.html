@@ -37,9 +37,9 @@
         <meta property="profile:username" content="iamilia" />
 
         <!-- Discord embed accent / browser chrome -->
-        <meta property="theme-color" content="#000000" />
+        <meta property="theme-color" content="#0071e3" />
         <!-- rewritten before first paint by the inline script below -->
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#f5f5f7" />
         <meta name="color-scheme" content="light dark" />
 
         <!-- Twitter Card -->
@@ -111,12 +111,12 @@
           Resolve the theme before first paint so there is no flash. The
           default is the operating system's own preference; `theme` in
           localStorage only exists once the visitor has overridden it by
-          hand. Keep these two hex values in step with --paper / --ink in
+          hand. Keep these two hex values in step with --bg (light / dark) in
           src/style.css and with src/store/themeStore.ts.
         -->
         <script>
             (() => {
-                const LIGHT = '#ffffff';
+                const LIGHT = '#f5f5f7';
                 const DARK = '#000000';
                 const prefersDark = () =>
                     window.matchMedia?.('(prefers-color-scheme: dark)')

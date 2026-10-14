@@ -1,14 +1,15 @@
 import {
-    IconStar,
+    IconBook2,
     IconGitFork,
-    IconArrowUpRight,
     IconRefresh,
+    IconStar,
 } from '@tabler/icons-react';
-import type { GitHubRepo } from '../types/github';
-import type { GitHubStatus } from '../store/githubStore';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { GitHubStatus } from '../store/githubStore';
+import type { GitHubRepo } from '../types/github';
+import { byRecentPush, languageColor, ownRepos } from '../utils/languages';
 import { SectionHeading } from './SectionHeading';
-import { Window } from './Window';
 
 interface ProjectsProps {
     repos: GitHubRepo[];
@@ -17,80 +18,105 @@ interface ProjectsProps {
     onRetry: () => void;
 }
 
+/** How many of my own repositories to show. */
+const SHOWN = 6;
+
+/** The profile README repository is not a project. */
+const isProfileReadme = (repo: GitHubRepo) =>
+    repo.name.toLowerCase() === 'iamilia';
+
 /**
- * The only part of the page that needs the GitHub fetch to have landed, so
- * it is also the only part that shows a loading or error state — the rest
- * of the page, headline included, renders on first paint.
+ * My own public repositories, laid out the way GitHub lays out pinned
+ * repositories — the same box, the same blue name, the same language dot —
+ * so anyone arriving from GitHub reads it without thinking. Forks are left
+ * out; they're other people's work.
  */
 export const Projects = ({ repos, status, error, onRetry }: ProjectsProps) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+
+    const shown = useMemo(
+        () =>
+            ownRepos(repos)
+                .filter((r) => !isProfileReadme(r))
+                .sort(byRecentPush)
+                .slice(0, SHOWN),
+        [repos]
+    );
+
+    const month = useMemo(
+        () =>
+            new Intl.DateTimeFormat(
+                i18n.language === 'fa' ? 'fa-IR' : 'en-GB',
+                {
+                    month: 'short',
+                    year: 'numeric',
+                }
+            ),
+        [i18n.language]
+    );
 
     const pending = repos.length === 0 && status !== 'error';
 
     return (
         <section id="projects" className="section scroll-mt-16">
             <div className="wrap">
-                <Window title={t('navigation.projects')}>
-                    <SectionHeading
-                        title={t('projects.title')}
-                        subtitle={t('projects.subtitle')}
-                    />
+                <SectionHeading
+                    title={t('projects.title')}
+                    subtitle={t('projects.subtitle')}
+                />
 
-                    {pending && (
-                        <div className="max-w-sm" role="status">
-                            <span className="label">
-                                {t('loading.loading')}
-                            </span>
-                            <div className="loader-track mt-2">
-                                <span className="loader-bar" />
-                            </div>
+                {pending && (
+                    <div className="max-w-xs" role="status">
+                        <span className="label">{t('loading.loading')}</span>
+                        <div className="loader-track mt-2">
+                            <span className="loader-bar" />
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {status === 'error' && repos.length === 0 && (
-                        <div className="max-w-md" role="alert">
-                            <p className="label label-ink">
-                                {t('loading.errorTitle')}
-                            </p>
-                            {error && <p className="prose-sm mt-1">{error}</p>}
-                            <button
-                                type="button"
-                                onClick={onRetry}
-                                className="btn-outline mt-5"
-                            >
-                                <IconRefresh size={16} />
-                                {t('loading.tryAgain')}
-                            </button>
-                        </div>
-                    )}
+                {status === 'error' && repos.length === 0 && (
+                    <div className="max-w-md" role="alert">
+                        <p className="font-semibold">
+                            {t('loading.errorTitle')}
+                        </p>
+                        {error && <p className="prose-sm mt-1">{error}</p>}
+                        <button
+                            type="button"
+                            onClick={onRetry}
+                            className="btn-outline mt-4"
+                        >
+                            <IconRefresh size={16} />
+                            {t('loading.tryAgain')}
+                        </button>
+                    </div>
+                )}
 
-                    {repos.length > 0 && (
-                        <ul className="m-0 grid list-none gap-5 p-0 sm:grid-cols-2 lg:grid-cols-3">
-                            {repos.map((repo) => (
+                {shown.length > 0 && (
+                    <ul className="m-0 grid list-none gap-4 p-0 md:grid-cols-2">
+                        {shown.map((repo) => {
+                            const pushed = repo.pushed_at || repo.updated_at;
+                            return (
                                 <li key={repo.id} className="flex">
-                                    <a
-                                        href={repo.html_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="card card-link invert-on-hover w-full"
-                                    >
-                                        <div className="flex items-start justify-between gap-3">
-                                            <h3
-                                                className="force-mono min-w-0 text-[0.9375rem] font-bold wrap-break-word"
-                                                dir="ltr"
+                                    <article className="card w-full" dir="ltr">
+                                        <h3 className="flex min-w-0 items-center gap-2">
+                                            <IconBook2
+                                                size={16}
+                                                className="text-muted shrink-0"
+                                                aria-hidden="true"
+                                            />
+                                            <a
+                                                href={repo.html_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="link truncate text-[0.9375rem] font-semibold"
                                             >
                                                 {repo.name}
-                                            </h3>
-                                            <IconArrowUpRight
-                                                size={16}
-                                                className="mt-0.5 shrink-0 rtl:-scale-x-100"
-                                            />
-                                        </div>
+                                            </a>
+                                        </h3>
 
-                                        {/* Descriptions come from GitHub, so they
-                                            may be English on a Persian page or
-                                            the reverse — `dir="auto"` lets each
-                                            one align itself. */}
+                                        {/* Descriptions are whatever the
+                                            repo says — may be English on a
+                                            Persian page, or the reverse. */}
                                         <p
                                             className="prose-sm bidi-auto mt-2 line-clamp-3"
                                             dir="auto"
@@ -99,45 +125,91 @@ export const Projects = ({ repos, status, error, onRetry }: ProjectsProps) => {
                                                 t('projects.noDescription')}
                                         </p>
 
-                                        <div
-                                            className="card-foot ltr-run nums"
-                                            dir="ltr"
-                                        >
+                                        {repo.topics &&
+                                            repo.topics.length > 0 && (
+                                                <ul className="m-0 mt-3 flex list-none flex-wrap gap-1.5 p-0">
+                                                    {repo.topics
+                                                        .slice(0, 5)
+                                                        .map((topic) => (
+                                                            <li key={topic}>
+                                                                <a
+                                                                    href={`https://github.com/topics/${topic}`}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="topic"
+                                                                >
+                                                                    {topic}
+                                                                </a>
+                                                            </li>
+                                                        ))}
+                                                </ul>
+                                            )}
+
+                                        <div className="card-foot nums">
                                             {repo.language && (
-                                                <span className="truncate">
+                                                <span className="flex items-center gap-1.5">
+                                                    <span
+                                                        className="lang-dot"
+                                                        style={{
+                                                            ['--c' as string]:
+                                                                languageColor(
+                                                                    repo.language
+                                                                ),
+                                                        }}
+                                                    />
                                                     {repo.language}
                                                 </span>
                                             )}
-                                            <span className="flex items-center gap-1.5">
-                                                <IconStar size={13} />
-                                                {repo.stargazers_count}
-                                            </span>
-                                            <span className="flex items-center gap-1.5">
-                                                <IconGitFork size={13} />
-                                                {repo.forks_count}
-                                            </span>
+                                            {repo.stargazers_count > 0 && (
+                                                <span
+                                                    className="flex items-center gap-1"
+                                                    title={t('projects.stars')}
+                                                >
+                                                    <IconStar size={14} />
+                                                    {repo.stargazers_count}
+                                                </span>
+                                            )}
+                                            {repo.forks_count > 0 && (
+                                                <span
+                                                    className="flex items-center gap-1"
+                                                    title={t('projects.forks')}
+                                                >
+                                                    <IconGitFork size={14} />
+                                                    {repo.forks_count}
+                                                </span>
+                                            )}
+                                            {pushed && (
+                                                <span
+                                                    className="ms-auto"
+                                                    dir="auto"
+                                                >
+                                                    {t('projects.updated', {
+                                                        date: month.format(
+                                                            new Date(pushed)
+                                                        ),
+                                                    })}
+                                                </span>
+                                            )}
                                         </div>
-                                    </a>
+                                    </article>
                                 </li>
-                            ))}
-                        </ul>
-                    )}
+                            );
+                        })}
+                    </ul>
+                )}
 
-                    <div className="mt-10">
+                {repos.length > 0 && (
+                    <p className="mt-8 text-[0.9375rem]">
                         <a
                             href="https://github.com/iamilia?tab=repositories"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="btn-outline"
+                            className="link"
                         >
                             {t('projects.viewAllProjects')}
-                            <IconArrowUpRight
-                                size={16}
-                                className="rtl:-scale-x-100"
-                            />
                         </a>
-                    </div>
-                </Window>
+                    </p>
+                )}
             </div>
         </section>
     );

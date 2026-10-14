@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { DitherField } from './components/DitherField';
 import { PageLoader } from './components/PageLoader';
 import { ScrollProgress } from './components/ScrollProgress';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -35,7 +34,6 @@ function App() {
         <>
             {/* Outside <Routes> so it survives navigation — otherwise the
                 progress bar would remount mid-scroll. */}
-            <DitherField />
             <ScrollProgress />
             <ScrollToTop />
             <Suspense fallback={<PageLoader />}>

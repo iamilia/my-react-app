@@ -21,7 +21,10 @@ const GROUPS = [
     },
     { id: 'web', items: ['HTML', 'CSS', 'Sass', 'Express'] },
     { id: 'systems', items: ['C++', 'Lua', 'Bash', 'Python'] },
-    { id: 'data', items: ['MongoDB', 'MySQL', 'ORM', 'HeidiSQL', 'Postgresql', 'Redis'] },
+    {
+        id: 'data',
+        items: ['MongoDB', 'MySQL', 'ORM', 'HeidiSQL', 'Postgresql', 'Redis'],
+    },
     { id: 'tools', items: ['Git', 'Figma', 'Visual Studio', 'FFmpeg'] },
 ] as const;
 
@@ -62,7 +65,6 @@ export const Skills = () => {
                             </div>
                         ))}
                     </dl>
-                    <hr className="rule" />
                 </Window>
             </div>
         </section>

@@ -10,7 +10,7 @@ interface FooterProps {
     scrollToSection?: (sectionId: string) => void;
 }
 
-const SECTIONS = ['about', 'skills', 'work', 'projects', 'contact'] as const;
+const SECTIONS = ['work', 'projects', 'about', 'skills', 'contact'] as const;
 
 const NAV_ITEMS = [
     ...SECTIONS.map((id) => ({ id, to: `/#${id}` })),
@@ -26,8 +26,7 @@ const STACK = [
 ];
 
 /**
- * The bottom of the desktop: a solid strip, not another window. It holds
- * the site map, the colophon and the copyright line.
+ * The foot of the page. It holds the site map, the colophon and the copyright line.
  */
 export const Footer = ({ userName, scrollToSection }: FooterProps) => {
     const { t } = useTranslation();
@@ -53,14 +52,14 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
     };
 
     return (
-        <footer className="section-alt mt-6 border-t-2 border-(--fg) sm:mt-10">
+        <footer className="section-alt border-t border-(--line)">
             <div className="wrap">
                 <div className="field py-10 sm:py-12 lg:py-16">
                     <div className="field-aside">
                         <button
                             type="button"
                             onClick={scrollToTop}
-                            className="display text-3xl hover:underline"
+                            className="text-lg font-semibold"
                         >
                             {userName}
                         </button>
@@ -69,9 +68,7 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                         </p>
                         <p className="mt-5 flex items-center gap-2.5">
                             <span className="marker" />
-                            <span className="label label-ink">
-                                {t('hero.available')}
-                            </span>
+                            <span className="label">{t('hero.available')}</span>
                         </p>
                     </div>
 
@@ -87,7 +84,7 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                                             <button
                                                 type="button"
                                                 onClick={() => go(item)}
-                                                className="invert-on-hover -mx-2 flex min-h-10 w-[calc(100%+1rem)] items-center px-2 text-start"
+                                                className="link flex min-h-9 items-center text-start text-[0.9375rem]"
                                             >
                                                 {t(`navigation.${item.id}`)}
                                             </button>
@@ -107,7 +104,7 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                                                 href={href}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="link force-mono inline-flex min-h-10 items-center text-sm"
+                                                className="link inline-flex min-h-9 items-center text-[0.9375rem]"
                                                 dir="ltr"
                                             >
                                                 {label}

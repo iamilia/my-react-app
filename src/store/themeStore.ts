@@ -18,7 +18,7 @@ import { rawStorage } from './rawStorage';
 const STORAGE_KEY = 'theme';
 
 /** Keep these in step with --bg in style.css and the inline script in index.html. */
-const LIGHT_BG = '#ffffff';
+const LIGHT_BG = '#f5f5f7';
 const DARK_BG = '#000000';
 
 const DARK_QUERY = '(prefers-color-scheme: dark)';

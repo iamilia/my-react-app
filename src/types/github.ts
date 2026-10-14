@@ -7,6 +7,11 @@ export interface GitHubRepo {
     forks_count: number;
     language: string;
     updated_at: string;
+    /** The fields below arrive from newer server builds; older cached data lacks them. */
+    pushed_at?: string;
+    fork?: boolean;
+    topics?: string[];
+    homepage?: string;
 }
 
 export interface GitHubUser {
