@@ -1,4 +1,4 @@
-import { useEffect, useRef, type RefObject } from 'react';
+import { type RefObject, useEffect, useRef } from 'react';
 import type { Direction } from './engine';
 
 const KEY_MAP: Record<string, Direction> = {

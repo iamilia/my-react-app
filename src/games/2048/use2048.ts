@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-    createBoard,
-    isBoard,
     move as applyMove,
+    type Board,
+    createBoard,
+    type Direction,
+    isBoard,
     reserveIds,
     settle,
-    type Board,
-    type Direction,
 } from './engine';
 
 const STATE_KEY = 'game2048:state';

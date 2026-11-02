@@ -1,5 +1,5 @@
 import type { CSSProperties, RefObject } from 'react';
-import { SIZE, type Board as BoardState, type Tile } from './engine';
+import { type Board as BoardState, SIZE, type Tile } from './engine';
 
 interface BoardProps {
     board: BoardState;

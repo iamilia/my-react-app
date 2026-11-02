@@ -13,7 +13,8 @@
         "test:watch": "vitest",
         "format": "biome format --write .",
         "check": "biome check --write .",
-        "check:ci": "biome ci ."
+        "check:ci": "biome ci .",
+        "deploy": "tsc -b && vite build --outDir ../my-express-app/public/main --emptyOutDir"
     },
     "dependencies": {
         "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
@@ -24,7 +25,6 @@
         "@react-three/fiber": "^9.8.1",
         "@tabler/icons-react": "^3.35.0",
         "@tailwindcss/vite": "^4.1.13",
-        "axios": "^1.12.2",
         "i18next": "^25.5.2",
         "i18next-http-backend": "^3.0.2",
         "motion": "^13.4.4",

@@ -24,7 +24,6 @@ A modern, responsive portfolio built with **React**, **TypeScript**, and **Tailw
 - [Zustand](https://zustand.docs.pmnd.rs/) (state + persisted cache)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Vite](https://vitejs.dev/)
-- [Axios](https://axios-http.com/)
 - [Tabler Icons](https://tabler.io/icons)
 - [i18next](https://www.i18next.com/)
 
@@ -59,6 +58,14 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ```sh
 npm run build
+```
+
+### Deploy
+
+Builds straight into `../my-express-app/public/main`, which the Express app serves:
+
+```sh
+npm run deploy
 ```
 
 ### Lint & Format

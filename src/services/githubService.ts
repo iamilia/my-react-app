@@ -11,13 +11,19 @@
  * server is the unreachable one.
  */
 
-import axios from 'axios';
-import type { GitHubUser, GitHubRepo } from '../types/github';
+import type { GitHubRepo, GitHubUser } from '../types/github';
 
 const BASE = '/_gh';
 
 /** Slow networks are the reason this exists, so leave room — but not forever. */
 const TIMEOUT = 8000;
+
+/** GET + JSON with a timeout; throws on non-2xx so callers can fall back. */
+async function getJson<T>(url: string): Promise<T> {
+    const res = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT) });
+    if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
+    return res.json() as Promise<T>;
+}
 
 export type ProfileSource = 'server' | 'github';
 
@@ -41,10 +47,9 @@ async function fromServer(
     username: string,
     limit: number
 ): Promise<GitHubProfile> {
-    const { data } = await axios.get<ServerResponse>(`${BASE}/${username}`, {
-        params: { limit },
-        timeout: TIMEOUT,
-    });
+    const data = await getJson<ServerResponse>(
+        `${BASE}/${username}?limit=${limit}`
+    );
 
     if (!data?.user) throw new Error('Malformed profile response');
 
@@ -60,21 +65,15 @@ async function fromGitHub(
     username: string,
     limit: number
 ): Promise<GitHubProfile> {
-    const api = axios.create({
-        baseURL: 'https://api.github.com',
-        timeout: TIMEOUT,
-    });
-
+    const api = `https://api.github.com/users/${username}`;
     const [user, repos] = await Promise.all([
-        api.get<GitHubUser>(`/users/${username}`),
-        api.get<GitHubRepo[]>(`/users/${username}/repos`, {
-            params: { sort: 'updated', per_page: limit },
-        }),
+        getJson<GitHubUser>(api),
+        getJson<GitHubRepo[]>(`${api}/repos?sort=updated&per_page=${limit}`),
     ]);
 
     return {
-        user: user.data,
-        repos: repos.data,
+        user,
+        repos,
         source: 'github',
         fetchedAt: Date.now(),
     };
