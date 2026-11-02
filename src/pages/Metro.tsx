@@ -7,7 +7,7 @@ import {
 } from 'motion/react';
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SubPageShell } from '../components/SubPageShell';
+import { Station, SubPageShell } from '../components/SubPageShell';
 import {
     approachingTrains,
     DAY_TYPES,
@@ -182,312 +182,336 @@ export const Metro = () => {
 
     return (
         <MotionConfig reducedMotion="user">
-            <SubPageShell title={t('navigation.metro')}>
-                <header className="max-w-3xl">
-                    <span className="label">{t('navigation.metro')}</span>
-                    <h1 className="display display-lg mt-2">
-                        {t('metro.title')}
-                    </h1>
-                    <p className="lede mt-4">{t('metro.subtitle')}</p>
-                </header>
-
-                <hr className="rule-heavy mt-8" />
-
-                <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] lg:gap-8">
-                    {/* --- controls + result -------------------------------- */}
-                    <motion.div
-                        className="flex min-w-0 flex-col gap-6"
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, ease }}
-                    >
-                        <form
-                            className="card gap-5"
-                            onSubmit={(e) => e.preventDefault()}
-                            aria-label={t('metro.form.label')}
+            <SubPageShell
+                kicker={t('navigation.metro')}
+                title={t('metro.title')}
+                subtitle={t('metro.subtitle')}
+            >
+                <Station no={1} title={t('metro.form.label')}>
+                    <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] lg:gap-8">
+                        {/* --- controls + result -------------------------------- */}
+                        <motion.div
+                            className="flex min-w-0 flex-col gap-6"
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, ease }}
                         >
-                            {/* Stacked, with the swap button beside both:
+                            <form
+                                className="card gap-5"
+                                onSubmit={(e) => e.preventDefault()}
+                                aria-label={t('metro.form.label')}
+                            >
+                                {/* Stacked, with the swap button beside both:
                                 station names are long in either script and
                                 need the full width of the panel. */}
-                            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-4">
-                                <StationPicker
-                                    label={t('metro.form.from')}
-                                    lines={LINES}
-                                    stations={STATIONS}
-                                    value={from}
-                                    onChange={setFrom}
-                                    language={language}
-                                    disabledId={to}
-                                />
-                                <motion.button
-                                    type="button"
-                                    onClick={() => {
-                                        setFrom(to);
-                                        setTo(from);
-                                    }}
-                                    whileTap={{ rotate: 180, scale: 0.9 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="btn-outline row-span-2 size-11 min-h-0! rounded-full! p-0!"
-                                    aria-label={t('metro.form.swap')}
-                                    title={t('metro.form.swap')}
-                                >
-                                    <IconArrowsUpDown size={18} aria-hidden />
-                                </motion.button>
-                                <StationPicker
-                                    label={t('metro.form.to')}
-                                    lines={LINES}
-                                    stations={STATIONS}
-                                    value={to}
-                                    onChange={setTo}
-                                    language={language}
-                                    disabledId={from}
-                                />
-                            </div>
-
-                            <fieldset className="m-0 border-0 p-0">
-                                <legend className="label">
-                                    {t('metro.form.dayType')}
-                                </legend>
-                                <div className="mt-2 grid grid-cols-3 gap-1 rounded-xl border border-(--line) p-1">
-                                    {DAY_TYPES.map((d) => (
-                                        <label
-                                            key={d}
-                                            className={`cursor-pointer rounded-lg px-2 py-2 text-center text-xs font-semibold transition-colors ${
-                                                dayType === d
-                                                    ? 'bg-(--accent-soft) text-(--accent)'
-                                                    : 'text-muted hover:text-(--fg)'
-                                            }`}
-                                        >
-                                            <input
-                                                type="radio"
-                                                name="metro-day-type"
-                                                value={d}
-                                                checked={dayType === d}
-                                                onChange={() => setDayType(d)}
-                                                className="sr-only"
-                                            />
-                                            {t(`metro.dayTypes.${d}`)}
-                                        </label>
-                                    ))}
-                                </div>
-                            </fieldset>
-
-                            <div className="flex items-end gap-2">
-                                <label className="min-w-0 flex-1">
-                                    <span className="label">
-                                        {t('metro.form.time')}
-                                    </span>
-                                    <input
-                                        type="time"
-                                        value={time}
-                                        onChange={(e) =>
-                                            setTime(e.target.value)
-                                        }
-                                        dir="ltr"
-                                        className="mt-2 w-full rounded-xl border border-(--line-strong) bg-(--bg) px-4 py-2.5 font-mono text-(--fg)"
+                                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-4">
+                                    <StationPicker
+                                        label={t('metro.form.from')}
+                                        lines={LINES}
+                                        stations={STATIONS}
+                                        value={from}
+                                        onChange={setFrom}
+                                        language={language}
+                                        disabledId={to}
                                     />
-                                </label>
-                                <button
-                                    type="button"
-                                    onClick={resetToNow}
-                                    className="btn-outline min-h-11! px-4!"
-                                >
-                                    <IconClockPlay size={16} aria-hidden />
-                                    {t('metro.form.now')}
-                                </button>
-                            </div>
-                        </form>
-
-                        <StationBoard
-                            lines={LINES}
-                            stations={STATIONS}
-                            stationId={from}
-                            board={board}
-                            boarding={boarding}
-                            language={language}
-                        />
-
-                        <JourneyCard
-                            lines={LINES}
-                            stations={STATIONS}
-                            journeys={journeys}
-                            selected={selected}
-                            onSelect={(index) => setChoice({ question, index })}
-                            language={language}
-                        />
-                    </motion.div>
-
-                    {/* --- scene ---------------------------------------------- */}
-                    <motion.section
-                        className="min-w-0"
-                        aria-label={t('metro.scene.title')}
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.08, ease }}
-                    >
-                        <fieldset className="m-0 mb-3 grid grid-cols-2 gap-1 rounded-xl border border-(--line) p-1 sm:inline-grid">
-                            <legend className="sr-only">
-                                {t('metro.view.label')}
-                            </legend>
-                            {(['journey', 'network'] as const).map((v) => (
-                                <button
-                                    key={v}
-                                    type="button"
-                                    onClick={() => setView(v)}
-                                    aria-pressed={view === v}
-                                    className={`rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
-                                        view === v
-                                            ? 'bg-(--accent-soft) text-(--accent)'
-                                            : 'text-muted hover:text-(--fg)'
-                                    }`}
-                                >
-                                    {t(`metro.view.${v}`)}
-                                </button>
-                            ))}
-                        </fieldset>
-
-                        <div className="relative h-[21rem] overflow-hidden rounded-(--r-md) border border-(--line) bg-(--tint) sm:h-[27rem] lg:h-[34rem]">
-                            <AnimatePresence mode="wait" initial={false}>
-                                <motion.div
-                                    key={journey ? scene.mode : 'empty'}
-                                    className="absolute inset-0"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.25 }}
-                                >
-                                    {journey &&
-                                        (scene.mode === '3d' ? (
-                                            <SceneErrorBoundary
-                                                fallback={diagram}
-                                            >
-                                                <Suspense fallback={diagram}>
-                                                    <RouteScene3D
-                                                        network={NETWORK}
-                                                        stations={STATIONS}
-                                                        journey={journey}
-                                                        elapsed={
-                                                            playback.elapsed
-                                                        }
-                                                        view={view}
-                                                        clock={clock}
-                                                        dayType={dayType}
-                                                        liveTrains={liveTrains}
-                                                        dark={dark}
-                                                        language={language}
-                                                        label={sceneLabel}
-                                                    />
-                                                </Suspense>
-                                            </SceneErrorBoundary>
-                                        ) : (
-                                            diagram
-                                        ))}
-                                </motion.div>
-                            </AnimatePresence>
-
-                            {scene.canUse3D && (
-                                <fieldset className="glass absolute end-3 top-3 z-30 m-0 flex gap-1 rounded-full border border-(--line) p-1">
-                                    <legend className="sr-only">
-                                        {t('metro.scene.view')}
-                                    </legend>
-                                    {(['3d', '2d'] as const).map((m) => (
-                                        <button
-                                            key={m}
-                                            type="button"
-                                            onClick={() => scene.setMode(m)}
-                                            aria-pressed={scene.mode === m}
-                                            className={`force-mono rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                                                scene.mode === m
-                                                    ? 'bg-(--accent) text-(--on-accent)'
-                                                    : 'text-muted hover:text-(--fg)'
-                                            }`}
-                                        >
-                                            {m.toUpperCase()}
-                                        </button>
-                                    ))}
-                                </fieldset>
-                            )}
-
-                            <div className="pointer-events-none absolute start-3 top-3 z-30 flex max-w-[calc(100%-8rem)] flex-wrap gap-1.5">
-                                {journeyLines.map((l) => (
-                                    <span
-                                        key={l.id}
-                                        className="glass inline-flex items-center gap-1.5 rounded-full border border-(--line) px-2.5 py-1 text-xs font-semibold"
+                                    <motion.button
+                                        type="button"
+                                        onClick={() => {
+                                            setFrom(to);
+                                            setTo(from);
+                                        }}
+                                        whileTap={{ rotate: 180, scale: 0.9 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="btn-outline row-span-2 size-11 min-h-0! rounded-full! p-0!"
+                                        aria-label={t('metro.form.swap')}
+                                        title={t('metro.form.swap')}
                                     >
-                                        <span
-                                            className="inline-block size-2.5 rounded-full"
-                                            style={{ background: l.color }}
+                                        <IconArrowsUpDown
+                                            size={18}
                                             aria-hidden
                                         />
-                                        {l.name[language]}
-                                    </span>
+                                    </motion.button>
+                                    <StationPicker
+                                        label={t('metro.form.to')}
+                                        lines={LINES}
+                                        stations={STATIONS}
+                                        value={to}
+                                        onChange={setTo}
+                                        language={language}
+                                        disabledId={from}
+                                    />
+                                </div>
+
+                                <fieldset className="m-0 border-0 p-0">
+                                    <legend className="label">
+                                        {t('metro.form.dayType')}
+                                    </legend>
+                                    <div className="mt-2 grid grid-cols-3 gap-1 rounded-xl border border-(--line) p-1">
+                                        {DAY_TYPES.map((d) => (
+                                            <label
+                                                key={d}
+                                                className={`cursor-pointer rounded-lg px-2 py-2 text-center text-xs font-semibold transition-colors ${
+                                                    dayType === d
+                                                        ? 'bg-(--accent-soft) text-(--accent)'
+                                                        : 'text-muted hover:text-(--fg)'
+                                                }`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    name="metro-day-type"
+                                                    value={d}
+                                                    checked={dayType === d}
+                                                    onChange={() =>
+                                                        setDayType(d)
+                                                    }
+                                                    className="sr-only"
+                                                />
+                                                {t(`metro.dayTypes.${d}`)}
+                                            </label>
+                                        ))}
+                                    </div>
+                                </fieldset>
+
+                                <div className="flex items-end gap-2">
+                                    <label className="min-w-0 flex-1">
+                                        <span className="label">
+                                            {t('metro.form.time')}
+                                        </span>
+                                        <input
+                                            type="time"
+                                            value={time}
+                                            onChange={(e) =>
+                                                setTime(e.target.value)
+                                            }
+                                            dir="ltr"
+                                            className="mt-2 w-full rounded-xl border border-(--line-strong) bg-(--bg) px-4 py-2.5 font-mono text-(--fg)"
+                                        />
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={resetToNow}
+                                        className="btn-outline min-h-11! px-4!"
+                                    >
+                                        <IconClockPlay size={16} aria-hidden />
+                                        {t('metro.form.now')}
+                                    </button>
+                                </div>
+                            </form>
+
+                            <StationBoard
+                                lines={LINES}
+                                stations={STATIONS}
+                                stationId={from}
+                                board={board}
+                                boarding={boarding}
+                                language={language}
+                            />
+
+                            <JourneyCard
+                                lines={LINES}
+                                stations={STATIONS}
+                                journeys={journeys}
+                                selected={selected}
+                                onSelect={(index) =>
+                                    setChoice({ question, index })
+                                }
+                                language={language}
+                            />
+                        </motion.div>
+
+                        {/* --- scene ---------------------------------------------- */}
+                        <motion.section
+                            className="min-w-0"
+                            aria-label={t('metro.scene.title')}
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.08, ease }}
+                        >
+                            <fieldset className="m-0 mb-3 grid grid-cols-2 gap-1 rounded-xl border border-(--line) p-1 sm:inline-grid">
+                                <legend className="sr-only">
+                                    {t('metro.view.label')}
+                                </legend>
+                                {(['journey', 'network'] as const).map((v) => (
+                                    <button
+                                        key={v}
+                                        type="button"
+                                        onClick={() => setView(v)}
+                                        aria-pressed={view === v}
+                                        className={`rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
+                                            view === v
+                                                ? 'bg-(--accent-soft) text-(--accent)'
+                                                : 'text-muted hover:text-(--fg)'
+                                        }`}
+                                    >
+                                        {t(`metro.view.${v}`)}
+                                    </button>
                                 ))}
+                            </fieldset>
+
+                            <div className="relative h-[21rem] overflow-hidden rounded-(--radius-lg) border border-(--line) bg-(--tint) sm:h-[27rem] lg:h-[34rem]">
+                                <AnimatePresence mode="wait" initial={false}>
+                                    <motion.div
+                                        key={journey ? scene.mode : 'empty'}
+                                        className="absolute inset-0"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.25 }}
+                                    >
+                                        {journey &&
+                                            (scene.mode === '3d' ? (
+                                                <SceneErrorBoundary
+                                                    fallback={diagram}
+                                                >
+                                                    <Suspense
+                                                        fallback={diagram}
+                                                    >
+                                                        <RouteScene3D
+                                                            network={NETWORK}
+                                                            stations={STATIONS}
+                                                            journey={journey}
+                                                            elapsed={
+                                                                playback.elapsed
+                                                            }
+                                                            view={view}
+                                                            clock={clock}
+                                                            dayType={dayType}
+                                                            liveTrains={
+                                                                liveTrains
+                                                            }
+                                                            dark={dark}
+                                                            language={language}
+                                                            label={sceneLabel}
+                                                        />
+                                                    </Suspense>
+                                                </SceneErrorBoundary>
+                                            ) : (
+                                                diagram
+                                            ))}
+                                    </motion.div>
+                                </AnimatePresence>
+
+                                {scene.canUse3D && (
+                                    <fieldset className="glass absolute end-3 top-3 z-30 m-0 flex gap-1 rounded-full border border-(--line) p-1">
+                                        <legend className="sr-only">
+                                            {t('metro.scene.view')}
+                                        </legend>
+                                        {(['3d', '2d'] as const).map((m) => (
+                                            <button
+                                                key={m}
+                                                type="button"
+                                                onClick={() => scene.setMode(m)}
+                                                aria-pressed={scene.mode === m}
+                                                className={`force-mono rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
+                                                    scene.mode === m
+                                                        ? 'bg-(--accent) text-(--on-accent)'
+                                                        : 'text-muted hover:text-(--fg)'
+                                                }`}
+                                            >
+                                                {m.toUpperCase()}
+                                            </button>
+                                        ))}
+                                    </fieldset>
+                                )}
+
+                                <div className="pointer-events-none absolute start-3 top-3 z-30 flex max-w-[calc(100%-8rem)] flex-wrap gap-1.5">
+                                    {journeyLines.map((l) => (
+                                        <span
+                                            key={l.id}
+                                            className="glass inline-flex items-center gap-1.5 rounded-full border border-(--line) px-2.5 py-1 text-xs font-semibold"
+                                        >
+                                            <span
+                                                className="inline-block size-2.5 rounded-full"
+                                                style={{ background: l.color }}
+                                                aria-hidden
+                                            />
+                                            {l.name[language]}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                <span className="label pointer-events-none absolute start-3 bottom-3 z-30">
+                                    {t('metro.scene.schematic')}
+                                </span>
                             </div>
 
-                            <span className="label pointer-events-none absolute start-3 bottom-3 z-30">
-                                {t('metro.scene.schematic')}
-                            </span>
-                        </div>
+                            {scene.reason && (
+                                <p className="text-muted mt-2 text-xs">
+                                    {t(`metro.scene.fallback.${scene.reason}`)}
+                                </p>
+                            )}
 
-                        {scene.reason && (
-                            <p className="text-muted mt-2 text-xs">
-                                {t(`metro.scene.fallback.${scene.reason}`)}
-                            </p>
-                        )}
-
-                        {view === 'network' ? (
-                            <NetworkBar
-                                network={NETWORK}
-                                dayType={dayType}
-                                clock={clock}
-                                playback={networkPlayback}
-                                speed={networkSpeed}
-                                onSpeedChange={setNetworkSpeed}
-                                onNow={resetToNow}
-                                language={language}
-                            />
-                        ) : (
-                            journey && (
-                                <PlaybackBar
-                                    stations={STATIONS}
-                                    journey={journey}
-                                    playback={playback}
-                                    speed={speed}
-                                    onSpeedChange={setSpeed}
+                            {view === 'network' ? (
+                                <NetworkBar
+                                    network={NETWORK}
+                                    dayType={dayType}
+                                    clock={clock}
+                                    playback={networkPlayback}
+                                    speed={networkSpeed}
+                                    onSpeedChange={setNetworkSpeed}
+                                    onNow={resetToNow}
                                     language={language}
                                 />
-                            )
-                        )}
+                            ) : (
+                                journey && (
+                                    <PlaybackBar
+                                        stations={STATIONS}
+                                        journey={journey}
+                                        playback={playback}
+                                        speed={speed}
+                                        onSpeedChange={setSpeed}
+                                        language={language}
+                                    />
+                                )
+                            )}
 
-                        {view === 'journey' && journey && (
-                            <LiveTrains
-                                network={NETWORK}
-                                stations={STATIONS}
-                                journey={journey}
-                                dayType={dayType}
-                                now={now}
-                                language={language}
-                            />
-                        )}
+                            {view === 'journey' && journey && (
+                                <LiveTrains
+                                    network={NETWORK}
+                                    stations={STATIONS}
+                                    journey={journey}
+                                    dayType={dayType}
+                                    now={now}
+                                    language={language}
+                                />
+                            )}
+                        </motion.section>
+                    </div>
+                </Station>
 
-                        <details className="text-muted mt-6 text-xs leading-relaxed">
-                            <summary className="cursor-pointer">
-                                {t('metro.sources', {
-                                    n: LINES.length.toLocaleString(language),
-                                })}
-                            </summary>
-                            <ul className="m-0 mt-2 list-none p-0">
-                                {LINES.map((l) => (
-                                    <li key={l.id}>
-                                        {l.name[language]}:{' '}
-                                        <bdi dir="ltr">{l.source.file}</bdi>
-                                    </li>
-                                ))}
-                            </ul>
-                            <p className="mt-2">{t('metro.sourceNote')}</p>
-                        </details>
-                    </motion.section>
-                </div>
+                <Station
+                    no={2}
+                    title={t('metro.sourcesTitle')}
+                    subtitle={t('metro.sources', {
+                        n: LINES.length.toLocaleString(language),
+                    })}
+                    className="pb-24! md:pb-32!"
+                >
+                    <ul className="m-0 grid list-none gap-x-8 gap-y-0 p-0 md:grid-cols-2 xl:grid-cols-3">
+                        {LINES.map((l) => (
+                            <li
+                                key={l.id}
+                                className="row flex items-center gap-3 py-3 text-sm"
+                            >
+                                <span
+                                    className="inline-block h-1 w-6 shrink-0 rounded-full"
+                                    style={{ background: l.color }}
+                                    aria-hidden
+                                />
+                                <span className="font-semibold">
+                                    {l.name[language]}
+                                </span>
+                                <bdi
+                                    dir="ltr"
+                                    className="text-muted ms-auto truncate font-mono text-xs"
+                                >
+                                    {l.source.file}
+                                </bdi>
+                            </li>
+                        ))}
+                    </ul>
+                    <p className="prose-sm mt-6">{t('metro.sourceNote')}</p>
+                </Station>
             </SubPageShell>
         </MotionConfig>
     );

@@ -10,7 +10,7 @@ interface FooterProps {
     scrollToSection?: (sectionId: string) => void;
 }
 
-const SECTIONS = ['work', 'projects', 'about', 'skills', 'contact'] as const;
+const SECTIONS = ['projects', 'work', 'about', 'skills', 'contact'] as const;
 
 const NAV_ITEMS = [
     ...SECTIONS.map((id) => ({ id, to: `/#${id}` })),
@@ -54,16 +54,20 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
     return (
         <footer className="section-alt border-t border-(--line)">
             <div className="wrap">
-                <div className="field py-10 sm:py-12 lg:py-16">
+                <div className="field py-14 md:py-20 xl:py-24">
                     <div className="field-aside">
                         <button
                             type="button"
                             onClick={scrollToTop}
-                            className="text-lg font-semibold"
+                            className="flex items-center gap-3 text-[clamp(2.5rem,6vw,4.5rem)] leading-none font-extrabold tracking-[-0.05em]"
                         >
+                            <span
+                                aria-hidden="true"
+                                className="size-[0.32em] rounded-full border-[0.07em] border-(--color-route)"
+                            />
                             {userName}
                         </button>
-                        <p className="prose-sm mt-2 max-w-xs">
+                        <p className="prose-sm mt-4 max-w-xs">
                             {t('footer.tagline')}
                         </p>
                         <p className="mt-5 flex items-center gap-2.5">
@@ -128,10 +132,13 @@ export const Footer = ({ userName, scrollToSection }: FooterProps) => {
                     <button
                         type="button"
                         onClick={scrollToTop}
-                        className="menubar-item invert-on-hover -ms-2.5"
+                        className="menubar-item group -me-3"
                     >
                         {t('footer.backToTop')}
-                        <IconArrowUp size={15} />
+                        <IconArrowUp
+                            size={15}
+                            className="transition-transform duration-300 group-hover:-translate-y-1"
+                        />
                     </button>
                 </div>
             </div>

@@ -17,12 +17,19 @@
         "ctaContact": "Get in touch",
         "available": "Open to projects",
         "scroll": "Scroll",
-        "roles": ["Software Developer", "Game Developer", "Tech Enthusiast"],
+        "roles": [
+            "Software Developer",
+            "Game Developer",
+            "Tech Enthusiast"
+        ],
         "rolesLabel": "Working as",
         "name": "Ilia Lotfi",
         "headline": "I write FiveM resources in Lua, and the React and TypeScript tools that run alongside them.",
         "joined": "On GitHub since {{year}}",
-        "languagesCaption": "Primary language of {{num}} of my own public repositories. Forks aren’t counted."
+        "languagesCaption": "Primary language of {{num}} of my own public repositories. Forks aren’t counted.",
+        "lines": "Lines I write in",
+        "linesHint": "Pick one to see those repositories",
+        "origin": "Start of the line"
     },
     "about": {
         "title": "About",
@@ -145,7 +152,10 @@
         "viewAllProjects": "All repositories on GitHub",
         "updated": "Updated {{date}}",
         "stars": "Stars",
-        "forks": "Forks"
+        "forks": "Forks",
+        "all": "All",
+        "count": "{{shown}} of {{total}} repositories",
+        "filterLabel": "Filter by language"
     },
     "contact": {
         "title": "Contact",
@@ -156,7 +166,8 @@
         "joinServer": "Join Server",
         "readyToCollaborate": "Ready to collaborate?",
         "collaborationText": "I'm always interested in hearing about new projects and opportunities. Whether you want to work together or just say hi, feel free to reach out through any of the channels above!",
-        "where": "I’m in {{place}}."
+        "where": "I’m in {{place}}.",
+        "lead": "Write to me"
     },
     "footer": {
         "tagline": "Lua, TypeScript and React, from Tehran.",
@@ -313,7 +324,8 @@
             "endsAt": "ends at {{station}}",
             "none": "No more trains from here today, according to the timetable.",
             "note": "Arrival times at this station, worked out from the published departure times and the chosen time."
-        }
+        },
+        "sourcesTitle": "Sources"
     },
     "game2048": {
         "back": "All games",
@@ -338,7 +350,8 @@
             "title": "No moves left",
             "body": "The board is full and nothing else can merge. You finished on {{score}}.",
             "tryAgain": "Try again"
-        }
+        },
+        "boardTitle": "Board"
     },
     "window": {
         "collapse": "Roll up window",

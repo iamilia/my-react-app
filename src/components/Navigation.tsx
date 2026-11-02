@@ -1,4 +1,5 @@
 import { IconMenu2, IconMoon, IconSun, IconX } from '@tabler/icons-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
     useCallback,
     useEffect,
@@ -20,7 +21,7 @@ interface NavigationProps {
     scrollToSection?: (sectionId: string) => void;
 }
 
-const SECTIONS = ['work', 'projects', 'about', 'skills', 'contact'] as const;
+const SECTIONS = ['projects', 'work', 'about', 'skills', 'contact'] as const;
 
 /** Sections first, then the routed pages that live outside the one-pager. */
 const NAV_ITEMS = [
@@ -78,6 +79,8 @@ export const Navigation = ({
     const [active, setActive] = useState<string>('');
     // true => links don't fit, show the burger instead
     const [compact, setCompact] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const reduce = useReducedMotion();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation();
@@ -157,6 +160,24 @@ export const Navigation = ({
         measure();
     }, [language, t, measure]);
 
+    // Transparent over the hero, frosted once the page moves under it.
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 8);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    // The open menu covers the page; the page underneath must not scroll.
+    useEffect(() => {
+        if (!mobileMenuOpen) return;
+        const prev = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = prev;
+        };
+    }, [mobileMenuOpen]);
+
     // The burger is gone once the links fit, so don't leave the panel hanging open
     useEffect(() => {
         if (!compact) setMobileMenuOpen(false);
@@ -217,35 +238,60 @@ export const Navigation = ({
     const renderLink = (
         item: (typeof NAV_ITEMS)[number],
         measuring = false
-    ) => (
-        <button
-            key={item.id}
-            type="button"
-            onClick={measuring ? undefined : () => go(item)}
-            tabIndex={measuring ? -1 : undefined}
-            aria-current={!measuring && active === item.id ? 'true' : undefined}
-            className={`menubar-item invert-on-hover ${
-                !measuring && active === item.id ? 'is-active' : ''
-            }`}
-        >
-            {t(`navigation.${item.id}`)}
-        </button>
-    );
+    ) => {
+        const isActive = !measuring && active === item.id;
+        return (
+            <button
+                key={item.id}
+                type="button"
+                onClick={measuring ? undefined : () => go(item)}
+                tabIndex={measuring ? -1 : undefined}
+                aria-current={isActive ? 'true' : undefined}
+                className={`menubar-item isolate ${isActive ? 'is-active' : ''}`}
+            >
+                {isActive && (
+                    <motion.span
+                        layoutId="nav-pill"
+                        className="nav-pill"
+                        transition={{
+                            type: 'spring',
+                            stiffness: 380,
+                            damping: 32,
+                        }}
+                    />
+                )}
+                {t(`navigation.${item.id}`)}
+            </button>
+        );
+    };
+
+    // backdrop-filter would make the fixed menu panel size itself to the
+    // bar, so the bar stays clear while the menu is open.
+    const frosted = scrolled && !mobileMenuOpen;
 
     return (
-        <header className="menubar fixed inset-x-0 top-0 z-50">
+        <motion.header
+            className={`menubar fixed inset-x-0 top-0 z-50 ${frosted ? 'is-scrolled' : ''}`}
+            initial={reduce ? false : { y: -24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
             <div className="wrap">
                 <div
                     ref={barRef}
-                    className="relative flex min-h-12 items-center justify-between gap-3 sm:gap-4"
+                    className="relative flex min-h-16 items-center justify-between gap-3 sm:gap-4"
                 >
-                    {/* Wordmark */}
+                    {/* Wordmark: a station ring and the name */}
                     <button
                         ref={wordmarkRef}
                         type="button"
                         onClick={goHome}
-                        className="menubar-item menubar-brand invert-on-hover -ms-2.5 shrink-0"
+                        className="menubar-item menubar-brand -ms-3 shrink-0 gap-2"
                     >
+                        <span
+                            aria-hidden="true"
+                            className="size-3 rounded-full border-[3px] border-(--color-route)"
+                        />
                         {t('navigation.userName')}
                     </button>
 
@@ -266,13 +312,13 @@ export const Navigation = ({
                     </nav>
 
                     {/* Controls */}
-                    <div className="-me-2.5 flex shrink-0 items-center gap-2">
+                    <div className="-me-3 flex shrink-0 items-center gap-1">
                         <div ref={controlsRef} className="flex items-center">
                             <LocalClock language={language} />
                             <button
                                 type="button"
                                 onClick={toggleLanguage}
-                                className="menubar-item invert-on-hover"
+                                className="menubar-item"
                                 title={
                                     language === 'en'
                                         ? 'Switch to Persian'
@@ -280,9 +326,6 @@ export const Navigation = ({
                                 }
                                 aria-label="Toggle language"
                             >
-                                {/* Shows the language you would switch *to*.
-                                    Vazirmatn covers Arabic script; the pixel
-                                    face does not. */}
                                 {language === 'en' ? (
                                     <span className="font-vazir" lang="fa">
                                         فا
@@ -295,14 +338,45 @@ export const Navigation = ({
                             <button
                                 type="button"
                                 onClick={toggleDarkMode}
-                                className="menubar-item invert-on-hover"
+                                className="menubar-item"
                                 aria-label="Toggle theme"
                             >
-                                {darkMode ? (
-                                    <IconSun size={18} />
-                                ) : (
-                                    <IconMoon size={18} />
-                                )}
+                                <AnimatePresence mode="wait" initial={false}>
+                                    <motion.span
+                                        key={darkMode ? 'sun' : 'moon'}
+                                        className="flex"
+                                        initial={
+                                            reduce
+                                                ? false
+                                                : {
+                                                      rotate: -90,
+                                                      scale: 0.4,
+                                                      opacity: 0,
+                                                  }
+                                        }
+                                        animate={{
+                                            rotate: 0,
+                                            scale: 1,
+                                            opacity: 1,
+                                        }}
+                                        exit={
+                                            reduce
+                                                ? undefined
+                                                : {
+                                                      rotate: 90,
+                                                      scale: 0.4,
+                                                      opacity: 0,
+                                                  }
+                                        }
+                                        transition={{ duration: 0.25 }}
+                                    >
+                                        {darkMode ? (
+                                            <IconSun size={18} />
+                                        ) : (
+                                            <IconMoon size={18} />
+                                        )}
+                                    </motion.span>
+                                </AnimatePresence>
                             </button>
                         </div>
 
@@ -313,9 +387,7 @@ export const Navigation = ({
                                 onClick={() =>
                                     setMobileMenuOpen(!mobileMenuOpen)
                                 }
-                                className={`menubar-item invert-on-hover ${
-                                    mobileMenuOpen ? 'is-active' : ''
-                                }`}
+                                className={`menubar-item ${mobileMenuOpen ? 'is-active' : ''}`}
                                 aria-label="Toggle menu"
                                 aria-expanded={mobileMenuOpen}
                                 aria-controls="mobile-menu"
@@ -331,39 +403,77 @@ export const Navigation = ({
                 </div>
             </div>
 
-            {/* The pulled-down menu. `.mobile-menu` is absolutely
-                positioned (see style.css), so it never adds its real height
-                to the fixed header above — closed, it can't sit, invisible
-                but still full-height, over the hero underneath. Only mounted
-                in `compact` layouts, so nothing lingers on a desktop
-                viewport that never shows a burger at all. */}
-            {compact && (
-                <div
-                    ref={menuPanelRef}
-                    id="mobile-menu"
-                    className={`mobile-menu ${mobileMenuOpen ? 'is-open' : ''}`}
-                    aria-hidden={!mobileMenuOpen}
-                    inert={!mobileMenuOpen}
-                >
-                    <div className="py-1.5">
-                        {NAV_ITEMS.map((item) => (
-                            <button
-                                key={item.id}
-                                type="button"
-                                onClick={() => go(item)}
-                                aria-current={
-                                    active === item.id ? 'true' : undefined
-                                }
-                                className={`mobile-menu-item invert-on-hover flex min-h-12 w-full items-center px-4 text-start text-xl ${
-                                    active === item.id ? 'is-active' : ''
-                                }`}
-                            >
-                                {t(`navigation.${item.id}`)}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </header>
+            {/* Full-screen menu: the links as big type, one after another. */}
+            <AnimatePresence>
+                {compact && mobileMenuOpen && (
+                    <motion.div
+                        ref={menuPanelRef}
+                        id="mobile-menu"
+                        className="mobile-menu"
+                        initial={
+                            reduce ? false : { clipPath: 'inset(0 0 100% 0)' }
+                        }
+                        animate={{ clipPath: 'inset(0 0 0% 0)' }}
+                        exit={
+                            reduce
+                                ? undefined
+                                : { clipPath: 'inset(0 0 100% 0)' }
+                        }
+                        transition={{
+                            duration: 0.55,
+                            ease: [0.65, 0, 0.35, 1],
+                        }}
+                    >
+                        <motion.ul
+                            className="wrap m-0 flex list-none flex-col gap-1 pt-24 pb-12"
+                            initial="hidden"
+                            animate="shown"
+                            transition={{
+                                staggerChildren: 0.05,
+                                delayChildren: 0.2,
+                            }}
+                        >
+                            {NAV_ITEMS.map((item, i) => (
+                                <motion.li
+                                    key={item.id}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 32 },
+                                        shown: { opacity: 1, y: 0 },
+                                    }}
+                                    transition={{
+                                        duration: 0.6,
+                                        ease: [0.16, 1, 0.3, 1],
+                                    }}
+                                >
+                                    <button
+                                        type="button"
+                                        onClick={() => go(item)}
+                                        aria-current={
+                                            active === item.id
+                                                ? 'true'
+                                                : undefined
+                                        }
+                                        className="mobile-menu-item flex min-h-14 w-full items-baseline gap-4 text-start"
+                                    >
+                                        <span className="station-no">
+                                            {String(i + 1).padStart(2, '0')}
+                                        </span>
+                                        <span
+                                            className={
+                                                active === item.id
+                                                    ? 'text-(--accent)'
+                                                    : ''
+                                            }
+                                        >
+                                            {t(`navigation.${item.id}`)}
+                                        </span>
+                                    </button>
+                                </motion.li>
+                            ))}
+                        </motion.ul>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.header>
     );
 };

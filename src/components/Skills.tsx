@@ -1,11 +1,11 @@
+import { motion, useReducedMotion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { EASE_OUT, SEEN_MARGIN } from './Motion';
 import { SectionHeading } from './SectionHeading';
-import { Window } from './Window';
 
 /**
- * Grouped rather than gridded. Twenty logo tiles say "I can name twenty
- * technologies"; five labelled rows say what each of them is actually for,
- * and read in a second.
+ * Grouped by what each one is for, and set as type rather than as tiles:
+ * the names are the picture. Each row slides in, then its words follow.
  */
 const GROUPS = [
     {
@@ -28,44 +28,70 @@ const GROUPS = [
     { id: 'tools', items: ['Git', 'Figma', 'Visual Studio', 'FFmpeg'] },
 ] as const;
 
-export const Skills = () => {
+export const Skills = ({ no }: { no: number }) => {
     const { t } = useTranslation();
+    const reduce = useReducedMotion();
 
     return (
         <section id="skills" className="section scroll-mt-16">
             <div className="wrap">
-                <Window title={t('navigation.skills')}>
+                <div className="lined">
                     <SectionHeading
+                        no={no}
                         title={t('skills.title')}
                         subtitle={t('skills.subtitle')}
                     />
 
                     <dl className="m-0">
                         {GROUPS.map((group) => (
-                            <div
+                            <motion.div
                                 key={group.id}
-                                className="row grid gap-3 py-4 sm:grid-cols-[11rem_1fr] sm:items-baseline sm:gap-8 sm:py-5"
+                                className="row grid gap-3 py-6 md:grid-cols-[10rem_1fr] md:items-baseline md:gap-8 md:py-8 xl:grid-cols-[14rem_1fr]"
+                                initial={reduce ? false : 'hidden'}
+                                whileInView="shown"
+                                viewport={{
+                                    once: true,
+                                    margin: SEEN_MARGIN,
+                                }}
+                                transition={{ staggerChildren: 0.05 }}
                             >
-                                <dt className="label label-ink">
+                                <dt className="station-no text-(--fg-muted)!">
                                     {t(`skills.groups.${group.id}`)}
                                 </dt>
-                                {/* Every entry is a Latin technology name,
-                                    so the run reads left-to-right in source
-                                    order regardless of the page. */}
+                                {/* Latin technology names: read left-to-right on either page. */}
                                 <dd
-                                    className="ltr-run m-0 flex flex-wrap gap-2"
+                                    className="m-0 flex flex-wrap gap-x-[0.6em] gap-y-1"
                                     dir="ltr"
                                 >
-                                    {group.items.map((item) => (
-                                        <span key={item} className="tag">
+                                    {group.items.map((item, i) => (
+                                        <motion.span
+                                            key={item}
+                                            className="text-[clamp(1.5rem,3.6vw,3rem)] leading-tight font-bold tracking-[-0.035em] transition-colors duration-300 hover:text-(--accent)"
+                                            variants={{
+                                                hidden: { opacity: 0, y: 20 },
+                                                shown: { opacity: 1, y: 0 },
+                                            }}
+                                            transition={{
+                                                duration: 0.7,
+                                                ease: EASE_OUT,
+                                            }}
+                                        >
                                             {item}
-                                        </span>
+                                            {i < group.items.length - 1 && (
+                                                <span
+                                                    className="text-(--fg-subtle) font-normal"
+                                                    aria-hidden="true"
+                                                >
+                                                    {' /'}
+                                                </span>
+                                            )}
+                                        </motion.span>
                                     ))}
                                 </dd>
-                            </div>
+                            </motion.div>
                         ))}
                     </dl>
-                </Window>
+                </div>
             </div>
         </section>
     );

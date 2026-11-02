@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     IconAlertTriangle,
     IconEye,
@@ -6,18 +5,19 @@ import {
     IconRefresh,
     IconUsers,
 } from '@tabler/icons-react';
-import { SubPageShell } from '../components/SubPageShell';
-import { useStatsAuthStore } from '../store/statsAuthStore';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Station, SubPageShell } from '../components/SubPageShell';
 import {
+    type DayStats,
+    type Entry,
     fetchStats,
     StatsError,
+    type StatsResponse,
     sumViews,
     sumVisitors,
     topOf,
-    type DayStats,
-    type Entry,
-    type StatsResponse,
 } from '../services/analyticsService';
+import { useStatsAuthStore } from '../store/statsAuthStore';
 
 const RANGES = [7, 30, 90] as const;
 
@@ -206,9 +206,8 @@ const TokenGate = ({
     const [value, setValue] = useState('');
 
     return (
-        <div className="mx-auto max-w-sm">
-            <h1 className="display display-md">Analytics</h1>
-            <p className="prose-sm mt-2">
+        <div className="max-w-sm">
+            <p className="prose-sm">
                 Enter the value of{' '}
                 <code className="font-mono">ANALYTICS_TOKEN</code> from the
                 server environment.
@@ -331,124 +330,143 @@ export const Stats = () => {
 
     if (!token) {
         return (
-            <SubPageShell title="Analytics">
-                <TokenGate onSubmit={signIn} error={error} />
+            <SubPageShell kicker="Admin" title="Analytics">
+                <Station no={1} title="Sign in" className="pb-24! md:pb-32!">
+                    <TokenGate onSubmit={signIn} error={error} />
+                </Station>
             </SubPageShell>
         );
     }
 
     return (
-        <SubPageShell title="Analytics">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-                <div>
-                    <h1 className="display display-md">Analytics</h1>
-                    <p className="text-muted mt-1 font-mono text-xs">
-                        {data
-                            ? `${data.today} · ${data.tz}`
-                            : loading
-                              ? 'loading…'
-                              : '—'}
-                    </p>
-                </div>
+        <SubPageShell kicker="Admin" title="Analytics">
+            <Station
+                no={1}
+                title={`Last ${days} days`}
+                className="pb-24! md:pb-32!"
+            >
+                <div className="flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <p className="text-muted font-mono text-xs">
+                            {data
+                                ? `${data.today} · ${data.tz}`
+                                : loading
+                                  ? 'loading…'
+                                  : '—'}
+                        </p>
+                    </div>
 
-                <div className="flex flex-wrap items-center gap-2">
-                    {RANGES.map((r) => (
+                    <div className="flex flex-wrap items-center gap-2">
+                        {RANGES.map((r) => (
+                            <button
+                                key={r}
+                                type="button"
+                                onClick={() => setDays(r)}
+                                aria-pressed={days === r}
+                                className={`tag cursor-pointer ${
+                                    days === r
+                                        ? 'border-(--accent) text-(--accent)'
+                                        : ''
+                                }`}
+                            >
+                                {r}d
+                            </button>
+                        ))}
+
                         <button
-                            key={r}
                             type="button"
-                            onClick={() => setDays(r)}
-                            aria-pressed={days === r}
-                            className={`tag cursor-pointer ${
-                                days === r
-                                    ? 'border-(--accent) text-(--accent)'
-                                    : ''
-                            }`}
+                            onClick={() => token && load(token, days)}
+                            className="tag cursor-pointer"
+                            aria-label="Refresh"
                         >
-                            {r}d
+                            <IconRefresh
+                                size={13}
+                                className={loading ? 'animate-spin' : ''}
+                            />
+                            refresh
                         </button>
-                    ))}
 
-                    <button
-                        type="button"
-                        onClick={() => token && load(token, days)}
-                        className="tag cursor-pointer"
-                        aria-label="Refresh"
-                    >
-                        <IconRefresh
-                            size={13}
-                            className={loading ? 'animate-spin' : ''}
-                        />
-                        refresh
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={handleSignOut}
-                        className="tag cursor-pointer"
-                        aria-label="Forget token"
-                    >
-                        <IconLogout size={13} />
-                        exit
-                    </button>
-                </div>
-            </div>
-
-            {error && (
-                <p className="text-accent mt-6 flex items-start gap-2 text-sm">
-                    <IconAlertTriangle size={16} className="mt-0.5 shrink-0" />
-                    {error}
-                </p>
-            )}
-
-            {view && data && (
-                <div className="mt-8 space-y-4">
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        <Kpi
-                            icon={<IconEye size={13} />}
-                            label="Views today"
-                            value={num(view.today?.views ?? 0)}
-                            hint={`${num(view.today?.visitors ?? 0)} visitors`}
-                        />
-                        <Kpi
-                            icon={<IconEye size={13} />}
-                            label={`Views · ${days}d`}
-                            value={num(view.rangeViews)}
-                        />
-                        <Kpi
-                            icon={<IconUsers size={13} />}
-                            label={`Visitors · ${days}d`}
-                            value={num(view.rangeVisitors)}
-                            hint="daily uniques, summed"
-                        />
-                        <Kpi
-                            icon={<IconEye size={13} />}
-                            label="All time"
-                            value={num(data.lifetime.views)}
-                            hint={`since ${data.lifetime.since}`}
-                        />
-                    </div>
-
-                    <DailyChart days={data.days} />
-
-                    <div className="grid gap-4 lg:grid-cols-2">
-                        <TopList title="Pages" entries={view.paths} />
-                        <TopList title="Referrers" entries={view.referrers} />
-                    </div>
-
-                    <div className="grid gap-4 lg:grid-cols-3">
-                        <TopList title="Countries" entries={view.countries} />
-                        <TopList title="Devices" entries={view.devices} />
-                        <TopList title="Browsers" entries={view.browsers} />
-                    </div>
-
-                    <div className="grid gap-4 lg:grid-cols-2">
-                        <TopList title="Operating systems" entries={view.os} />
-                        <HourChart days={data.days} tz={data.tz} />
+                        <button
+                            type="button"
+                            onClick={handleSignOut}
+                            className="tag cursor-pointer"
+                            aria-label="Forget token"
+                        >
+                            <IconLogout size={13} />
+                            exit
+                        </button>
                     </div>
                 </div>
-            )}
 
-            {!view && !error && <p className="prose-sm mt-8">Loading…</p>}
+                {error && (
+                    <p className="text-accent mt-6 flex items-start gap-2 text-sm">
+                        <IconAlertTriangle
+                            size={16}
+                            className="mt-0.5 shrink-0"
+                        />
+                        {error}
+                    </p>
+                )}
+
+                {view && data && (
+                    <div className="mt-8 space-y-4">
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                            <Kpi
+                                icon={<IconEye size={13} />}
+                                label="Views today"
+                                value={num(view.today?.views ?? 0)}
+                                hint={`${num(view.today?.visitors ?? 0)} visitors`}
+                            />
+                            <Kpi
+                                icon={<IconEye size={13} />}
+                                label={`Views · ${days}d`}
+                                value={num(view.rangeViews)}
+                            />
+                            <Kpi
+                                icon={<IconUsers size={13} />}
+                                label={`Visitors · ${days}d`}
+                                value={num(view.rangeVisitors)}
+                                hint="daily uniques, summed"
+                            />
+                            <Kpi
+                                icon={<IconEye size={13} />}
+                                label="All time"
+                                value={num(data.lifetime.views)}
+                                hint={`since ${data.lifetime.since}`}
+                            />
+                        </div>
+
+                        <DailyChart days={data.days} />
+
+                        <div className="grid gap-4 lg:grid-cols-2">
+                            <TopList title="Pages" entries={view.paths} />
+                            <TopList
+                                title="Referrers"
+                                entries={view.referrers}
+                            />
+                        </div>
+
+                        <div className="grid gap-4 lg:grid-cols-3">
+                            <TopList
+                                title="Countries"
+                                entries={view.countries}
+                            />
+                            <TopList title="Devices" entries={view.devices} />
+                            <TopList title="Browsers" entries={view.browsers} />
+                        </div>
+
+                        <div className="grid gap-4 lg:grid-cols-2">
+                            <TopList
+                                title="Operating systems"
+                                entries={view.os}
+                            />
+                            <HourChart days={data.days} tz={data.tz} />
+                        </div>
+                    </div>
+                )}
+
+                {!view && !error && <p className="prose-sm mt-8">Loading…</p>}
+            </Station>
         </SubPageShell>
     );
 };

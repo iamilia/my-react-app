@@ -1,17 +1,18 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGitHubStore } from '../store/githubStore';
-import { useThemeStore } from '../store/themeStore';
-import { useLanguageStore } from '../store/languageStore';
-import { Navigation } from '../components/Navigation';
-import { Hero } from '../components/Hero';
+import { useLocation } from 'react-router-dom';
 import { About } from '../components/About';
-import { Work } from '../components/Work';
-import { Projects } from '../components/Projects';
 import { Contact } from '../components/Contact';
-import { Skills } from '../components/Skills';
 import { Footer } from '../components/Footer';
+import { Hero } from '../components/Hero';
+import { Navigation } from '../components/Navigation';
+import { Projects } from '../components/Projects';
+import { RouteLine } from '../components/RouteLine';
+import { Skills } from '../components/Skills';
+import { Work } from '../components/Work';
+import { useGitHubStore } from '../store/githubStore';
+import { useLanguageStore } from '../store/languageStore';
+import { useThemeStore } from '../store/themeStore';
 import { smoothScrollToSection } from '../utils/scroll';
 
 const USERNAME = 'iamilia';
@@ -31,6 +32,14 @@ export const Home = () => {
     const toggleLanguage = useLanguageStore((s) => s.toggleLanguage);
     const { hash } = useLocation();
     const { t } = useTranslation();
+    const mainRef = useRef<HTMLElement>(null);
+    /** The line the visitor picked; shared by the hero legend and Projects. */
+    const [line, setLine] = useState<string | null>(null);
+
+    const pickLine = (language: string) => {
+        setLine(language);
+        smoothScrollToSection('projects');
+    };
 
     // The sub-pages retitle the tab, so put the original back on the way in.
     useEffect(() => {
@@ -66,22 +75,27 @@ export const Home = () => {
                 language={language}
             />
 
-            <main>
+            <main ref={mainRef} className="relative">
+                <RouteLine container={mainRef} />
                 <Hero
                     user={user}
                     repos={repos}
                     scrollToSection={smoothScrollToSection}
+                    onPickLanguage={pickLine}
                 />
-                <Work />
                 <Projects
+                    no={1}
                     repos={repos}
                     status={status}
                     error={error}
                     onRetry={() => void load(USERNAME, REPO_COUNT)}
+                    language={line}
+                    onLanguage={setLine}
                 />
-                <About user={user} />
-                <Skills />
-                <Contact user={user} />
+                <Work no={2} />
+                <About no={3} user={user} />
+                <Skills no={4} />
+                <Contact no={5} user={user} />
             </main>
 
             <Footer

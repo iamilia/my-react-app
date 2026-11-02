@@ -1,96 +1,146 @@
+import { IconArrowRight, IconLock } from '@tabler/icons-react';
+import { motion, useReducedMotion } from 'motion/react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { IconArrowUpRight, IconLock } from '@tabler/icons-react';
-import { SubPageShell } from '../components/SubPageShell';
-import { SectionHeading } from '../components/SectionHeading';
+import { Link } from 'react-router-dom';
+import { EASE_OUT, Reveal, SEEN_MARGIN } from '../components/Motion';
+import { Station, SubPageShell } from '../components/SubPageShell';
 import { GAMES, type GameMeta } from '../games/registry';
 
-const GameCard = ({ game }: { game: GameMeta }) => {
+const MotionLink = motion.create(Link);
+
+/** A playable game: a big card, the whole of it a link. */
+const LiveGame = ({ game }: { game: GameMeta }) => {
     const { t } = useTranslation();
-    // One binding for both questions ("is it playable?" and "where to?") so
-    // the link target narrows on its own.
-    const livePath = game.status === 'live' ? game.path : null;
-    const live = livePath !== null;
+    const reduce = useReducedMotion();
+    const Icon = game.icon;
+    if (!game.path) return null;
 
-    const body = (
-        <>
-            <div className="flex items-start justify-between gap-3">
-                <h3 className="display display-md min-w-0">
-                    {t(`games.items.${game.id}.title`)}
-                </h3>
-                {live ? (
-                    <IconArrowUpRight
-                        size={16}
-                        className="mt-1 shrink-0 rtl:-scale-x-100"
-                    />
-                ) : (
-                    <IconLock size={14} className="text-muted mt-1 shrink-0" />
-                )}
-            </div>
-
-            <p className="prose-sm bidi-auto mt-2.5 line-clamp-3" dir="auto">
+    return (
+        <MotionLink
+            to={game.path}
+            className="card card-link group relative w-full overflow-hidden p-6! md:p-10!"
+            whileHover={reduce ? undefined : { y: -6 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+        >
+            <Icon
+                aria-hidden="true"
+                stroke={1.25}
+                className="pointer-events-none absolute -end-6 -bottom-8 size-48 text-(--tint-hover) transition-transform duration-700 group-hover:-rotate-12 group-hover:scale-110 md:size-64"
+            />
+            <span className="flex items-center gap-2 text-sm font-semibold text-(--fg-muted)">
+                <span className="marker" />
+                {t('games.status.live')}
+            </span>
+            <h3 className="mt-5 text-[clamp(3rem,10vw,7rem)] leading-[0.9] font-extrabold tracking-[-0.06em]">
+                {t(`games.items.${game.id}.title`)}
+            </h3>
+            <p className="lede bidi-auto relative mt-5 max-w-xl" dir="auto">
                 {t(`games.items.${game.id}.description`)}
             </p>
-
-            <div className="ltr-run mt-4 flex flex-wrap gap-1.5" dir="ltr">
+            <div className="relative mt-6 flex flex-wrap gap-1.5" dir="ltr">
                 {game.tags.map((tag) => (
                     <span key={tag} className="tag">
                         {tag}
                     </span>
                 ))}
             </div>
-
-            <div className="card-foot">
-                {live ? (
-                    <span className="text-accent inline-flex items-center gap-2">
-                        <span className="marker" />
-                        {t('games.play')}
-                    </span>
-                ) : (
-                    <span>{t('games.inProgress')}</span>
-                )}
-            </div>
-        </>
+            <span className="btn relative mt-8 self-start">
+                {t('games.play')}
+                <IconArrowRight
+                    size={18}
+                    aria-hidden="true"
+                    className="btn-arrow rtl:-scale-x-100"
+                />
+            </span>
+        </MotionLink>
     );
+};
 
-    return livePath ? (
-        <Link to={livePath} className="card card-link invert-on-hover w-full">
-            {body}
-        </Link>
-    ) : (
-        <div className="card w-full opacity-60" aria-disabled>
-            {body}
+/** Not playable yet: no link, quieter. */
+const SoonGame = ({ game }: { game: GameMeta }) => {
+    const { t } = useTranslation();
+    const Icon = game.icon;
+    return (
+        <div className="card h-full w-full" aria-disabled>
+            <div className="flex items-start justify-between gap-3">
+                <Icon
+                    size={28}
+                    stroke={1.5}
+                    aria-hidden="true"
+                    className="text-(--fg-muted)"
+                />
+                <IconLock
+                    size={16}
+                    aria-hidden="true"
+                    className="text-(--fg-muted)"
+                />
+            </div>
+            <h3 className="display display-md mt-6">
+                {t(`games.items.${game.id}.title`)}
+            </h3>
+            <p className="prose-sm bidi-auto mt-2" dir="auto">
+                {t(`games.items.${game.id}.description`)}
+            </p>
+            <div className="card-foot">
+                <span>{t('games.inProgress')}</span>
+            </div>
         </div>
     );
 };
 
 export const GameList = () => {
     const { t } = useTranslation();
+    const reduce = useReducedMotion();
 
     useEffect(() => {
         document.title = `${t('games.title')} — ${t('navigation.userName')}`;
     }, [t]);
 
-    return (
-        <SubPageShell title={t('navigation.games')}>
-            <div>
-                <SectionHeading
-                    as="h1"
-                    title={t('games.title')}
-                    subtitle={t('games.subtitle')}
-                />
+    const live = GAMES.filter((g) => g.status === 'live');
+    const soon = GAMES.filter((g) => g.status === 'soon');
 
-                <ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
-                    {GAMES.map((game) => (
-                        <li key={game.id} className="flex">
-                            <GameCard game={game} />
-                        </li>
+    return (
+        <SubPageShell
+            kicker={t('navigation.userName')}
+            title={t('games.title')}
+            subtitle={t('games.subtitle')}
+        >
+            <Station no={1} title={t('games.status.live')}>
+                <ul className="m-0 grid list-none gap-5 p-0">
+                    {live.map((game) => (
+                        <Reveal as="li" key={game.id} className="flex">
+                            <LiveGame game={game} />
+                        </Reveal>
                     ))}
                 </ul>
+            </Station>
 
+            <Station
+                no={2}
+                title={t('games.status.soon')}
+                className="pb-24! md:pb-32!"
+            >
+                <ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 xl:gap-5">
+                    {soon.map((game, i) => (
+                        <motion.li
+                            key={game.id}
+                            className="flex"
+                            initial={reduce ? false : { opacity: 0, y: 24 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: SEEN_MARGIN }}
+                            transition={{
+                                duration: 0.7,
+                                ease: EASE_OUT,
+                                delay: i * 0.08,
+                            }}
+                        >
+                            <SoonGame game={game} />
+                        </motion.li>
+                    ))}
+                </ul>
                 <p className="prose-sm mt-10">{t('games.footnote')}</p>
-            </div>
+            </Station>
         </SubPageShell>
     );
 };

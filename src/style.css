@@ -1,111 +1,107 @@
 @import "tailwindcss";
+@import "./tokens.css";
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ==========================================================================
    FONTS
    --------------------------------------------------------------------------
-   One family for everything: the platform's own (San Francisco on Apple,
-   Segoe UI Variable on Windows). Vazirmatn carries Persian. JetBrains Mono
-   is only for things that really are code — repo names and hostnames.
+   Atkinson Hyperlegible Next carries Latin, from body copy up to the poster
+   name. Vazirmatn carries Persian. JetBrains Mono is for things that are
+   code: station numbers, hostnames, repository stats.
    ========================================================================== */
 
+@import '@fontsource-variable/atkinson-hyperlegible-next/wght.css';
 @import '@fontsource-variable/jetbrains-mono/wght.css';
 @import '@fontsource-variable/vazirmatn/wght.css';
 
 @theme {
-    --font-sans:
-        -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI Variable Text',
-        'Segoe UI', 'Vazirmatn Variable', system-ui, 'Helvetica Neue', Arial,
-        sans-serif;
-
+    --font-sans: var(--font-display);
     --font-mono:
-        'JetBrains Mono Variable', 'Vazirmatn Variable', ui-monospace,
-        'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
-
-    --font-display: var(--font-sans);
-    --default-font-family: var(--font-sans);
-
-    --wrap: 64rem;
+        'JetBrains Mono Variable', 'Vazirmatn Variable', ui-monospace, Menlo,
+        Consolas, monospace;
+    --default-font-family: var(--font-display);
+    --breakpoint-2xl: 96rem;
 }
 
 /* ==========================================================================
    PALETTE
    --------------------------------------------------------------------------
-   Apple's neutrals and nothing decorative on top of them. The only colours
-   beyond grey are ones that carry information: the link blue, the green
-   "available" dot, and each language's own GitHub colour.
+   Values live in tokens.css (generated from /tokens). The short names below
+   are what the games, the metro planner and older components read, so they
+   are kept as aliases of the semantic tokens.
    ========================================================================== */
 
-:root {
-    color-scheme: light;
-
-    --bg: #f5f5f7;
-    --bg-alt: #ffffff;
-    --surface: #ffffff;
-    --surface-2: #ffffff;
-    --fg: #1d1d1f;
-    --fg-muted: #6e6e73;
-    --fg-subtle: #86868b;
-
-    --accent: #0066cc;
-    --accent-hover: #0077ed;
-    --accent-2: #0066cc;
-    --on-accent: #ffffff;
-
-    --line: rgba(0, 0, 0, 0.1);
-    --line-strong: rgba(0, 0, 0, 0.2);
-    --tint: rgba(0, 0, 0, 0.04);
-    --tint-hover: rgba(0, 0, 0, 0.07);
+:root,
+.dark {
+    --bg: var(--color-surface-base);
+    --bg-alt: var(--color-surface-raised);
+    --surface: var(--color-surface-raised);
+    --surface-2: var(--color-surface-raised);
+    --fg: var(--color-text-primary);
+    --fg-muted: var(--color-text-secondary);
+    --fg-subtle: var(--color-decor);
+    --accent: var(--color-action-primary);
+    --accent-hover: var(--color-action-primary-hover);
+    --accent-2: var(--color-action-primary);
+    --on-accent: var(--color-text-on-action);
+    --line: var(--color-border-subtle);
+    --line-strong: var(--color-border-strong);
+    --tint: var(--color-tint);
+    --tint-hover: var(--color-tint-hover);
+    --glass: var(--color-glass);
+    --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+    --accent-2-soft: var(--accent-soft);
+    --folio: var(--fg);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 
     --topic-bg: #ddf4ff;
     --topic-fg: #0969da;
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    --glass: rgba(245, 245, 247, 0.8);
+    --r-box: var(--radius-md);
+    --r-btn: var(--radius-full);
+    --ease: var(--ease-out);
+    --menu-open-duration: 320ms;
+    --menu-close-duration: 200ms;
+
+    /* The inline-start rail the route line runs down. Content in a
+       `.lined` section starts after it. */
+    --rail: 1.75rem;
+    --wrap: 76rem;
+    --gutter: 1.25rem;
 }
 
 .dark {
     color-scheme: dark;
-
-    --bg: #000000;
-    --bg-alt: #1c1c1e;
-    --surface: #1c1c1e;
-    --surface-2: #1c1c1e;
-    --fg: #f5f5f7;
-    --fg-muted: #a1a1a6;
-    --fg-subtle: #86868b;
-
-    --accent: #2997ff;
-    --accent-hover: #47a5ff;
-    --accent-2: #2997ff;
-    --on-accent: #ffffff;
-
-    --line: rgba(255, 255, 255, 0.12);
-    --line-strong: rgba(255, 255, 255, 0.24);
-    --tint: rgba(255, 255, 255, 0.06);
-    --tint-hover: rgba(255, 255, 255, 0.1);
-
     --topic-bg: rgba(56, 139, 253, 0.15);
     --topic-fg: #4493f8;
-
     --shadow-sm: none;
     --shadow: none;
-    --glass: rgba(0, 0, 0, 0.75);
 }
 
-:root,
-.dark {
-    --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
-    --accent-2-soft: var(--accent-soft);
-    --folio: var(--fg);
+:root {
+    color-scheme: light;
+}
 
-    --r-box: 12px;
-    --r-btn: 980px;
-    --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+@media (min-width: 768px) {
+    :root {
+        --rail: 4.5rem;
+        --gutter: 2rem;
+    }
+}
 
-    --menu-open-duration: 200ms;
-    --menu-close-duration: 150ms;
+@media (min-width: 1280px) {
+    :root {
+        --rail: 7rem;
+        --gutter: 3rem;
+    }
+}
+
+@media (min-width: 1536px) {
+    :root {
+        --wrap: 88rem;
+        --rail: 9rem;
+    }
 }
 
 /* ==========================================================================
@@ -118,7 +114,6 @@
     }
 
     html {
-        scroll-behavior: smooth;
         -webkit-text-size-adjust: 100%;
         background-color: var(--bg);
     }
@@ -128,19 +123,17 @@
         min-height: 100svh;
         background-color: transparent;
         color: var(--fg);
-        font-family: var(--font-sans);
+        font-family: var(--font-display);
         font-size: 1.0625rem;
-        line-height: 1.55;
-        letter-spacing: -0.01em;
+        line-height: 1.6;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        overflow-x: hidden;
+        overflow-x: clip;
     }
 
     [dir='rtl'] body {
-        font-family: 'Vazirmatn Variable', var(--font-sans);
-        letter-spacing: normal;
-        line-height: 1.75;
+        font-family: var(--font-fa);
+        line-height: 1.8;
     }
 
     ::selection {
@@ -148,8 +141,8 @@
     }
 
     :focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 2px;
+        outline: 2px solid var(--color-border-focus);
+        outline-offset: 3px;
         border-radius: 6px;
     }
 }
@@ -160,7 +153,7 @@
 
 @layer components {
     .font-vazir {
-        font-family: 'Vazirmatn Variable', sans-serif;
+        font-family: var(--font-fa);
     }
 
     /* ---------------------------------------------------------------- layout */
@@ -168,38 +161,30 @@
     .wrap {
         margin-inline: auto;
         width: 100%;
-        max-width: var(--wrap);
-        padding-inline: 1.25rem;
+        max-width: calc(var(--wrap) + 2 * var(--gutter));
+        padding-inline: var(--gutter);
     }
 
-    @media (min-width: 640px) {
-        .wrap {
-            padding-inline: 2rem;
-        }
+    /* A section on the line: the rail on the start side, content after it. */
+    .lined {
+        position: relative;
+        padding-inline-start: var(--rail);
     }
 
-    /* Sections are plain stretches of page with a rule between them — no
-       panel around each one. */
     .section {
         position: relative;
-        padding-block: 3.5rem;
+        padding-block: 5rem;
     }
 
-    .section + .section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        inset-inline: max(1.25rem, calc((100% - var(--wrap)) / 2 + 1.25rem));
-        height: 1px;
-        background: var(--line);
-    }
-
-    @media (min-width: 640px) {
+    @media (min-width: 768px) {
         .section {
-            padding-block: 5rem;
+            padding-block: 6rem;
         }
-        .section + .section::before {
-            inset-inline: max(2rem, calc((100% - var(--wrap)) / 2 + 2rem));
+    }
+
+    @media (min-width: 1280px) {
+        .section {
+            padding-block: 7.5rem;
         }
     }
 
@@ -225,15 +210,11 @@
         }
     }
 
-    /* The old window is now just a wrapper; kept so every page using it
-       still renders. */
     .window,
     .window-body {
         position: relative;
     }
 
-    /* A GitHub-style box: white sheet, one hairline, small radius. Used for
-       things that are objects (a repository, a game), not for sections. */
     .box {
         border: 1px solid var(--line);
         border-radius: var(--r-box);
@@ -244,27 +225,97 @@
 
     .display {
         font-family: var(--font-display);
-        font-weight: 600;
-        letter-spacing: -0.022em;
-        line-height: 1.12;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
         text-wrap: balance;
     }
 
     .display-xl {
-        font-size: clamp(2rem, 5.2vw, 3rem);
-        letter-spacing: -0.03em;
-        line-height: 1.1;
+        font-size: clamp(2.25rem, 6vw, 4rem);
+        letter-spacing: -0.04em;
     }
 
     .display-lg {
-        font-size: clamp(1.625rem, 3.6vw, 2rem);
-        line-height: 1.15;
+        font-size: clamp(1.875rem, 4vw, 2.75rem);
     }
 
     .display-md {
-        font-size: 1.3125rem;
-        letter-spacing: -0.015em;
+        font-size: clamp(1.25rem, 2vw, 1.5rem);
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+    }
+
+    /* The poster name in the hero: type as the image. */
+    .poster {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: clamp(6rem, 42vw, 24rem);
+        line-height: 0.86;
+        letter-spacing: -0.065em;
+    }
+
+    [dir='rtl'] .poster {
+        font-family: var(--font-fa);
+        font-weight: 900;
+        line-height: 1.15;
+        letter-spacing: 0;
+        font-size: clamp(5rem, 32vw, 19rem);
+    }
+
+    /* A sub-page's title: the poster one size down. */
+    .poster-sm {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: clamp(3.25rem, 13vw, 10rem);
+        line-height: 0.9;
+        letter-spacing: -0.06em;
+        text-wrap: balance;
+    }
+
+    /* A long title ("Tehran Metro travel time") at poster size runs to four
+       lines; one step down keeps it to two on wide screens. */
+    .poster-long {
+        font-size: clamp(2.75rem, 7.5vw, 6.5rem);
+    }
+
+    [dir='rtl'] .poster-sm {
+        font-family: var(--font-fa);
+        font-weight: 900;
         line-height: 1.3;
+        letter-spacing: 0;
+        font-size: clamp(2.75rem, 10vw, 7.5rem);
+    }
+
+    [dir='rtl'] .poster-long {
+        font-size: clamp(2.25rem, 6vw, 5rem);
+    }
+
+    /* Section titles: one size step under the poster. */
+    .headline {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: clamp(2.5rem, 7vw, 6rem);
+        line-height: 0.95;
+        letter-spacing: -0.05em;
+        text-wrap: balance;
+    }
+
+    [dir='rtl'] .headline {
+        font-family: var(--font-fa);
+        font-weight: 900;
+        line-height: 1.3;
+        letter-spacing: 0;
+        font-size: clamp(2.25rem, 6vw, 5rem);
+    }
+
+    /* Station number beside each title, in the line's colour. */
+    .station-no {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--accent);
     }
 
     .kicker {
@@ -273,7 +324,7 @@
     }
 
     .folio {
-        font-weight: 600;
+        font-weight: 700;
         font-size: clamp(1.75rem, 6vw, 2.5rem);
         letter-spacing: -0.03em;
         line-height: 1;
@@ -289,7 +340,7 @@
 
     .label-ink {
         color: var(--fg);
-        font-weight: 600;
+        font-weight: 700;
     }
 
     .label-accent {
@@ -298,7 +349,7 @@
 
     .lede {
         max-width: 60ch;
-        font-size: 1.0625rem;
+        font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
         line-height: 1.55;
         color: var(--fg-muted);
         text-wrap: pretty;
@@ -324,6 +375,10 @@
         font-variant-numeric: tabular-nums;
     }
 
+    .mono {
+        font-family: var(--font-mono);
+    }
+
     /* ----------------------------------------------------------------- rules */
 
     .rule,
@@ -338,12 +393,11 @@
         background: var(--line-strong);
     }
 
-    /* --------------------------------------------------- hover (old name)
-       A light grey wash on hover, nothing more. */
+    /* ------------------------------------------------------- hover wash */
 
     .invert-on-hover {
-        border-radius: 8px;
-        transition: background-color 0.15s var(--ease);
+        border-radius: var(--radius-sm);
+        transition: background-color var(--duration-fast) var(--ease);
     }
 
     .invert-on-hover.is-active,
@@ -364,11 +418,13 @@
         display: flex;
         flex-direction: column;
         border: 1px solid var(--line);
-        border-radius: var(--r-box);
+        border-radius: var(--radius-lg);
         background: var(--surface);
         color: var(--fg);
-        padding: 1rem 1.125rem;
-        transition: border-color 0.15s var(--ease);
+        padding: 1.25rem 1.375rem;
+        transition:
+            border-color var(--duration-fast) var(--ease),
+            box-shadow var(--duration-base) var(--ease);
     }
 
     .card.invert-on-hover:hover,
@@ -388,7 +444,7 @@
         align-items: center;
         gap: 0.5rem 1rem;
         margin-top: auto;
-        padding-top: 0.875rem;
+        padding-top: 1rem;
         font-size: 0.8125rem;
         color: var(--fg-muted);
     }
@@ -416,13 +472,33 @@
     /* -------------------------------------------------------- links, buttons */
 
     .link {
-        color: var(--accent);
+        color: var(--color-text-link);
         text-decoration: none;
     }
 
     .link:hover {
         text-decoration: underline;
-        text-underline-offset: 0.15em;
+        text-underline-offset: 0.18em;
+    }
+
+    /* An underline that draws in from the start edge on hover. */
+    .draw-line {
+        background-image: linear-gradient(currentColor, currentColor);
+        background-repeat: no-repeat;
+        background-position: 0 100%;
+        background-size: 0% 0.08em;
+        transition: background-size var(--duration-base) var(--ease);
+    }
+
+    [dir='rtl'] .draw-line {
+        background-position: 100% 100%;
+    }
+
+    .draw-line:hover,
+    .draw-line:focus-visible,
+    a:hover .draw-line,
+    a:focus-visible .draw-line {
+        background-size: 100% 0.08em;
     }
 
     .btn,
@@ -430,18 +506,20 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 0.4rem;
-        min-height: 2.75rem;
-        padding: 0.5rem 1.25rem;
+        gap: 0.5rem;
+        min-height: 3rem;
+        padding: 0.625rem 1.5rem;
         border: 1px solid transparent;
         border-radius: var(--r-btn);
         font-size: 1.0625rem;
+        font-weight: 700;
         line-height: 1.2;
         cursor: pointer;
         user-select: none;
         transition:
-            background-color 0.15s var(--ease),
-            border-color 0.15s var(--ease);
+            background-color var(--duration-fast) var(--ease),
+            border-color var(--duration-fast) var(--ease),
+            transform var(--duration-base) var(--ease);
     }
 
     .btn {
@@ -450,18 +528,37 @@
     }
 
     .btn-outline {
-        color: var(--accent);
-        border-color: var(--accent);
+        color: var(--fg);
+        border-color: var(--line-strong);
         background: transparent;
     }
 
+    .btn .btn-arrow,
+    .btn-outline .btn-arrow {
+        transition: transform var(--duration-base) var(--ease);
+    }
+
     @media (hover: hover) {
-        .btn:hover:not(:disabled) {
-            background: var(--accent-hover);
+        .btn:hover:not(:disabled),
+        .btn-outline:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+        .btn:hover .btn-arrow,
+        .btn-outline:hover .btn-arrow {
+            transform: translateX(3px);
+        }
+        [dir='rtl'] .btn:hover .btn-arrow,
+        [dir='rtl'] .btn-outline:hover .btn-arrow {
+            transform: translateX(-3px);
         }
         .btn-outline:hover:not(:disabled) {
-            background: var(--accent-soft);
+            border-color: var(--fg);
         }
+    }
+
+    .btn:active:not(:disabled),
+    .btn-outline:active:not(:disabled) {
+        transform: translateY(0) scale(0.98);
     }
 
     .btn:disabled,
@@ -470,38 +567,50 @@
         opacity: 0.4;
     }
 
-    /* a neutral token — a technology name, a platform */
     .tag {
         display: inline-flex;
         align-items: center;
-        border-radius: 6px;
-        padding: 0.125rem 0.5rem;
+        border-radius: var(--radius-full);
+        padding: 0.1875rem 0.75rem;
         font-size: 0.8125rem;
         line-height: 1.5;
         color: var(--fg);
         background: var(--tint);
+        box-shadow: inset 0 0 0 1px var(--line);
     }
 
-    /* a GitHub topic: the same blue chip GitHub draws */
     .topic {
         display: inline-flex;
         align-items: center;
         border-radius: 999px;
         padding: 0.0625rem 0.625rem;
+        min-height: 1.5rem;
         font-size: 0.75rem;
-        font-weight: 500;
+        font-weight: 600;
         line-height: 1.6;
         color: var(--topic-fg);
         background: var(--topic-bg);
     }
 
     .marker {
+        position: relative;
         display: inline-block;
         flex: none;
         width: 0.5rem;
         height: 0.5rem;
         border-radius: 999px;
-        background: #30d158;
+        background: var(--color-status-live);
+    }
+
+    /* The live dot breathes: the only looping motion on the site, because
+       "available" is a present-tense fact. */
+    .marker::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: inherit;
+        animation: marker-ping 2.4s var(--ease) infinite;
     }
 
     .caret,
@@ -527,6 +636,11 @@
         box-shadow: inset 0 0 0 1px var(--line);
     }
 
+    .dark .lang-dot,
+    .dark .lang-bar > span {
+        background: color-mix(in srgb, var(--c) 75%, #fff);
+    }
+
     .lang-bar {
         display: flex;
         gap: 2px;
@@ -537,24 +651,6 @@
 
     .lang-bar > span {
         background: var(--c);
-        transform-origin: left center;
-        animation: lang-grow 0.9s var(--ease) both;
-    }
-
-    [dir='rtl'] .lang-bar > span {
-        transform-origin: right center;
-    }
-
-    /* Lua's navy and the like vanish on black; lift them a little. */
-    .dark .lang-bar > span,
-    .dark .lang-dot {
-        background: color-mix(in srgb, var(--c) 75%, #fff);
-    }
-
-    /* ---------------------------------------------------------------- hero */
-
-    .hero-in > * {
-        animation: hero-in 0.7s var(--ease) both;
     }
 
     .avatar {
@@ -567,29 +663,88 @@
         box-shadow: 0 0 0 1px var(--line);
     }
 
+    /* --------------------------------------------------------------- route */
+
+    /* The SVG the line is drawn in: covers <main>, never takes a click. */
+    .route-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .route-track {
+        fill: none;
+        stroke: var(--line);
+        stroke-width: var(--line-route);
+        stroke-linecap: round;
+    }
+
+    .route-path {
+        fill: none;
+        stroke: var(--color-route);
+        stroke-width: var(--line-route);
+        stroke-linecap: round;
+    }
+
+    .station-dot {
+        fill: var(--bg);
+        stroke: var(--line-strong);
+        stroke-width: 3;
+        transition:
+            stroke var(--duration-base) var(--ease),
+            fill var(--duration-base) var(--ease);
+    }
+
+    .station-dot.is-reached {
+        stroke: var(--color-route);
+    }
+
+    .station-dot.is-here {
+        fill: var(--color-route);
+    }
+
+    .terminus {
+        stroke: var(--color-route);
+        stroke-width: 6;
+        stroke-linecap: round;
+    }
+
     /* -------------------------------------------------------------- menubar */
 
     .menubar {
+        transition:
+            background-color var(--duration-base) var(--ease),
+            border-color var(--duration-base) var(--ease);
+        border-bottom: 1px solid transparent;
+    }
+
+    .menubar.is-scrolled {
         background: var(--glass);
         backdrop-filter: saturate(180%) blur(20px);
         -webkit-backdrop-filter: saturate(180%) blur(20px);
-        border-bottom: 1px solid var(--line);
+        border-bottom-color: var(--line);
     }
 
     .menubar-item {
+        position: relative;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 0.4rem;
         min-height: 2.75rem;
-        min-width: 2.5rem;
-        padding-inline: 0.625rem;
-        font-size: 0.8125rem;
+        min-width: 2.75rem;
+        padding-inline: 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 600;
         line-height: 1;
         white-space: nowrap;
         color: var(--fg-muted);
         cursor: pointer;
-        transition: color 0.15s var(--ease);
+        transition: color var(--duration-fast) var(--ease);
     }
 
     .menubar-item.invert-on-hover:hover,
@@ -605,43 +760,41 @@
 
     .menubar-brand {
         color: var(--fg);
-        font-weight: 600;
-        font-size: 0.9375rem;
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: -0.02em;
+    }
+
+    /* The sliding pill behind the active link (motion layoutId). */
+    .nav-pill {
+        position: absolute;
+        inset: 0.375rem 0;
+        border-radius: var(--radius-full);
+        background: var(--tint-hover);
+        z-index: -1;
     }
 
     .mobile-menu {
-        position: absolute;
-        inset-inline: 0;
-        top: 100%;
+        position: fixed;
+        inset: 0;
+        z-index: -1;
         background: var(--bg);
-        border-bottom: 1px solid var(--line);
-        pointer-events: none;
-        visibility: hidden;
-        opacity: 0;
-        transition:
-            opacity var(--menu-close-duration) var(--ease),
-            visibility 0s var(--menu-close-duration);
-    }
-
-    .mobile-menu.is-open {
-        pointer-events: auto;
-        visibility: visible;
-        opacity: 1;
-        transition:
-            opacity var(--menu-open-duration) var(--ease),
-            visibility 0s;
-    }
-
-    .mobile-menu > div {
-        margin-inline: auto;
-        max-width: var(--wrap);
-        padding-inline: 0.75rem;
+        overflow-y: auto;
     }
 
     .mobile-menu-item {
-        border-radius: 8px;
-        font-size: 1.0625rem !important;
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: clamp(2.25rem, 10vw, 3.5rem);
+        line-height: 1.1;
+        letter-spacing: -0.04em;
         color: var(--fg);
+    }
+
+    [dir='rtl'] .mobile-menu-item {
+        font-family: var(--font-fa);
+        letter-spacing: 0;
+        line-height: 1.5;
     }
 
     /* --------------------------------------------------- RTL / Arabic script */
@@ -662,23 +815,18 @@
     [dir='rtl'] .kicker,
     [dir='rtl'] .label,
     [dir='rtl'] .menubar-item,
-    [dir='rtl'] .mobile-menu-item,
     [dir='rtl'] .btn,
     [dir='rtl'] .btn-outline {
-        font-family: 'Vazirmatn Variable', var(--font-sans);
+        font-family: var(--font-fa);
     }
 
     [dir='rtl'] .display {
-        font-weight: 700;
-        line-height: 1.55;
-    }
-
-    [dir='rtl'] .display-xl {
-        font-size: clamp(1.75rem, 4.4vw, 2.5rem);
+        font-weight: 800;
+        line-height: 1.5;
     }
 
     [dir='rtl'] .folio {
-        font-family: var(--font-sans);
+        font-family: var(--font-display);
     }
 
     .force-mono {
@@ -688,9 +836,9 @@
 
     .force-pixel,
     [dir='rtl'] .force-pixel {
-        font-family: var(--font-sans);
-        letter-spacing: -0.025em;
-        line-height: 1.15;
+        font-family: var(--font-display);
+        letter-spacing: -0.03em;
+        line-height: 1.1;
     }
 
     .ltr-run {
@@ -740,8 +888,20 @@
         inset-block: 0;
         width: 35%;
         border-radius: inherit;
-        background: var(--fg-subtle);
-        animation: loader-glide 1.4s var(--ease) infinite;
+        background: var(--accent);
+        animation: loader-glide 1.4s var(--ease-in-out) infinite;
+    }
+}
+
+@keyframes marker-ping {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    80%,
+    100% {
+        transform: scale(2.6);
+        opacity: 0;
     }
 }
 
@@ -1046,5 +1206,15 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+}
+
+/* Beside the side column on lg+, the poster is sized to its 7/12 share. */
+@media (min-width: 1024px) {
+    .poster {
+        font-size: min(26rem, 25vw);
+    }
+    [dir='rtl'] .poster {
+        font-size: min(20rem, 19vw);
     }
 }

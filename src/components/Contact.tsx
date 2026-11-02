@@ -1,79 +1,102 @@
-import type { GitHubUser } from '../types/github';
+import { IconArrowUpRight } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import type { GitHubUser } from '../types/github';
+import { Reveal } from './Motion';
 import { SectionHeading } from './SectionHeading';
-import { Window } from './Window';
 
 interface ContactProps {
+    no: number;
     user: GitHubUser | null;
 }
 
-export const Contact = ({ user }: ContactProps) => {
+const EMAIL = 'ilialotfi@outlook.com';
+
+/**
+ * The terminus. The address is set at poster scale because writing to it is
+ * the whole point of the page; the other channels follow as rows.
+ */
+export const Contact = ({ no, user }: ContactProps) => {
     const { t } = useTranslation();
 
     const channels = [
         {
-            title: t('contact.email'),
-            value: 'ilialotfi@outlook.com',
-            href: 'mailto:ilialotfi@outlook.com',
-            external: false,
-        },
-        {
             title: t('contact.telegram'),
             value: '@org_ilia',
             href: 'https://t.me/org_ilia',
-            external: true,
         },
         {
             title: t('contact.discordServer'),
             value: t('contact.joinServer'),
             href: 'https://discord.gg/kz6cSRrTdy',
-            external: true,
         },
         {
             title: 'GitHub',
             value: 'github.com/iamilia',
             href: 'https://github.com/iamilia',
-            external: true,
         },
     ];
 
     return (
-        <section id="contact" className="section scroll-mt-16">
+        <section id="contact" className="section scroll-mt-16 pb-24! md:pb-32!">
             <div className="wrap">
-                <Window title={t('navigation.contact')}>
+                <div className="lined">
                     <SectionHeading
+                        no={no}
                         title={t('contact.title')}
                         subtitle={t('contact.subtitle')}
                     />
 
-                    <ul className="m-0 max-w-2xl list-none p-0">
-                        {channels.map(({ title, value, href, external }) => (
-                            <li key={title}>
+                    <Reveal>
+                        <p className="label block">{t('contact.lead')}</p>
+                        <a
+                            href={`mailto:${EMAIL}`}
+                            className="group mt-2 inline-flex max-w-full items-center gap-3 text-[clamp(1.5rem,6.2vw,5.5rem)] leading-[1.05] font-extrabold tracking-[-0.045em] break-all text-(--color-text-link) md:gap-5"
+                            dir="ltr"
+                        >
+                            <span className="draw-line">{EMAIL}</span>
+                            <IconArrowUpRight
+                                aria-hidden="true"
+                                className="size-[0.7em] shrink-0 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:rotate-45"
+                            />
+                        </a>
+                    </Reveal>
+
+                    <ul className="m-0 mt-14 grid list-none gap-0 p-0 md:mt-20 md:grid-cols-3 md:gap-6">
+                        {channels.map(({ title, value, href }, i) => (
+                            <Reveal as="li" key={title} delay={i * 0.08}>
                                 <a
                                     href={href}
-                                    target={external ? '_blank' : undefined}
+                                    target="_blank"
                                     rel="noopener noreferrer"
-                                    className="row row-link invert-on-hover flex flex-col gap-0.5 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+                                    className="row group flex items-baseline justify-between gap-4 py-5 md:flex-col md:items-start md:gap-1"
                                 >
                                     <span className="text-muted text-[0.9375rem]">
                                         {title}
                                     </span>
                                     <span
-                                        className="row-title max-w-full self-start truncate text-[1.0625rem] transition-colors sm:self-auto"
+                                        className="flex items-center gap-1.5 text-lg font-bold md:text-xl"
                                         dir="ltr"
                                     >
-                                        {value}
+                                        <span className="draw-line">
+                                            {value}
+                                        </span>
+                                        <IconArrowUpRight
+                                            size={18}
+                                            aria-hidden="true"
+                                            className="text-muted transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                                        />
                                     </span>
                                 </a>
-                            </li>
+                            </Reveal>
                         ))}
                     </ul>
+
                     {user?.location && (
-                        <p className="prose-sm mt-6 bidi-auto" dir="auto">
+                        <p className="prose-sm mt-10 bidi-auto" dir="auto">
                             {t('contact.where', { place: user.location })}
                         </p>
                     )}
-                </Window>
+                </div>
             </div>
         </section>
     );
